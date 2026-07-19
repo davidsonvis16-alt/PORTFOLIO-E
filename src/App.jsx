@@ -47,7 +47,7 @@ const PRICING = [
   },
   {
     name: "Business Site",
-    price: "KSh 35,000",
+    price: "KSh 25,000",
     note: "starting at",
     desc: "For restaurants, spas, and shops that need more than one page.",
     features: ["Up to 5 pages", "Custom design", "WhatsApp / M-Pesa integration", "1 round of revisions", "7-day turnaround"],
@@ -397,11 +397,11 @@ function AboutPage() {
         <div style={{ color: "#6E6E73", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>About</div>
         <div style={{ maxWidth: 700 }}>
           <p style={{ fontSize: "clamp(1.3rem, 2.3vw, 1.8rem)", lineHeight: 1.6, fontWeight: 500, color: "#0A0A0A", margin: "0 0 22px", letterSpacing: "-0.01em" }}>
-            I build websites for small businesses — mostly restaurants, cafés,
-            and shops around Nairobi.
+            I build websites for businesses — mostly restaurants, cafés, spas, Reality homes,
+            and shops.There are no limitations of any sort
           </p>
           <p style={{ fontSize: 16.5, lineHeight: 1.8, fontWeight: 400, color: "#6E6E73", margin: "0 0 22px" }}>
-            Self-taught, no agency, no team. I work mainly in{" "}
+            No agency, no team. I work mainly in{" "}
             <span style={{ color: "#0071E3" }}>React</span>. If you want a
             sense of what I can actually build rather than what I say I can
             build, <a href="https://rhomes.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: "#0A0A0A", textDecoration: "underline", textDecorationColor: "rgba(0,0,0,0.25)", textUnderlineOffset: 3 }}>Reality Homes</a> is
