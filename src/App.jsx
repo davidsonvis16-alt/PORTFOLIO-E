@@ -12,11 +12,11 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 const PROJECTS = [
   {
-    title: "Canvas & Coffee",
+    title: "Bakemart Coffee House",
     desc: "A coffee brand site. Menu, story, and ordering in one page that loads fast and doesn't get in the way.",
     tags: ["React", "Vite", "Tailwind"],
-    demo: "https://canvas-coffee.vercel.app/",
-    img: "https://images.unsplash.com/photo-1524671710025-d79530c2f957?fm=jpg&q=80&w=1400&auto=format&fit=crop",
+    demo: "https://bakemart.co.ke/",
+    img: "https://www.bakemart.co.ke/logo.jpeg",
   },
   {
     title: "Mvule Restaurants",
