@@ -18,10 +18,10 @@ const PROJECTS = [
     img: "https://images.unsplash.com/photo-1524671710025-d79530c2f957?fm=jpg&q=80&w=1400&auto=format&fit=crop",
   },
   {
-    title: "Mvule Restaurants",
-    desc: "Multi-restaurant ordering built for real Nairobi kitchens. Menu to order in a few taps, WhatsApp checkout included.",
-    tags: ["React", "Next.js", "WhatsApp API"],
-    demo: "https://restaurants-pied.vercel.app/",
+    title: "Kijani Kafe",
+    desc: "A garden bar & restaurant in Milimani, Nakuru — built to carry the calm, slow-down feel of the place itself onto the screen.",
+    tags: ["React", "Next.js", "Tailwind"],
+    demo: "https://kijani-kafe.vercel.app/",
     img: "https://images.unsplash.com/photo-1642339147375-c3e037498ab5?fm=jpg&q=80&w=1400&auto=format&fit=crop",
   },
   {
