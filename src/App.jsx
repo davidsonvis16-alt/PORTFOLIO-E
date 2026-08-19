@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 /* ---------------------------------------------------------
    Design tokens — v4, black + blue, white as accent
@@ -47,7 +48,7 @@ const PROJECTS = [
   },
 ];
 
-const SKILLS = ["HTML", "CSS", "JavaScript", "React", "Vite", "Git", "Responsive Design"];
+const SKILLS = ["HTML", "CSS", "JavaScript", "React", "Next.js", "Tailwind CSS", "Supabase", "Vite", "TypeScript", "Git", "Responsive Design"];
 
 const PRICING = [
   {
@@ -60,7 +61,7 @@ const PRICING = [
   },
   {
     name: "Business Site",
-    price: "KSh 25,000",
+    price: "KSh 30,000",
     note: "starting at",
     desc: "For restaurants, spas, and shops that need more than one page.",
     features: ["Up to 5 pages", "Custom design", "WhatsApp / M-Pesa integration", "1 round of revisions", "7-day turnaround"],
@@ -100,6 +101,28 @@ function CheckIcon() {
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
       <path d="M2.5 7.2L5.3 10L11.5 3.5" stroke="#2F8CFF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  );
+}
+
+function SkillIcon({ name }) {
+  const config = {
+    "HTML": { bg: "#E44D26", text: "H5" },
+    "CSS": { bg: "#1572B6", text: "C3" },
+    "JavaScript": { bg: "#F7DF1E", text: "JS", color: "#000" },
+    "React": { bg: "#61DAFB", text: "⚛", color: "#000" },
+    "Next.js": { bg: "#000000", text: "N" },
+    "Tailwind CSS": { bg: "#06B6D4", text: "TW" },
+    "Supabase": { bg: "#3FCF8E", text: "S", color: "#000" },
+    "Vite": { bg: "#646CFF", text: "V" },
+    "TypeScript": { bg: "#3178C6", text: "TS" },
+    "Git": { bg: "#F05032", text: "G" },
+    "Responsive Design": { bg: "#8391AD", text: "RD" },
+  };
+  const c = config[name] || { bg: "#8391AD", text: name.slice(0, 2).toUpperCase() };
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, borderRadius: 5, background: c.bg, color: c.color || "#FFF", fontSize: 9, fontWeight: 800, flexShrink: 0, lineHeight: 1 }}>
+      {c.text}
+    </span>
   );
 }
 
@@ -161,33 +184,37 @@ function Typewriter({ text, speed = 55, initialDelay = 0 }) {
   );
 }
 
-function Reveal({ children, direction = "left", delay = 0 }) {
+function Reveal({ children, direction = "left" }) {
   const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => setIsVisible(true), delay);
-        observer.disconnect();
-      }
-    }, { threshold: 0.12 });
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [delay]);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
 
-  const x = direction === "left" ? -50 : direction === "right" ? 50 : 0;
+  const smoothProgress = useSpring(scrollYProgress, { damping: 50, stiffness: 80 });
+
+  const rotateY = useTransform(
+    smoothProgress,
+    [0, 0.35, 0.65, 1],
+    direction === "left" ? [-90, 0, 0, 90] : [90, 0, 0, -90]
+  );
+  const opacity = useTransform(smoothProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const scale = useTransform(smoothProgress, [0, 0.35, 0.65, 1], [0.9, 1, 1, 0.9]);
 
   return (
-    <div
+    <motion.div
       ref={ref}
       style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "translateX(0px)" : `translateX(${x}px)`,
-        transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)",
+        rotateY,
+        opacity,
+        scale,
+        transformStyle: "preserve-3d",
+        backfaceVisibility: "hidden",
+        willChange: "transform, opacity",
       }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
@@ -248,7 +275,7 @@ function Nav() {
 
 function Hero() {
   return (
-    <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "120px 6vw 60px", position: "relative" }}>
+    <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "120px 6vw 60px", position: "relative", perspective: 1200 }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "center" }} className="edn-hero-grid">
         <div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 28, color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>
@@ -280,22 +307,22 @@ function Hero() {
 
 function About() {
   return (
-    <section id="about" style={{ padding: "160px 6vw 120px" }}>
+    <section id="about" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
       <Reveal direction="left">
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "0.4fr 1fr", gap: 48 }} className="edn-about-grid">
           <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>About</div>
           <div style={{ maxWidth: 700 }}>
             <p style={{ fontSize: "clamp(1.3rem, 2.3vw, 1.8rem)", lineHeight: 1.6, fontWeight: 500, color: "#F5F7FA", margin: "0 0 22px", letterSpacing: "-0.01em" }}>
-              I build websites for small businesses — mostly restaurants, cafés,
+              We build websites for small businesses — mostly restaurants, cafés,
               and shops around Nairobi.
             </p>
             <p style={{ fontSize: 16.5, lineHeight: 1.8, fontWeight: 400, color: "#8391AD", margin: "0 0 22px" }}>
-              Self-taught, no agency, no team. I work mainly in{" "}
+              Self-taught, no agency, no team. We work mainly in{" "}
               <span style={{ color: "#99b2c2" }}>React</span>. If you want a
-              sense of what I can actually build rather than what I say I can
+              sense of what we can actually build rather than what we say we can
               build, <a href="https://bakemart.co.ke/" target="_blank" rel="noopener noreferrer" style={{ color: "#F5F7FA", textDecoration: "underline", textDecorationColor: "rgba(255,255,255,0.3)", textUnderlineOffset: 3 }}>Bakemart Coffee House</a> is
               a good place to look — real listings, built to stay fast even on
-              a slow connection. That's the standard I hold every project to.
+              a slow connection. That's the standard we hold every project to.
             </p>
             <a href="https://bakemart.co.ke/" target="_blank" rel="noopener noreferrer" className="edn-btn-ghost"
               style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
@@ -308,9 +335,51 @@ function About() {
   );
 }
 
+function WhyWebsite() {
+  return (
+    <section id="why" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
+      <Reveal direction="right">
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ marginBottom: 56 }}>
+            <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Why a Website</div>
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#F5F7FA" }}>Why your business needs a website</h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 28 }}>
+            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Be found 24/7</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+                Customers search online before they buy. A website puts your business in front of them anytime — even when your shop is closed.
+              </p>
+            </div>
+            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Look legitimate</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+                A clean, fast website builds trust instantly. People judge businesses before they walk through the door — make sure that first impression works for you.
+              </p>
+            </div>
+            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Reach beyond your street</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+                Social media is noisy and temporary. A website is yours — you control the message, the look, and the experience. It scales with your business.
+              </p>
+            </div>
+            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Why build it with us</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+                We build lightweight, fast websites that work on weak connections — because that is how most people browse here. No bloated agencies, no unnecessary overhead. Just a site that performs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+    </section>
+  );
+}
+
 function Projects() {
   return (
-    <section id="projects" style={{ padding: "160px 6vw 120px" }}>
+    <section id="projects" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
       <Reveal direction="right">
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 56 }}>
@@ -378,14 +447,17 @@ function Projects() {
 
 function Skills() {
   return (
-    <section id="skills" style={{ padding: "160px 6vw 120px" }}>
+    <section id="skills" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
       <Reveal direction="left">
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Toolkit</div>
           <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 40px", letterSpacing: "-0.02em", color: "#F5F7FA" }}>Skills</h2>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {SKILLS.map((s) => (
-              <span key={s} className="edn-pill" style={{ fontSize: 13.5, padding: "12px 22px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.14)", color: "#C7D0E0", fontWeight: 500, cursor: "default", background: "#0D1220" }}>{s}</span>
+              <span key={s} className="edn-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, padding: "10px 18px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.14)", color: "#C7D0E0", fontWeight: 500, cursor: "default", background: "#0D1220" }}>
+                <SkillIcon name={s} />
+                {s}
+              </span>
             ))}
           </div>
         </div>
@@ -396,7 +468,7 @@ function Skills() {
 
 function Pricing() {
   return (
-    <section id="pricing" style={{ padding: "160px 6vw 120px" }}>
+    <section id="pricing" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
       <Reveal direction="right">
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ marginBottom: 20 }}>
@@ -404,7 +476,7 @@ function Pricing() {
             <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 14px", letterSpacing: "-0.02em", color: "#F5F7FA" }}>What it costs to work together</h2>
             <p style={{ fontSize: 15, color: "#8391AD", fontWeight: 400, maxWidth: 560, lineHeight: 1.7 }}>
               Rough starting points, not rigid packages. Every site gets scoped
-              around what your business actually needs before I quote a final number.
+              around what your business actually needs before we quote a final number.
             </p>
           </div>
 
@@ -458,7 +530,7 @@ function Pricing() {
 
 function Contact() {
   return (
-    <section id="contact" style={{ padding: "160px 6vw 120px", minHeight: "100vh", display: "flex", alignItems: "center" }}>
+    <section id="contact" style={{ padding: "160px 6vw 120px", minHeight: "100vh", display: "flex", alignItems: "center", perspective: 1200 }}>
       <Reveal direction="left">
         <div style={{ maxWidth: 1280, margin: "0 auto", textAlign: "center", width: "100%" }}>
           <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 20, fontFamily: "'JetBrains Mono', monospace" }}>Contact</div>
@@ -560,6 +632,8 @@ export default function EdenPortfolio() {
         .edn-social { color:#8391AD; transition:color .3s; text-decoration: none; }
         .edn-social:hover { color:#2F8CFF; }
 
+        .edn-cube-edge { height:1px; background:linear-gradient(to right, transparent, rgba(255,255,255,0.12), transparent); margin:0 6vw; }
+
         @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 
         @media (max-width: 1080px) {
@@ -580,11 +654,19 @@ export default function EdenPortfolio() {
 
       <Nav />
       <Hero />
+      <div className="edn-cube-edge" />
       <About />
+      <div className="edn-cube-edge" />
+      <WhyWebsite />
+      <div className="edn-cube-edge" />
       <Projects />
+      <div className="edn-cube-edge" />
       <Skills />
+      <div className="edn-cube-edge" />
       <Pricing />
+      <div className="edn-cube-edge" />
       <Contact />
+      <div className="edn-cube-edge" />
       <Footer />
     </div>
   );
