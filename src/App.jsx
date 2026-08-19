@@ -505,26 +505,24 @@ function Pricing() {
                   {tier.note && <div style={{ fontSize: 11, color: tier.featured ? "rgba(5,7,12,0.5)" : "#8391AD", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>{tier.note}</div>}
                   <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em" }}>{tier.price}</div>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28, flexGrow: 1 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28, flexGrow: 1 }}>
                   {tier.features.map((f) => (
                     <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: tier.featured ? "rgba(5,7,12,0.8)" : "#C7D0E0" }}>
                       <CheckIcon /> {f}
                     </div>
                   ))}
                 </div>
-                <a href="#contact" style={{
-                  border: "none", padding: "12px 20px", borderRadius: 100,
-                  fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex",
-                  alignItems: "center", justifyContent: "center", gap: 8, width: "100%",
-                  background: tier.featured ? "#05070C" : "#F5F7FA",
-                  color: tier.featured ? "#F5F7FA" : "#05070C",
-                  textDecoration: "none",
-                  transition: "opacity .3s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.82")}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}>
-                  {tier.price === "Let's talk" ? "Start a conversation" : "Get Started"} <ArrowIcon className="edn-arrow" />
-                </a>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Eden, I'm interested in the ${tier.name} plan (${tier.price}). Can we discuss it?`)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: "#25D366", color: "#FFF" }}>
+                    WhatsApp <ArrowIcon className="edn-arrow" />
+                  </a>
+                  <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer"
+                    style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: tier.featured ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.08)", color: tier.featured ? "#05070C" : "#F5F7FA" }}>
+                    Instagram <ArrowIcon className="edn-arrow" />
+                  </a>
+                </div>
               </div>
             ))}
           </div>
