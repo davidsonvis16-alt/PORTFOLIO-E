@@ -413,8 +413,7 @@ function Projects() {
                   </div>
                 </div>
               ) : (
-                <a key={p.title} href={p.demo} target="_blank" rel="noopener noreferrer"
-                  className="edn-card" style={{ display: "block", cursor: "pointer", textDecoration: "none" }}>
+                <div key={p.title} className="edn-card" style={{ cursor: "default" }}>
                   <div className="edn-card-glow"></div>
                   <div style={{ position: "relative", zIndex: 2 }}>
                     <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#0D1220" }}>
@@ -429,13 +428,20 @@ function Projects() {
                           <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
                         ))}
                       </div>
-                      <span className="edn-card-btn"
-                        style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
-                        Live Demo <ArrowIcon className="edn-arrow" />
-                      </span>
+                      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                        <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Eden, I'm interested in the ${p.title} project. Can we discuss it?`)}`}
+                          target="_blank" rel="noopener noreferrer"
+                          style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "none", background: "#25D366", color: "#FFF", borderRadius: 100 }}>
+                          WhatsApp <ArrowIcon className="edn-arrow" />
+                        </a>
+                        <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer"
+                          style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "none", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", color: "#F5F7FA", borderRadius: 100 }}>
+                          Instagram <ArrowIcon className="edn-arrow" />
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </a>
+                </div>
               );
             })}
           </div>
@@ -646,6 +652,9 @@ export default function EdenPortfolio() {
           .edn-hero-grid { grid-template-columns:1fr !important; }
           .edn-hero-visual { height:240px !important; order:-1; }
           .edn-about-grid { grid-template-columns:1fr !important; }
+          .edn-project-grid { grid-template-columns:repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 520px) {
           .edn-project-grid { grid-template-columns:1fr !important; }
         }
         @media (max-width: 420px) {
