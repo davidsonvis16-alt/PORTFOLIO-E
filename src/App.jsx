@@ -126,10 +126,9 @@ function LogoMark({ size = 22 }) {
 function HeroMark() {
   return (
     <svg
-      width="320"
-      height="320"
       viewBox="0 0 40 40"
       fill="none"
+      className="edn-hero-mark-svg"
       style={{ animation: "floatSlow 7s ease-in-out infinite", filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.08))" }}
     >
       <rect x="10" y="8"    width="7"  height="24" rx="1.4" fill="#0F172A"/>
@@ -285,6 +284,7 @@ function Hero() {
               <span className="edn-hero-den" style={{
                 opacity: denVisible ? 1 : 0,
                 transition: "opacity 0.6s ease",
+                fontSize: "clamp(4rem, 10vw, 8rem)",
                 fontWeight: 800,
                 color: "#0F172A",
                 letterSpacing: "-0.04em",
@@ -934,6 +934,7 @@ export default function EdenPortfolio() {
           100% { transform: rotateY(360deg); }
         }
         .edn-hero-mark-wrap { animation: heroFlip 2.2s ease-in-out both; transform-style: preserve-3d; }
+        .edn-hero-mark-svg { width: clamp(180px, 25vw, 320px); height: clamp(180px, 25vw, 320px); }
 
         @keyframes slideInLeft {
           from { transform: translateX(-120px); opacity: 0; }
@@ -1018,16 +1019,12 @@ export default function EdenPortfolio() {
           .edn-mobile-toggle { display:flex !important; }
           .edn-hero-grid { grid-template-columns:1fr !important; }
           .edn-hero-visual { height:320px !important; order:0 !important; }
-          .edn-hero-visual svg { width:180px !important; height:180px !important; }
-          .edn-hero-den { font-size:90px !important; }
           .edn-about-grid { grid-template-columns:1fr !important; }
           .edn-project-grid { grid-template-columns:repeat(2, 1fr) !important; }
         }
         @media (max-width: 520px) {
           .edn-project-grid { grid-template-columns:1fr !important; }
           .edn-hero-visual { height:280px !important; }
-          .edn-hero-visual svg { width:140px !important; height:140px !important; }
-          .edn-hero-den { font-size:70px !important; }
         }
         @media (max-width: 420px) {
         }
