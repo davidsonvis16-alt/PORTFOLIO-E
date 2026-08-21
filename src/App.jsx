@@ -278,14 +278,13 @@ function Hero() {
         </div>
         <div style={{ height: 480, display: "flex", alignItems: "center", justifyContent: "center" }} className="edn-hero-visual">
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div className={eFlipping ? "edn-hero-mark-wrap" : ""}>
+            <div className={eFlipping ? "edn-hero-mark-wrap" : ""} style={{ flexShrink: 0 }}>
               <HeroMark />
             </div>
             {denVisible && (
-              <span style={{
+              <span className="edn-hero-den" style={{
                 opacity: denVisible ? 1 : 0,
                 transition: "opacity 0.6s ease",
-                fontSize: 140,
                 fontWeight: 800,
                 color: "#0F172A",
                 letterSpacing: "-0.04em",
@@ -908,29 +907,10 @@ function PageTransition() {
 }
 
 function PageWrapper({ children, direction }) {
-  const variants = {
-    left: {
-      initial: { x: -60, opacity: 0 },
-      animate: { x: 0, opacity: 1 },
-      exit: { x: 60, opacity: 0 },
-    },
-    right: {
-      initial: { x: 60, opacity: 0 },
-      animate: { x: 0, opacity: 1 },
-      exit: { x: -60, opacity: 0 },
-    },
-  };
-
   return (
-    <motion.div
-      variants={variants[direction]}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-    >
+    <div className={`edn-page-${direction}`} style={{ width: "100%" }}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -954,6 +934,17 @@ export default function EdenPortfolio() {
           100% { transform: rotateY(360deg); }
         }
         .edn-hero-mark-wrap { animation: heroFlip 2.2s ease-in-out both; transform-style: preserve-3d; }
+
+        @keyframes slideInLeft {
+          from { transform: translateX(-120px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInRight {
+          from { transform: translateX(120px); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        .edn-page-left { animation: slideInLeft 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+        .edn-page-right { animation: slideInRight 0.6s cubic-bezier(0.16,1,0.3,1) both; }
 
         .edn-app-shell { min-height: 100vh; }
 
@@ -1026,12 +1017,17 @@ export default function EdenPortfolio() {
           .edn-desktop-nav { display:none !important; }
           .edn-mobile-toggle { display:flex !important; }
           .edn-hero-grid { grid-template-columns:1fr !important; }
-          .edn-hero-visual { height:240px !important; order:-1; }
+          .edn-hero-visual { height:320px !important; order:0 !important; }
+          .edn-hero-visual svg { width:180px !important; height:180px !important; }
+          .edn-hero-den { font-size:90px !important; }
           .edn-about-grid { grid-template-columns:1fr !important; }
           .edn-project-grid { grid-template-columns:repeat(2, 1fr) !important; }
         }
         @media (max-width: 520px) {
           .edn-project-grid { grid-template-columns:1fr !important; }
+          .edn-hero-visual { height:280px !important; }
+          .edn-hero-visual svg { width:140px !important; height:140px !important; }
+          .edn-hero-den { font-size:70px !important; }
         }
         @media (max-width: 420px) {
         }
@@ -1040,17 +1036,15 @@ export default function EdenPortfolio() {
       <PageTransition />
       <Nav />
 
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageHome />} />
-          <Route path="/about" element={<PageAbout />} />
-          <Route path="/why" element={<PageWhy />} />
-          <Route path="/projects" element={<PageProjects />} />
-          <Route path="/skills" element={<PageSkills />} />
-          <Route path="/pricing" element={<PagePricing />} />
-          <Route path="/contact" element={<PageContact />} />
-        </Routes>
-      </AnimatePresence>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageHome />} />
+        <Route path="/about" element={<PageAbout />} />
+        <Route path="/why" element={<PageWhy />} />
+        <Route path="/projects" element={<PageProjects />} />
+        <Route path="/skills" element={<PageSkills />} />
+        <Route path="/pricing" element={<PagePricing />} />
+        <Route path="/contact" element={<PageContact />} />
+      </Routes>
 
       <Footer />
     </div>
