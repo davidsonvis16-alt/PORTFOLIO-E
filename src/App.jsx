@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 /* ---------------------------------------------------------
-   Design tokens — v4, black + blue, white as accent
+   Design tokens — light mode
+   bg        #F8F9FB  off-white
+   surface   #FFFFFF  white panels
+   text      #0F172A  near-black
+   muted     #64748B  slate gray
+   accent    #2563EB  bright blue
 --------------------------------------------------------- */
 
 const PROJECTS = [
@@ -80,6 +85,7 @@ const PRICING = [
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
+  { id: "why", label: "Why" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "pricing", label: "Pricing" },
@@ -99,41 +105,19 @@ function ArrowIcon({ className = "" }) {
 function CheckIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-      <path d="M2.5 7.2L5.3 10L11.5 3.5" stroke="#2F8CFF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.5 7.2L5.3 10L11.5 3.5" stroke="#2563EB" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
-  );
-}
-
-function SkillIcon({ name }) {
-  const config = {
-    "HTML": { bg: "#E44D26", text: "H5" },
-    "CSS": { bg: "#1572B6", text: "C3" },
-    "JavaScript": { bg: "#F7DF1E", text: "JS", color: "#000" },
-    "React": { bg: "#61DAFB", text: "⚛", color: "#000" },
-    "Next.js": { bg: "#000000", text: "N" },
-    "Tailwind CSS": { bg: "#06B6D4", text: "TW" },
-    "Supabase": { bg: "#3FCF8E", text: "S", color: "#000" },
-    "Vite": { bg: "#646CFF", text: "V" },
-    "TypeScript": { bg: "#3178C6", text: "TS" },
-    "Git": { bg: "#F05032", text: "G" },
-    "Responsive Design": { bg: "#8391AD", text: "RD" },
-  };
-  const c = config[name] || { bg: "#8391AD", text: name.slice(0, 2).toUpperCase() };
-  return (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, borderRadius: 5, background: c.bg, color: c.color || "#FFF", fontSize: 9, fontWeight: 800, flexShrink: 0, lineHeight: 1 }}>
-      {c.text}
-    </span>
   );
 }
 
 function LogoMark({ size = 22 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" style={{ flexShrink: 0 }}>
-      <rect x="10" y="8"    width="7"  height="24" rx="1.4" fill="#F5F7FA"/>
-      <rect x="10" y="8"    width="21" height="7"  rx="1.4" fill="#F5F7FA"/>
-      <rect x="10" y="16.5" width="16" height="7"  rx="1.4" fill="#F5F7FA"/>
-      <rect x="10" y="25"   width="21" height="7"  rx="1.4" fill="#F5F7FA"/>
-      <rect x="27" y="8"    width="7"  height="7"  rx="1.4" fill="#2F8CFF"/>
+      <rect x="10" y="8"    width="7"  height="24" rx="1.4" fill="#0F172A"/>
+      <rect x="10" y="8"    width="21" height="7"  rx="1.4" fill="#0F172A"/>
+      <rect x="10" y="16.5" width="16" height="7"  rx="1.4" fill="#0F172A"/>
+      <rect x="10" y="25"   width="21" height="7"  rx="1.4" fill="#0F172A"/>
+      <rect x="27" y="8"    width="7"  height="7"  rx="1.4" fill="#2563EB"/>
     </svg>
   );
 }
@@ -145,13 +129,13 @@ function HeroMark() {
       height="320"
       viewBox="0 0 40 40"
       fill="none"
-      style={{ animation: "floatSlow 7s ease-in-out infinite", filter: "drop-shadow(0 30px 50px rgba(255,255,255,0.16))" }}
+      style={{ animation: "floatSlow 7s ease-in-out infinite", filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.08))" }}
     >
-      <rect x="10" y="8"    width="7"  height="24" rx="1.4" fill="#F5F7FA"/>
-      <rect x="10" y="8"    width="21" height="7"  rx="1.4" fill="#F5F7FA"/>
-      <rect x="10" y="16.5" width="16" height="7"  rx="1.4" fill="#F5F7FA"/>
-      <rect x="10" y="25"   width="21" height="7"  rx="1.4" fill="#F5F7FA"/>
-      <rect x="27" y="8"    width="7"  height="7"  rx="1.4" fill="#2F8CFF"/>
+      <rect x="10" y="8"    width="7"  height="24" rx="1.4" fill="#0F172A"/>
+      <rect x="10" y="8"    width="21" height="7"  rx="1.4" fill="#0F172A"/>
+      <rect x="10" y="16.5" width="16" height="7"  rx="1.4" fill="#0F172A"/>
+      <rect x="10" y="25"   width="21" height="7"  rx="1.4" fill="#0F172A"/>
+      <rect x="27" y="8"    width="7"  height="7"  rx="1.4" fill="#2563EB"/>
     </svg>
   );
 }
@@ -179,7 +163,7 @@ function Typewriter({ text, speed = 55, initialDelay = 0 }) {
   return (
     <span>
       {displayed}
-      {!done && <span style={{ borderRight: "2px solid #2F8CFF", marginLeft: 2, animation: "blink 1s step-end infinite" }} />}
+      {!done && <span style={{ borderRight: "2px solid #2563EB", marginLeft: 2, animation: "blink 1s step-end infinite" }} />}
     </span>
   );
 }
@@ -232,38 +216,38 @@ function Nav() {
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
       padding: "18px 6vw", display: "flex", alignItems: "center", justifyContent: "space-between",
-      background: scrolled ? "rgba(5,7,12,0.88)" : "rgba(5,7,12,0.35)",
+      background: scrolled ? "rgba(255,255,255,0.88)" : "rgba(248,249,251,0.6)",
       backdropFilter: scrolled ? "blur(14px)" : "blur(6px)",
       WebkitBackdropFilter: scrolled ? "blur(14px)" : "blur(6px)",
-      borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(255,255,255,0.04)",
+      borderBottom: scrolled ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(0,0,0,0.04)",
       transition: "all .4s ease",
     }}>
-      <a href="#home" style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 9, fontSize: 19, fontWeight: 700, letterSpacing: "-0.01em", color: "#F5F7FA", textDecoration: "none" }}>
+      <a href="#home" style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 9, fontSize: 19, fontWeight: 700, letterSpacing: "-0.01em", color: "#0F172A", textDecoration: "none" }}>
         <LogoMark size={22} />
-        Eden<span style={{ color: "#2F8CFF" }}>.</span>
+        Pulse<span style={{ color: "#2563EB" }}>.</span>
       </a>
 
       <div style={{ display: "flex", gap: 30 }} className="edn-desktop-nav">
         {NAV_ITEMS.map((item) => (
-          <a key={item.id} href={`#${item.id}`} style={{ color: "#8391AD", textDecoration: "none", fontSize: 14, fontWeight: 500, transition: "color .3s" }}>
+          <a key={item.id} href={`#${item.id}`} style={{ color: "#64748B", textDecoration: "none", fontSize: 14, fontWeight: 500, transition: "color .3s" }}>
             {item.label}
           </a>
         ))}
       </div>
 
-      <button onClick={() => setOpen((v) => !v)} className="edn-mobile-toggle" style={{ display: "none", background: "none", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 100, width: 38, height: 34, alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-        <div style={{ color: "#F5F7FA", fontSize: 12 }}>{open ? "✕" : "☰"}</div>
+      <button onClick={() => setOpen((v) => !v)} className="edn-mobile-toggle" style={{ display: "none", background: "none", border: "1px solid rgba(0,0,0,0.12)", borderRadius: 100, width: 38, height: 34, alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+        <div style={{ color: "#0F172A", fontSize: 12 }}>{open ? "✕" : "☰"}</div>
       </button>
 
       {open && (
         <div style={{
           position: "absolute", top: 64, right: "6vw",
-          background: "rgba(5,7,12,0.95)", backdropFilter: "blur(14px)",
-          border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "14px 18px",
+          background: "rgba(255,255,255,0.98)", backdropFilter: "blur(14px)",
+          border: "1px solid rgba(0,0,0,0.06)", borderRadius: 16, padding: "14px 18px",
           display: "flex", flexDirection: "column", gap: 14, animation: "fadeIn .3s ease",
         }}>
           {NAV_ITEMS.map((item) => (
-            <a key={item.id} href={`#${item.id}`} onClick={() => setOpen(false)} style={{ color: "#F5F7FA", textDecoration: "none", fontSize: 15, padding: "4px 0" }}>
+            <a key={item.id} href={`#${item.id}`} onClick={() => setOpen(false)} style={{ color: "#0F172A", textDecoration: "none", fontSize: 15, padding: "4px 0" }}>
               {item.label}
             </a>
           ))}
@@ -278,14 +262,14 @@ function Hero() {
     <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "120px 6vw 60px", position: "relative", perspective: 1200 }}>
       <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "center" }} className="edn-hero-grid">
         <div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 28, color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>
-            <span style={{ width: 24, height: 1, background: "#2F8CFF", display: "inline-block" }} />
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 28, color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>
+            <span style={{ width: 24, height: 1, background: "#2563EB", display: "inline-block" }} />
             Web Developer &amp; Designer
           </div>
-          <h1 style={{ fontSize: "clamp(2.2rem, 5.6vw, 4.6rem)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", margin: 0, maxWidth: 700, color: "#F5F7FA" }}>
+          <h1 style={{ fontSize: "clamp(2.2rem, 5.6vw, 4.6rem)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", margin: 0, maxWidth: 700, color: "#0F172A" }}>
             <Typewriter text="Building digital experiences with clarity and purpose." speed={55} initialDelay={600} />
           </h1>
-          <p style={{ marginTop: 26, fontSize: 17, lineHeight: 1.7, color: "#8391AD", maxWidth: 480, fontWeight: 400 }}>
+          <p style={{ marginTop: 26, fontSize: 17, lineHeight: 1.7, color: "#64748B", maxWidth: 480, fontWeight: 400 }}>
             Web developer and designer creating clean, modern websites and digital experiences.
           </p>
           <div className="edn-hero-buttons" style={{ display: "flex", gap: 16, marginTop: 42, flexWrap: "wrap" }}>
@@ -310,17 +294,17 @@ function About() {
     <section id="about" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
       <Reveal direction="left">
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "0.4fr 1fr", gap: 48 }} className="edn-about-grid">
-          <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>About</div>
+          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>About</div>
           <div style={{ maxWidth: 700 }}>
-            <p style={{ fontSize: "clamp(1.3rem, 2.3vw, 1.8rem)", lineHeight: 1.6, fontWeight: 500, color: "#F5F7FA", margin: "0 0 22px", letterSpacing: "-0.01em" }}>
+            <p style={{ fontSize: "clamp(1.3rem, 2.3vw, 1.8rem)", lineHeight: 1.6, fontWeight: 500, color: "#0F172A", margin: "0 0 22px", letterSpacing: "-0.01em" }}>
               We build websites for small businesses — mostly restaurants, cafés,
               and shops around Nairobi.
             </p>
-            <p style={{ fontSize: 16.5, lineHeight: 1.8, fontWeight: 400, color: "#8391AD", margin: "0 0 22px" }}>
+            <p style={{ fontSize: 16.5, lineHeight: 1.8, fontWeight: 400, color: "#64748B", margin: "0 0 22px" }}>
               Self-taught, no agency, no team. We work mainly in{" "}
-              <span style={{ color: "#99b2c2" }}>React</span>. If you want a
+              <span style={{ color: "#475569" }}>React</span>. If you want a
               sense of what we can actually build rather than what we say we can
-              build, <a href="https://bakemart.co.ke/" target="_blank" rel="noopener noreferrer" style={{ color: "#F5F7FA", textDecoration: "underline", textDecorationColor: "rgba(255,255,255,0.3)", textUnderlineOffset: 3 }}>Bakemart Coffee House</a> is
+              build, <a href="https://bakemart.co.ke/" target="_blank" rel="noopener noreferrer" style={{ color: "#0F172A", textDecoration: "underline", textDecorationColor: "rgba(0,0,0,0.2)", textUnderlineOffset: 3 }}>Bakemart Coffee House</a> is
               a good place to look — real listings, built to stay fast even on
               a slow connection. That's the standard we hold every project to.
             </p>
@@ -341,32 +325,32 @@ function WhyWebsite() {
       <Reveal direction="right">
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 56 }}>
-            <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Why a Website</div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#F5F7FA" }}>Why your business needs a website</h2>
+            <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Why a Website</div>
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Why your business needs a website</h2>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 28 }}>
-            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Be found 24/7</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Be found 24/7</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
                 Customers search online before they buy. A website puts your business in front of them anytime — even when your shop is closed.
               </p>
             </div>
-            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Look legitimate</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Look legitimate</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
                 A clean, fast website builds trust instantly. People judge businesses before they walk through the door — make sure that first impression works for you.
               </p>
             </div>
-            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Reach beyond your street</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Reach beyond your street</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
                 Social media is noisy and temporary. A website is yours — you control the message, the look, and the experience. It scales with your business.
               </p>
             </div>
-            <div style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 32, background: "#0D1220" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#F5F7FA" }}>Why build it with us</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#8391AD", margin: 0 }}>
+            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Why build it with us</h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
                 We build lightweight, fast websites that work on weak connections — because that is how most people browse here. No bloated agencies, no unnecessary overhead. Just a site that performs.
               </p>
             </div>
@@ -383,8 +367,8 @@ function Projects() {
       <Reveal direction="right">
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ marginBottom: 56 }}>
-            <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Selected Work</div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#F5F7FA" }}>Featured Projects</h2>
+            <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Selected Work</div>
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Featured Projects</h2>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }} className="edn-project-grid">
@@ -396,7 +380,7 @@ function Projects() {
                   <div style={{ position: "relative", zIndex: 2 }}>
                     <div className="edn-card-placeholder">
                       <span style={{ opacity: 0.45 }}>
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8391AD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                       </span>
                       <span className="edn-card-pending-badge">Coming Soon</span>
                     </div>
@@ -413,10 +397,11 @@ function Projects() {
                   </div>
                 </div>
               ) : (
-                <div key={p.title} className="edn-card" style={{ cursor: "default" }}>
+                <a key={p.title} href={p.demo} target="_blank" rel="noopener noreferrer"
+                  className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
                   <div className="edn-card-glow"></div>
                   <div style={{ position: "relative", zIndex: 2 }}>
-                    <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#0D1220" }}>
+                    <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
                       <img src={p.img} alt={p.title} className="edn-card-img"
                         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                     </div>
@@ -428,20 +413,13 @@ function Projects() {
                           <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
                         ))}
                       </div>
-                      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                        <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Eden, I'm interested in the ${p.title} project. Can we discuss it?`)}`}
-                          target="_blank" rel="noopener noreferrer"
-                          style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "none", background: "#25D366", color: "#FFF", borderRadius: 100 }}>
-                          WhatsApp <ArrowIcon className="edn-arrow" />
-                        </a>
-                        <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer"
-                          style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "none", background: "transparent", border: "1px solid rgba(255,255,255,0.3)", color: "#F5F7FA", borderRadius: 100 }}>
-                          Instagram <ArrowIcon className="edn-arrow" />
-                        </a>
-                      </div>
+                      <span className="edn-card-btn"
+                        style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                        Live Demo <ArrowIcon className="edn-arrow" />
+                      </span>
                     </div>
                   </div>
-                </div>
+                </a>
               );
             })}
           </div>
@@ -456,11 +434,11 @@ function Skills() {
     <section id="skills" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
       <Reveal direction="left">
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Toolkit</div>
-          <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 40px", letterSpacing: "-0.02em", color: "#F5F7FA" }}>Skills</h2>
+          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Toolkit</div>
+          <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 40px", letterSpacing: "-0.02em", color: "#0F172A" }}>Skills</h2>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {SKILLS.map((s) => (
-              <span key={s} className="edn-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, padding: "10px 18px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.14)", color: "#C7D0E0", fontWeight: 500, cursor: "default", background: "#0D1220" }}>
+              <span key={s} className="edn-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, padding: "10px 18px", borderRadius: 100, border: "1px solid rgba(0,0,0,0.08)", color: "#475569", fontWeight: 500, cursor: "default", background: "#F1F5F9" }}>
                 <SkillIcon name={s} />
                 {s}
               </span>
@@ -478,9 +456,9 @@ function Pricing() {
       <Reveal direction="right">
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ marginBottom: 20 }}>
-            <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Pricing</div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 14px", letterSpacing: "-0.02em", color: "#F5F7FA" }}>What it costs to work together</h2>
-            <p style={{ fontSize: 15, color: "#8391AD", fontWeight: 400, maxWidth: 560, lineHeight: 1.7 }}>
+            <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Pricing</div>
+            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 14px", letterSpacing: "-0.02em", color: "#0F172A" }}>What it costs to work together</h2>
+            <p style={{ fontSize: 15, color: "#64748B", fontWeight: 400, maxWidth: 560, lineHeight: 1.7 }}>
               Rough starting points, not rigid packages. Every site gets scoped
               around what your business actually needs before we quote a final number.
             </p>
@@ -489,37 +467,37 @@ function Pricing() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginTop: 48 }} className="edn-pricing-grid">
             {PRICING.map((tier) => (
               <div key={tier.name} className="edn-price-card" style={{
-                border: tier.featured ? "1.5px solid #F5F7FA" : "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 20, padding: 32, background: tier.featured ? "#F5F7FA" : "#05070C",
-                color: tier.featured ? "#05070C" : "#F5F7FA",
+                border: tier.featured ? "1.5px solid #0F172A" : "1px solid rgba(0,0,0,0.08)",
+                borderRadius: 20, padding: 32, background: tier.featured ? "#EFF6FF" : "#FFFFFF",
+                color: tier.featured ? "#0F172A" : "#0F172A",
                 display: "flex", flexDirection: "column", position: "relative",
               }}>
                 {tier.featured && (
-                  <span style={{ position: "absolute", top: -12, left: 32, background: "#2F8CFF", color: "#05070C", fontSize: 10.5, fontWeight: 700, padding: "5px 13px", borderRadius: 100, letterSpacing: "0.05em" }}>
+                  <span style={{ position: "absolute", top: -12, left: 32, background: "#2563EB", color: "#FFFFFF", fontSize: 10.5, fontWeight: 700, padding: "5px 13px", borderRadius: 100, letterSpacing: "0.05em" }}>
                     MOST BOOKED
                   </span>
                 )}
                 <h3 style={{ fontSize: 19, fontWeight: 700, margin: "6px 0 6px", color: "inherit" }}>{tier.name}</h3>
-                <p style={{ fontSize: 13, color: tier.featured ? "rgba(5,7,12,0.62)" : "#8391AD", fontWeight: 400, lineHeight: 1.6, margin: "0 0 20px", minHeight: 54 }}>{tier.desc}</p>
+                <p style={{ fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.62)" : "#64748B", fontWeight: 400, lineHeight: 1.6, margin: "0 0 20px", minHeight: 54 }}>{tier.desc}</p>
                 <div style={{ marginBottom: 24 }}>
-                  {tier.note && <div style={{ fontSize: 11, color: tier.featured ? "rgba(5,7,12,0.5)" : "#8391AD", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>{tier.note}</div>}
+                  {tier.note && <div style={{ fontSize: 11, color: tier.featured ? "rgba(15,23,42,0.5)" : "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>{tier.note}</div>}
                   <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em" }}>{tier.price}</div>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 28, flexGrow: 1 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28, flexGrow: 1 }}>
                   {tier.features.map((f) => (
-                    <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: tier.featured ? "rgba(5,7,12,0.8)" : "#C7D0E0" }}>
+                    <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.8)" : "#475569" }}>
                       <CheckIcon /> {f}
                     </div>
                   ))}
                 </div>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Eden, I'm interested in the ${tier.name} plan (${tier.price}). Can we discuss it?`)}`}
+                  <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Pulse, I'm interested in the ${tier.name} plan (${tier.price}). Can we discuss it?`)}`}
                     target="_blank" rel="noopener noreferrer"
                     style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: "#25D366", color: "#FFF" }}>
                     WhatsApp <ArrowIcon className="edn-arrow" />
                   </a>
                   <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer"
-                    style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: tier.featured ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.08)", color: tier.featured ? "#05070C" : "#F5F7FA" }}>
+                    style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: tier.featured ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.06)", color: tier.featured ? "#0F172A" : "#0F172A" }}>
                     Instagram <ArrowIcon className="edn-arrow" />
                   </a>
                 </div>
@@ -537,8 +515,8 @@ function Contact() {
     <section id="contact" style={{ padding: "160px 6vw 120px", minHeight: "100vh", display: "flex", alignItems: "center", perspective: 1200 }}>
       <Reveal direction="left">
         <div style={{ maxWidth: 1280, margin: "0 auto", textAlign: "center", width: "100%" }}>
-          <div style={{ color: "#8391AD", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 20, fontFamily: "'JetBrains Mono', monospace" }}>Contact</div>
-          <h2 style={{ fontSize: "clamp(2.1rem, 5vw, 3.6rem)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.02em", margin: "0 auto 44px", maxWidth: 720, color: "#F5F7FA" }}>
+          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 20, fontFamily: "'JetBrains Mono', monospace" }}>Contact</div>
+          <h2 style={{ fontSize: "clamp(2.1rem, 5vw, 3.6rem)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.02em", margin: "0 auto 44px", maxWidth: 720, color: "#0F172A" }}>
             Let&rsquo;s build something meaningful together.
           </h2>
           <div style={{ display: "flex", gap: 32, justifyContent: "center", flexWrap: "wrap", fontSize: 14.5 }}>
@@ -554,8 +532,8 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer style={{ padding: "32px 6vw", borderTop: "1px solid rgba(255,255,255,0.09)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
-      <span style={{ fontSize: 12.5, color: "#5B6479" }}>© 2026 Eden. All rights reserved.</span>
+    <footer style={{ padding: "32px 6vw", borderTop: "1px solid rgba(0,0,0,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
+      <span style={{ fontSize: 12.5, color: "#64748B" }}>© 2026 Pulse. All rights reserved.</span>
       <div style={{ display: "flex", gap: 22 }}>
         <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer" className="edn-social" style={{ fontSize: 12.5, textDecoration: "none" }}>Instagram</a>
         <a href="mailto:davidson.vis.16@gmail.com" className="edn-social" style={{ fontSize: 12.5, textDecoration: "none" }}>Email</a>
@@ -564,79 +542,101 @@ function Footer() {
   );
 }
 
-export default function EdenPortfolio() {
+function SkillIcon({ name }) {
+  const config = {
+    "HTML": { bg: "#E44D26", text: "H5" },
+    "CSS": { bg: "#1572B6", text: "C3" },
+    "JavaScript": { bg: "#F7DF1E", text: "JS", color: "#000" },
+    "React": { bg: "#61DAFB", text: "⚛", color: "#000" },
+    "Next.js": { bg: "#000000", text: "N" },
+    "Tailwind CSS": { bg: "#06B6D4", text: "TW" },
+    "Supabase": { bg: "#3FCF8E", text: "S", color: "#000" },
+    "Vite": { bg: "#646CFF", text: "V" },
+    "TypeScript": { bg: "#3178C6", text: "TS" },
+    "Git": { bg: "#F05032", text: "G" },
+    "Responsive Design": { bg: "#94A3B8", text: "RD" },
+  };
+  const c = config[name] || { bg: "#94A3B8", text: name.slice(0, 2).toUpperCase() };
   return (
-    <div className="edn-app-shell" style={{ background: "#05070C", color: "#F5F7FA", fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, borderRadius: 5, background: c.bg, color: c.color || "#FFF", fontSize: 9, fontWeight: 800, flexShrink: 0, lineHeight: 1 }}>
+      {c.text}
+    </span>
+  );
+}
+
+export default function PulsePortfolio() {
+  return (
+    <div className="edn-app-shell" style={{ background: "#F8F9FB", color: "#0F172A", fontFamily: "'Inter', system-ui, sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap');
         * { box-sizing: border-box; }
-        ::selection { background: #2F8CFF; color: #05070C; }
+        ::selection { background: #2563EB; color: #FFFFFF; }
         @keyframes floatSlow { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-10px);} }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
         .edn-app-shell { min-height: 100vh; }
 
-        .edn-btn-primary { background:#F5F7FA; color:#05070C; transition:background .3s cubic-bezier(0.16,1,0.3,1); border-radius: 100px; text-decoration: none; }
-        .edn-btn-primary:hover { background:#2F8CFF; }
+        .edn-btn-primary { background:#0F172A; color:#FFFFFF; transition:background .3s cubic-bezier(0.16,1,0.3,1); border-radius: 100px; text-decoration: none; }
+        .edn-btn-primary:hover { background:#2563EB; }
         .edn-btn-primary:hover .edn-arrow { transform: translateX(4px); }
 
-        .edn-btn-ghost { background:transparent; color:#F5F7FA; border:1px solid rgba(255,255,255,0.16); transition:border-color .3s, background .3s; border-radius: 100px; text-decoration: none; }
-        .edn-btn-ghost:hover { border-color:#2F8CFF; background:rgba(47,140,255,0.1); color:#2F8CFF; }
+        .edn-btn-ghost { background:transparent; color:#0F172A; border:1px solid rgba(0,0,0,0.12); transition:border-color .3s, background .3s; border-radius: 100px; text-decoration: none; }
+        .edn-btn-ghost:hover { border-color:#2563EB; background:rgba(37,99,235,0.1); color:#2563EB; }
         .edn-btn-ghost:hover .edn-arrow { transform: translateX(4px); }
 
-        .edn-navlink { position:relative; color:#8391AD; transition:color .3s; text-decoration: none; }
-        .edn-navlink:hover { color:#F5F7FA; }
+        .edn-navlink { position:relative; color:#64748B; transition:color .3s; text-decoration: none; }
+        .edn-navlink:hover { color:#0F172A; }
 
         .edn-card { background:#FFFFFF; border:1px solid rgba(0,0,0,0.06); border-radius:18px; overflow:hidden; position:relative; transition:transform .45s cubic-bezier(0.16,1,0.3,1), box-shadow .45s cubic-bezier(0.16,1,0.3,1), background .4s cubic-bezier(0.16,1,0.3,1), border-color .4s; }
         .edn-card:hover,
-        .edn-card:active { transform:translateY(-8px); box-shadow:0 24px 48px -20px rgba(47,140,255,0.3); background:#2F8CFF; border-color:rgba(47,140,255,0.45); }
+        .edn-card:active { transform:translateY(-8px); box-shadow:0 24px 48px -20px rgba(37,99,235,0.2); background:#2563EB; border-color:rgba(37,99,235,0.4); }
         .edn-card:hover .edn-card-img,
         .edn-card:active .edn-card-img { transform:scale(1.05); }
         .edn-card-img { transition:transform .7s cubic-bezier(0.16,1,0.3,1); }
-        .edn-card-title { color:#05070C; }
+        .edn-card-title { color:#0F172A; }
         .edn-card:hover .edn-card-title,
-        .edn-card:active .edn-card-title { color:#F5F7FA; }
-        .edn-card-desc { color:#5B6479; }
+        .edn-card:active .edn-card-title { color:#FFFFFF; }
+        .edn-card-desc { color:#64748B; }
         .edn-card:hover .edn-card-desc,
-        .edn-card:active .edn-card-desc { color:rgba(255,255,255,0.78); }
-        .edn-card-tag { color:#2F8CFF; background:rgba(47,140,255,0.08); border:1px solid rgba(47,140,255,0.35); }
+        .edn-card:active .edn-card-desc { color:rgba(255,255,255,0.9); }
+        .edn-card-tag { color:#2563EB; background:rgba(37,99,235,0.08); border:1px solid rgba(37,99,235,0.35); }
         .edn-card:hover .edn-card-tag,
-        .edn-card:active .edn-card-tag { color:#F5F7FA; background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.35); }
-        .edn-card-btn { background:#05070C; color:#F5F7FA; border:none; border-radius:100px; transition:background .4s cubic-bezier(0.16,1,0.3,1), color .4s; }
+        .edn-card:active .edn-card-tag { color:#FFFFFF; background:rgba(255,255,255,0.2); border-color:rgba(255,255,255,0.35); }
+        .edn-card-btn { background:#0F172A; color:#FFFFFF; border:none; border-radius:100px; transition:background .4s cubic-bezier(0.16,1,0.3,1), color .4s; }
         .edn-card:hover .edn-card-btn,
-        .edn-card:active .edn-card-btn { background:#F5F7FA; color:#05070C; }
+        .edn-card:active .edn-card-btn { background:#FFFFFF; color:#0F172A; }
         .edn-card-btn .edn-arrow { transform:translateX(0); }
         .edn-card:hover .edn-card-btn .edn-arrow,
         .edn-card:active .edn-card-btn .edn-arrow { transform:translateX(4px); }
-        .edn-card-glow { position:absolute; inset:0; background:radial-gradient(circle at center, #2F8CFF 0%, #2F8CFF 100%); transform:scale(0); opacity:0; border-radius:inherit; transition:transform .55s cubic-bezier(0.16,1,0.3,1), opacity .45s ease; z-index:1; pointer-events:none; }
+        .edn-card-glow { position:absolute; inset:0; background:radial-gradient(circle at center, #2563EB 0%, #2563EB 100%); transform:scale(0); opacity:0; border-radius:inherit; transition:transform .55s cubic-bezier(0.16,1,0.3,1), opacity .45s ease; z-index:1; pointer-events:none; }
         .edn-card:hover .edn-card-glow,
         .edn-card:active .edn-card-glow { transform:scale(2.2); opacity:1; }
         .edn-card-pending { background:#FFFFFF; border:1px solid rgba(0,0,0,0.06); border-radius:18px; overflow:hidden; position:relative; }
         .edn-card-pending:hover .edn-card-glow,
         .edn-card-pending:active .edn-card-glow { transform:scale(2.2); opacity:1; }
         .edn-card-pending:hover .edn-card-title,
-        .edn-card-pending:active .edn-card-title { color:#F5F7FA; }
+        .edn-card-pending:active .edn-card-title { color:#FFFFFF; }
         .edn-card-pending:hover .edn-card-desc,
-        .edn-card-pending:active .edn-card-desc { color:rgba(255,255,255,0.78); }
+        .edn-card-pending:active .edn-card-desc { color:rgba(255,255,255,0.9); }
         .edn-card-pending:hover .edn-card-tag,
-        .edn-card-pending:active .edn-card-tag { color:#F5F7FA; background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.35); }
+        .edn-card-pending:active .edn-card-tag { color:#FFFFFF; background:rgba(255,255,255,0.2); border-color:rgba(255,255,255,0.35); }
         .edn-card-pending:hover .edn-card-pending-label,
         .edn-card-pending:active .edn-card-pending-label { color:rgba(255,255,255,0.85); }
-        .edn-card-placeholder { height:220px; overflow:hidden; position:relative; background:linear-gradient(135deg,#EDEDF2,#E8EBEF); display:flex; align-items:center; justify-content:center; }
-        .edn-card-pending-badge { position:absolute; top:16px; right:16px; background:#2F8CFF; color:#F5F7FA; font-size:10.5px; font-weight:700; padding:5px 12px; border-radius:100px; letter-spacing:0.05em; }
-        .edn-card-pending-label { color:#8391AD; font-size:13px; font-weight:500; }
+        .edn-card-placeholder { height:220px; overflow:hidden; position:relative; background:linear-gradient(135deg,#F1F5F9,#E8EBEF); display:flex; align-items:center; justify-content:center; }
+        .edn-card-pending-badge { position:absolute; top:16px; right:16px; background:#2563EB; color:#FFFFFF; font-size:10.5px; font-weight:700; padding:5px 12px; border-radius:100px; letter-spacing:0.05em; }
+        .edn-card-pending-label { color:#64748B; font-size:13px; font-weight:500; }
 
         .edn-price-card { transition: transform .4s cubic-bezier(0.16,1,0.3,1), border-color .4s, box-shadow .4s; }
-        .edn-price-card:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -20px rgba(0,0,0,0.45); }
+        .edn-price-card:hover { transform: translateY(-5px); box-shadow: 0 22px 44px -20px rgba(0,0,0,0.1); }
 
         .edn-pill { transition:border-color .3s, color .3s, background .3s; }
-        .edn-pill:hover { border-color:#2F8CFF; color:#2F8CFF; background:rgba(47,140,255,0.1); }
+        .edn-pill:hover { border-color:#2563EB; color:#2563EB; background:rgba(37,99,235,0.1); }
 
-        .edn-social { color:#8391AD; transition:color .3s; text-decoration: none; }
-        .edn-social:hover { color:#2F8CFF; }
+        .edn-social { color:#64748B; transition:color .3s; text-decoration: none; }
+        .edn-social:hover { color:#2563EB; }
 
-        .edn-cube-edge { height:1px; background:linear-gradient(to right, transparent, rgba(255,255,255,0.12), transparent); margin:0 6vw; }
+        .edn-cube-edge { height:1px; background:linear-gradient(to right, transparent, rgba(0,0,0,0.06), transparent); margin:0 6vw; }
 
         @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 
