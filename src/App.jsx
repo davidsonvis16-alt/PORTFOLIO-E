@@ -1,6 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
+
+const TRACK_ID_REGEX = /track\/([a-zA-Z0-9]+)/;
+
+function getTrackId(spotifyUrl) {
+  if (!spotifyUrl) return null;
+  const match = spotifyUrl.match(TRACK_ID_REGEX);
+  return match ? match[1] : null;
+}
 
 /* ---------------------------------------------------------
    Design tokens — light mode
@@ -48,9 +55,113 @@ const PROJECTS = [
   },
   {
     title: "Pulse",
-    desc: "A music streaming app built for indie artists and listeners — coming soon.",
+    desc: "A music streaming app built for indie artists and listeners.",
     tags: ["React", "TypeScript", "Tailwind"],
-    status: "pending",
+    demo: "/pulse",
+    img: "/pulse%20image.jpeg",
+  },
+];
+
+const MUSIC_CATEGORIES = [
+  {
+    name: "Pop",
+    songs: [
+      { title: "Midnight City", artist: "Imagine Dragons", spotify: "https://open.spotify.com/track/7xDd7gl6AGgpiOz5trz4dM?si=07d0ada0892c4381", previewUrl: "/previews/pop/midnight-city.mp3" },
+      { title: "Blinding Lights", artist: "The Weeknd", spotify: "https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b", previewUrl: "/previews/pop/blinding-lights.mp3" },
+      { title: "Levitating", artist: "Dua Lipa", spotify: "https://open.spotify.com/track/6R6PtQkSYMFd7l7GIoWz3k", previewUrl: "/previews/pop/levitating.mp3" },
+      { title: "Watermelon Sugar", artist: "Harry Styles", spotify: "https://open.spotify.com/track/6UelLqGlWMcVH1E5c4H7lY", previewUrl: "/previews/pop/watermelon-sugar.mp3" },
+      { title: "Don't Start Now", artist: "Dua Lipa", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/pop/dont-start-now.mp3" },
+    ],
+  },
+  {
+    name: "Kenyan",
+    songs: [
+      { title: "Mungu Pekee", artist: "Christina Shusho", spotify: "https://open.spotify.com/search/Mungu+Pekee", previewUrl: "/previews/kenyan/mungu-pekee.mp3" },
+      { title: "Niko Sawa", artist: "Khaligraph Jones", spotify: "https://open.spotify.com/search/Niko+Sawa", previewUrl: "/previews/kenyan/niko-sawa.mp3" },
+      { title: "Tafadhali", artist: "Sauti Sol", spotify: "https://open.spotify.com/search/Tafadhali", previewUrl: "/previews/kenyan/tafadhali.mp3" },
+      { title: "Mama", artist: "Sanaipei Tande", spotify: "https://open.spotify.com/search/Mama+Sanaipei", previewUrl: "/previews/kenyan/mama.mp3" },
+      { title: "Kiboko Changu", artist: "Jua Cali", spotify: "https://open.spotify.com/search/Kiboko+Changu", previewUrl: "/previews/kenyan/kiboko-changu.mp3" },
+    ],
+  },
+  {
+    name: "Hip Hop",
+    songs: [
+      { title: "SICKO MODE", artist: "Travis Scott", spotify: "https://open.spotify.com/track/0tuZ4TuhdZK7D3CNlPvGpV", previewUrl: "/previews/hiphop/sicko-mode.mp3" },
+      { title: "God's Plan", artist: "Drake", spotify: "https://open.spotify.com/track/6DCZcZ3Fq7r4Q4vH6Rv8Kq", previewUrl: "/previews/hiphop/gods-plan.mp3" },
+      { title: "HUMBLE.", artist: "Kendrick Lamar", spotify: "https://open.spotify.com/track/7KXjTSCq5nL1LoYt6X5v4R", previewUrl: "/previews/hiphop/humble.mp3" },
+      { title: "Mo Bamba", artist: "Sheck Wes", spotify: "https://open.spotify.com/track/6tYQqB6T5w4w5r7w8x9z0A", previewUrl: "/previews/hiphop/mo-bamba.mp3" },
+      { title: "Lucid Dreams", artist: "Juice WRLD", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/hiphop/lucid-dreams.mp3" },
+    ],
+  },
+  {
+    name: "R&B",
+    songs: [
+      { title: "Earned It", artist: "The Weeknd", spotify: "https://open.spotify.com/track/3u1S9Y7w4r6t7y8u9i0o1p", previewUrl: "/previews/rnb/earned-it.mp3" },
+      { title: "Thinkin Bout You", artist: "Frank Ocean", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rnb/thinkin-bout-you.mp3" },
+      { title: "Adorn", artist: "Miguel", spotify: "https://open.spotify.com/search/Adorn+Miguel", previewUrl: "/previews/rnb/adorn.mp3" },
+      { title: "P.Y.T.", artist: "Michael Jackson", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rnb/pyt.mp3" },
+      { title: "Best Part", artist: "Daniel Caesar", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rnb/best-part.mp3" },
+    ],
+  },
+  {
+    name: "Afrobeats",
+    songs: [
+      { title: "Calm Down", artist: "Rema", spotify: "https://open.spotify.com/track/0tCgFjM7q8w9X0Y1Z2A3B4", previewUrl: "/previews/afrobeats/calm-down.mp3" },
+      { title: "Love Nwantiti", artist: "CKay", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/afrobeats/love-nwantiti.mp3" },
+      { title: "Essence", artist: "Wizkid ft. Tems", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/afrobeats/essence.mp3" },
+      { title: "Peru", artist: "Fireboy DML", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/afrobeats/peru.mp3" },
+      { title: "Rush", artist: "Ayra Starr", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/afrobeats/rush.mp3" },
+    ],
+  },
+  {
+    name: "Electronic",
+    songs: [
+      { title: "Titanium", artist: "David Guetta ft. Sia", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/electronic/titanium.mp3" },
+      { title: "Levels", artist: "Avicii", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/electronic/levels.mp3" },
+      { title: "Wake Me Up", artist: "Avicii", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/electronic/wake-me-up.mp3" },
+      { title: "Don't You Worry Child", artist: "Swedish House Mafia", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/electronic/dont-you-worry-child.mp3" },
+      { title: "Clarity", artist: "Zedd ft. Foxes", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/electronic/clarity.mp3" },
+    ],
+  },
+  {
+    name: "Reggae",
+    songs: [
+      { title: "One Love", artist: "Bob Marley", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/reggae/one-love.mp3" },
+      { title: "Buffalo Soldier", artist: "Bob Marley", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/reggae/buffalo-soldier.mp3" },
+      { title: "Redemption Song", artist: "Bob Marley", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/reggae/redemption-song.mp3" },
+      { title: "Is This Love", artist: "Bob Marley", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/reggae/is-this-love.mp3" },
+      { title: "Three Little Birds", artist: "Bob Marley", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/reggae/three-little-birds.mp3" },
+    ],
+  },
+  {
+    name: "Rock",
+    songs: [
+      { title: "Bohemian Rhapsody", artist: "Queen", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rock/bohemian-rhapsody.mp3" },
+      { title: "Hotel California", artist: "Eagles", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rock/hotel-california.mp3" },
+      { title: "Stairway to Heaven", artist: "Led Zeppelin", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rock/stairway-to-heaven.mp3" },
+      { title: "Sweet Child O' Mine", artist: "Guns N' Roses", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rock/sweet-child-o-mine.mp3" },
+      { title: "Back in Black", artist: "AC/DC", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/rock/back-in-black.mp3" },
+    ],
+  },
+  {
+    name: "Jazz",
+    songs: [
+      { title: "Take Five", artist: "Dave Brubeck", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/jazz/take-five.mp3" },
+      { title: "So What", artist: "Miles Davis", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/jazz/so-what.mp3" },
+      { title: "My Favorite Things", artist: "John Coltrane", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/jazz/my-favorite-things.mp3" },
+      { title: "Feeling Good", artist: "Nina Simone", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/jazz/feeling-good.mp3" },
+      { title: "Autumn Leaves", artist: "Bill Evans", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/jazz/autumn-leaves.mp3" },
+    ],
+  },
+  {
+    name: "Classical",
+    songs: [
+      { title: "Four Seasons - Spring", artist: "Vivaldi", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/classical/four-seasons.mp3" },
+      { title: "Moonlight Sonata", artist: "Beethoven", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/classical/moonlight-sonata.mp3" },
+      { title: "Canon in D", artist: "Pachelbel", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/classical/canon-in-d.mp3" },
+      { title: "Clair de Lune", artist: "Debussy", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/classical/clair-de-lune.mp3" },
+      { title: "Symphony No. 5", artist: "Beethoven", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/classical/symphony-no-5.mp3" },
+    ],
   },
 ];
 
@@ -90,6 +201,7 @@ const NAV_ITEMS = [
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "pricing", label: "Pricing" },
+  { id: "pulse", label: "Pulse" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -120,6 +232,23 @@ function LogoMark({ size = 22 }) {
       <rect x="10" y="25"   width="21" height="7"  rx="1.4" fill="#0F172A"/>
       <rect x="27" y="8"    width="7"  height="7"  rx="1.4" fill="#2563EB"/>
     </svg>
+  );
+}
+
+function PulseLogo({ size = 72 }) {
+  return (
+    <img
+      src="/logo%20image%20pulse.jpeg"
+      alt="Pulse"
+      style={{
+        width: size,
+        height: size,
+        borderRadius: 14,
+        objectFit: "contain",
+        flexShrink: 0,
+        boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+      }}
+    />
   );
 }
 
@@ -877,6 +1006,82 @@ function PageContact() {
   );
 }
 
+function MusicPage() {
+  return (
+    <PageWrapper direction="right">
+      <section id="pulse" style={{ padding: "160px 6vw 120px", minHeight: "100vh", background: "#FFFFFF" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ marginBottom: 64, display: "flex", flexDirection: "column", gap: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+              <PulseLogo size={96} />
+              <h1 style={{
+                fontSize: "clamp(2.6rem, 6vw, 4rem)",
+                fontWeight: 800,
+                margin: 0,
+                letterSpacing: "-0.04em",
+                color: "#C6FF00",
+                lineHeight: 1,
+                textShadow: "0 2px 12px rgba(0,0,0,0.08)",
+              }}>Pulse</h1>
+            </div>
+            <div style={{
+              marginTop: 16,
+              width: "100%",
+              height: 12,
+              background: "linear-gradient(to bottom, #d4ff4d, #a3cc00, #8fb300)",
+              borderRadius: 100,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.4)",
+            }} />
+          </div>
+
+          <div style={{ display: "grid", gap: 48 }}>
+            {MUSIC_CATEGORIES.map((category) => (
+              <div key={category.name}>
+                <h3 style={{ fontSize: "clamp(1.3rem, 2vw, 1.6rem)", fontWeight: 700, margin: "0 0 20px", color: "#000000" }}>{category.name}</h3>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 16 }} className="edn-music-grid">
+                  {category.songs.map((song) => {
+                    const trackId = getTrackId(song.spotify);
+                    return (
+                      <div key={song.title} className="pulse-card">
+                        <div className="pulse-card-artwork">
+                          {trackId ? (
+                            <iframe
+                              src={`https://open.spotify.com/embed/track/${trackId}`}
+                              width="100%"
+                              height="152"
+                              frameBorder="0"
+                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                              loading="lazy"
+                              title={`${song.title} by ${song.artist}`}
+                              className="pulse-spotify-iframe"
+                            />
+                          ) : (
+                            <div className="pulse-card-artwork-placeholder">
+                              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="1.5">
+                                <path d="M9 18V5l12-2v13" />
+                                <circle cx="6" cy="18" r="3" />
+                                <circle cx="18" cy="16" r="3" />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                        <div className="pulse-card-info">
+                          <div className="pulse-card-title">{song.title}</div>
+                          <div className="pulse-card-artist">{song.artist}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </PageWrapper>
+  );
+}
+
 function PageTransition() {
   const location = useLocation();
   const [visible, setVisible] = useState(false);
@@ -916,7 +1121,7 @@ function PageWrapper({ children, direction }) {
 
 export default function EdenPortfolio() {
   const location = useLocation();
-  const pageOrder = ["/", "/about", "/why", "/projects", "/skills", "/pricing", "/contact"];
+  const pageOrder = ["/", "/about", "/why", "/projects", "/skills", "/pricing", "/pulse", "/contact"];
   const pageIndex = pageOrder.indexOf(location.pathname);
   const direction = pageIndex % 2 === 0 ? "left" : "right";
 
@@ -1008,6 +1213,411 @@ export default function EdenPortfolio() {
         .edn-social { color:#64748B; transition:color .3s; text-decoration: none; }
         .edn-social:hover { color:#2563EB; }
 
+        .edn-music-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+
+        .pulse-card {
+          background: #FFFFFF;
+          border: 1px solid rgba(0,0,0,0.06);
+          border-radius: 18px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pulse-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px -8px rgba(0,0,0,0.1);
+        }
+        .pulse-card--playing {
+          border-color: #C6FF00;
+          box-shadow: 0 0 0 2px rgba(198, 255, 0, 0.25);
+        }
+
+        .pulse-card-artwork {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 1 / 1;
+          overflow: hidden;
+          background: #F1F5F9;
+        }
+
+        .pulse-card-artwork-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .pulse-card-artwork-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .pulse-card-spinner {
+          width: 24px;
+          height: 24px;
+          border: 2px solid rgba(0,0,0,0.08);
+          border-top-color: #C6FF00;
+          border-radius: 50%;
+          animation: pulse-spin 0.8s linear infinite;
+        }
+
+        @keyframes pulse-spin {
+          to { transform: rotate(360deg); }
+        }
+
+        .pulse-card-play-button {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: #C6FF00;
+          color: #000000;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.2s ease, background 0.2s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+          z-index: 2;
+        }
+
+        .pulse-card-play-button:hover {
+          transform: translate(-50%, -50%) scale(1.08);
+          background: #b3e600;
+        }
+
+        .pulse-card-play-button:active {
+          transform: translate(-50%, -50%) scale(0.96);
+        }
+
+        .pulse-card-playing-indicator {
+          position: absolute;
+          bottom: 12px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 3px;
+          align-items: flex-end;
+          height: 16px;
+          z-index: 2;
+        }
+
+        .pulse-card-playing-indicator span {
+          width: 3px;
+          background: #C6FF00;
+          border-radius: 2px;
+          animation: pulse-bars 0.8s ease-in-out infinite;
+        }
+
+        .pulse-card-playing-indicator span:nth-child(1) { height: 60%; animation-delay: 0s; }
+        .pulse-card-playing-indicator span:nth-child(2) { height: 100%; animation-delay: 0.15s; }
+        .pulse-card-playing-indicator span:nth-child(3) { height: 40%; animation-delay: 0.3s; }
+
+        @keyframes pulse-bars {
+          0%, 100% { transform: scaleY(1); }
+          50% { transform: scaleY(0.4); }
+        }
+
+        .pulse-card-info {
+          padding: 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .pulse-card-title {
+          font-size: 13.5px;
+          font-weight: 700;
+          color: #000000;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .pulse-card-artist {
+          font-size: 12px;
+          color: #A8A8A8;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .pulse-mini-player {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+          background: #FFFFFF;
+          border-top: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+        }
+
+        .pulse-mini-player-inner {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 12px 6vw;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+
+        .pulse-mini-player-left {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          min-width: 0;
+          flex: 1;
+        }
+
+        .pulse-mini-player-artwork {
+          width: 64px;
+          height: 64px;
+          border-radius: 10px;
+          object-fit: cover;
+          flex-shrink: 0;
+          background: #F1F5F9;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .pulse-mini-player-info {
+          min-width: 0;
+        }
+
+        .pulse-mini-player-title {
+          font-size: 13.5px;
+          font-weight: 700;
+          color: #000000;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .pulse-mini-player-artist {
+          font-size: 12px;
+          color: #A8A8A8;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .pulse-mini-player-center {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+          flex: 0 0 auto;
+        }
+
+        .pulse-mini-player-controls {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .pulse-mini-player-button {
+          background: none;
+          border: none;
+          color: #000000;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6px;
+          border-radius: 50%;
+          transition: background 0.2s ease, transform 0.15s ease;
+          width: 36px;
+          height: 36px;
+        }
+
+        .pulse-mini-player-button:hover {
+          background: rgba(0,0,0,0.06);
+        }
+
+        .pulse-mini-player-button:active {
+          transform: scale(0.92);
+        }
+
+        .pulse-mini-player-button--primary {
+          width: 40px;
+          height: 40px;
+          background: #C6FF00;
+          color: #000000;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .pulse-mini-player-button--primary:hover {
+          background: #b3e600;
+        }
+
+        .pulse-mini-player-spinner {
+          width: 18px;
+          height: 18px;
+          border: 2px solid rgba(0,0,0,0.1);
+          border-top-color: #000000;
+          border-radius: 50%;
+          animation: pulse-spin 0.8s linear infinite;
+        }
+
+        .pulse-mini-player-progress {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          width: 100%;
+          max-width: 320px;
+        }
+
+        .pulse-mini-player-time {
+          font-size: 11px;
+          color: #A8A8A8;
+          font-variant-numeric: tabular-nums;
+          font-family: 'JetBrains Mono', monospace;
+          min-width: 32px;
+          text-align: center;
+        }
+
+        .pulse-mini-player-progress-bar {
+          flex: 1;
+          height: 4px;
+          background: rgba(0,0,0,0.08);
+          border-radius: 100px;
+          overflow: hidden;
+          cursor: pointer;
+          position: relative;
+        }
+
+        .pulse-mini-player-progress-fill {
+          height: 100%;
+          background: #C6FF00;
+          border-radius: 100px;
+          width: 0%;
+          transition: width 0.1s linear;
+        }
+
+        .pulse-mini-player-right {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .pulse-mini-player-category {
+          position: relative;
+        }
+
+        .pulse-mini-player-category-button {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 100px;
+          background: #FFFFFF;
+          color: #000000;
+          font-size: 12.5px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: border-color 0.2s ease, background 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .pulse-mini-player-category-button:hover {
+          border-color: #C6FF00;
+          background: rgba(198, 255, 0, 0.08);
+        }
+
+        .pulse-mini-player-category-menu {
+          position: absolute;
+          bottom: calc(100% + 8px);
+          right: 0;
+          background: #FFFFFF;
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 14px;
+          padding: 8px;
+          min-width: 180px;
+          box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+          z-index: 1001;
+          max-height: 320px;
+          overflow-y: auto;
+        }
+
+        .pulse-mini-player-category-item {
+          display: block;
+          width: 100%;
+          text-align: left;
+          padding: 10px 14px;
+          border: none;
+          background: none;
+          color: #000000;
+          font-size: 13.5px;
+          font-weight: 500;
+          cursor: pointer;
+          border-radius: 10px;
+          transition: background 0.15s ease;
+        }
+
+        .pulse-mini-player-category-item:hover {
+          background: rgba(198, 255, 0, 0.15);
+        }
+
+        .pulse-mini-player-category-item.active {
+          background: #C6FF00;
+          color: #000000;
+          font-weight: 700;
+        }
+
+        .pulse-mini-player-spotify {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 14px;
+          border-radius: 100px;
+          background: #000000;
+          color: #FFFFFF;
+          text-decoration: none;
+          font-size: 12.5px;
+          font-weight: 600;
+          transition: background 0.2s ease, transform 0.15s ease;
+          white-space: nowrap;
+        }
+
+        .pulse-mini-player-spotify:hover {
+          background: #1a1a1a;
+          transform: translateY(-1px);
+        }
+
+        .pulse-mini-player-error {
+          padding: 6px 6vw;
+          background: rgba(0,0,0,0.04);
+          color: #64748B;
+          font-size: 12px;
+          text-align: center;
+        }
+
+        .pulse-audio-element {
+          display: none;
+        }
+
+        .pulse-mini-player-spotify-embed {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.35s ease, opacity 0.35s ease;
+          opacity: 0;
+        }
+
+        .pulse-mini-player-spotify-embed iframe {
+          border-radius: 0;
+          border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
         @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 
         @media (max-width: 1080px) {
@@ -1025,6 +1635,35 @@ export default function EdenPortfolio() {
         @media (max-width: 520px) {
           .edn-project-grid { grid-template-columns:1fr !important; }
           .edn-hero-visual { height:280px !important; }
+          .edn-music-grid { grid-template-columns: 1fr !important; }
+
+          .pulse-mini-player-inner {
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 4vw;
+          }
+
+          .pulse-mini-player-left {
+            width: 100%;
+          }
+
+          .pulse-mini-player-center {
+            width: 100%;
+          }
+
+          .pulse-mini-player-progress {
+            max-width: none;
+          }
+
+          .pulse-mini-player-right {
+            width: 100%;
+            justify-content: space-between;
+          }
+
+          .pulse-mini-player-spotify {
+            flex: 1;
+            justify-content: center;
+          }
         }
         @media (max-width: 420px) {
         }
@@ -1040,6 +1679,7 @@ export default function EdenPortfolio() {
         <Route path="/projects" element={<PageProjects />} />
         <Route path="/skills" element={<PageSkills />} />
         <Route path="/pricing" element={<PagePricing />} />
+        <Route path="/pulse" element={<MusicPage />} />
         <Route path="/contact" element={<PageContact />} />
       </Routes>
 
