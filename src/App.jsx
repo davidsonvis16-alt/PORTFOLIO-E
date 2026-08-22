@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
+import SpotifyEmbed from "./SpotifyEmbed";
 
 const TRACK_ID_REGEX = /track\/([a-zA-Z0-9]+)/;
 
@@ -1228,102 +1229,26 @@ export default function EdenPortfolio() {
           transform: translateY(-4px);
           box-shadow: 0 12px 24px -8px rgba(0,0,0,0.1);
         }
-        .pulse-card--playing {
-          border-color: #C6FF00;
-          box-shadow: 0 0 0 2px rgba(198, 255, 0, 0.25);
-        }
-
         .pulse-card-artwork {
           position: relative;
           width: 100%;
-          aspect-ratio: 1 / 1;
           overflow: hidden;
           background: #F1F5F9;
         }
 
-        .pulse-card-artwork-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-        }
-
         .pulse-card-artwork-placeholder {
           width: 100%;
-          height: 100%;
+          height: 152px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
-        .pulse-card-spinner {
-          width: 24px;
-          height: 24px;
-          border: 2px solid rgba(0,0,0,0.08);
-          border-top-color: #C6FF00;
-          border-radius: 50%;
-          animation: pulse-spin 0.8s linear infinite;
-        }
-
-        @keyframes pulse-spin {
-          to { transform: rotate(360deg); }
-        }
-
-        .pulse-card-play-button {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          background: #C6FF00;
-          color: #000000;
+        .pulse-spotify-iframe {
+          width: 100%;
+          height: 152px;
           border: none;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: transform 0.2s ease, background 0.2s ease;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-          z-index: 2;
-        }
-
-        .pulse-card-play-button:hover {
-          transform: translate(-50%, -50%) scale(1.08);
-          background: #b3e600;
-        }
-
-        .pulse-card-play-button:active {
-          transform: translate(-50%, -50%) scale(0.96);
-        }
-
-        .pulse-card-playing-indicator {
-          position: absolute;
-          bottom: 12px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 3px;
-          align-items: flex-end;
-          height: 16px;
-          z-index: 2;
-        }
-
-        .pulse-card-playing-indicator span {
-          width: 3px;
-          background: #C6FF00;
-          border-radius: 2px;
-          animation: pulse-bars 0.8s ease-in-out infinite;
-        }
-
-        .pulse-card-playing-indicator span:nth-child(1) { height: 60%; animation-delay: 0s; }
-        .pulse-card-playing-indicator span:nth-child(2) { height: 100%; animation-delay: 0.15s; }
-        .pulse-card-playing-indicator span:nth-child(3) { height: 40%; animation-delay: 0.3s; }
-
-        @keyframes pulse-bars {
-          0%, 100% { transform: scaleY(1); }
-          50% { transform: scaleY(0.4); }
+          display: block;
         }
 
         .pulse-card-info {
@@ -1350,273 +1275,7 @@ export default function EdenPortfolio() {
           text-overflow: ellipsis;
         }
 
-        .pulse-mini-player {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          z-index: 1000;
-          background: #FFFFFF;
-          border-top: 1px solid rgba(0,0,0,0.08);
-          box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-        }
-
-        .pulse-mini-player-inner {
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 12px 6vw;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-        }
-
-        .pulse-mini-player-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          min-width: 0;
-          flex: 1;
-        }
-
-        .pulse-mini-player-artwork {
-          width: 64px;
-          height: 64px;
-          border-radius: 10px;
-          object-fit: cover;
-          flex-shrink: 0;
-          background: #F1F5F9;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .pulse-mini-player-info {
-          min-width: 0;
-        }
-
-        .pulse-mini-player-title {
-          font-size: 13.5px;
-          font-weight: 700;
-          color: #000000;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .pulse-mini-player-artist {
-          font-size: 12px;
-          color: #A8A8A8;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .pulse-mini-player-center {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 6px;
-          flex: 0 0 auto;
-        }
-
-        .pulse-mini-player-controls {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .pulse-mini-player-button {
-          background: none;
-          border: none;
-          color: #000000;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 6px;
-          border-radius: 50%;
-          transition: background 0.2s ease, transform 0.15s ease;
-          width: 36px;
-          height: 36px;
-        }
-
-        .pulse-mini-player-button:hover {
-          background: rgba(0,0,0,0.06);
-        }
-
-        .pulse-mini-player-button:active {
-          transform: scale(0.92);
-        }
-
-        .pulse-mini-player-button--primary {
-          width: 40px;
-          height: 40px;
-          background: #C6FF00;
-          color: #000000;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .pulse-mini-player-button--primary:hover {
-          background: #b3e600;
-        }
-
-        .pulse-mini-player-spinner {
-          width: 18px;
-          height: 18px;
-          border: 2px solid rgba(0,0,0,0.1);
-          border-top-color: #000000;
-          border-radius: 50%;
-          animation: pulse-spin 0.8s linear infinite;
-        }
-
-        .pulse-mini-player-progress {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          width: 100%;
-          max-width: 320px;
-        }
-
-        .pulse-mini-player-time {
-          font-size: 11px;
-          color: #A8A8A8;
-          font-variant-numeric: tabular-nums;
-          font-family: 'JetBrains Mono', monospace;
-          min-width: 32px;
-          text-align: center;
-        }
-
-        .pulse-mini-player-progress-bar {
-          flex: 1;
-          height: 4px;
-          background: rgba(0,0,0,0.08);
-          border-radius: 100px;
-          overflow: hidden;
-          cursor: pointer;
-          position: relative;
-        }
-
-        .pulse-mini-player-progress-fill {
-          height: 100%;
-          background: #C6FF00;
-          border-radius: 100px;
-          width: 0%;
-          transition: width 0.1s linear;
-        }
-
-        .pulse-mini-player-right {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .pulse-mini-player-category {
-          position: relative;
-        }
-
-        .pulse-mini-player-category-button {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          padding: 6px 12px;
-          border: 1px solid rgba(0,0,0,0.08);
-          border-radius: 100px;
-          background: #FFFFFF;
-          color: #000000;
-          font-size: 12.5px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: border-color 0.2s ease, background 0.2s ease;
-          white-space: nowrap;
-        }
-
-        .pulse-mini-player-category-button:hover {
-          border-color: #C6FF00;
-          background: rgba(198, 255, 0, 0.08);
-        }
-
-        .pulse-mini-player-category-menu {
-          position: absolute;
-          bottom: calc(100% + 8px);
-          right: 0;
-          background: #FFFFFF;
-          border: 1px solid rgba(0,0,0,0.08);
-          border-radius: 14px;
-          padding: 8px;
-          min-width: 180px;
-          box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-          z-index: 1001;
-          max-height: 320px;
-          overflow-y: auto;
-        }
-
-        .pulse-mini-player-category-item {
-          display: block;
-          width: 100%;
-          text-align: left;
-          padding: 10px 14px;
-          border: none;
-          background: none;
-          color: #000000;
-          font-size: 13.5px;
-          font-weight: 500;
-          cursor: pointer;
-          border-radius: 10px;
-          transition: background 0.15s ease;
-        }
-
-        .pulse-mini-player-category-item:hover {
-          background: rgba(198, 255, 0, 0.15);
-        }
-
-        .pulse-mini-player-category-item.active {
-          background: #C6FF00;
-          color: #000000;
-          font-weight: 700;
-        }
-
-        .pulse-mini-player-spotify {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 8px 14px;
-          border-radius: 100px;
-          background: #000000;
-          color: #FFFFFF;
-          text-decoration: none;
-          font-size: 12.5px;
-          font-weight: 600;
-          transition: background 0.2s ease, transform 0.15s ease;
-          white-space: nowrap;
-        }
-
-        .pulse-mini-player-spotify:hover {
-          background: #1a1a1a;
-          transform: translateY(-1px);
-        }
-
-        .pulse-mini-player-error {
-          padding: 6px 6vw;
-          background: rgba(0,0,0,0.04);
-          color: #64748B;
-          font-size: 12px;
-          text-align: center;
-        }
-
-        .pulse-audio-element {
-          display: none;
-        }
-
-        .pulse-mini-player-spotify-embed {
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.35s ease, opacity 0.35s ease;
-          opacity: 0;
-        }
-
-        .pulse-mini-player-spotify-embed iframe {
-          border-radius: 0;
-          border-top: 1px solid rgba(0,0,0,0.06);
-        }
+        @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 
         @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 
@@ -1636,34 +1295,6 @@ export default function EdenPortfolio() {
           .edn-project-grid { grid-template-columns:1fr !important; }
           .edn-hero-visual { height:280px !important; }
           .edn-music-grid { grid-template-columns: 1fr !important; }
-
-          .pulse-mini-player-inner {
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 10px 4vw;
-          }
-
-          .pulse-mini-player-left {
-            width: 100%;
-          }
-
-          .pulse-mini-player-center {
-            width: 100%;
-          }
-
-          .pulse-mini-player-progress {
-            max-width: none;
-          }
-
-          .pulse-mini-player-right {
-            width: 100%;
-            justify-content: space-between;
-          }
-
-          .pulse-mini-player-spotify {
-            flex: 1;
-            justify-content: center;
-          }
         }
         @media (max-width: 420px) {
         }
