@@ -1046,15 +1046,10 @@ function MusicPage() {
                       <div key={song.title} className="pulse-card">
                         <div className="pulse-card-artwork">
                           {trackId ? (
-                            <iframe
-                              src={`https://open.spotify.com/embed/track/${trackId}`}
-                              width="100%"
-                              height="152"
-                              frameBorder="0"
-                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                              loading="lazy"
-                              title={`${song.title} by ${song.artist}`}
-                              className="pulse-spotify-iframe"
+                            <SpotifyEmbed
+                              trackId={trackId}
+                              title={song.title}
+                              artist={song.artist}
                             />
                           ) : (
                             <div className="pulse-card-artwork-placeholder">
