@@ -15,12 +15,13 @@ function sendSpotifyCommand(iframe, method, params) {
   }
 }
 
-export default function SpotifyEmbed({ trackId, title, artist }) {
+export default function SpotifyCard({ song }) {
   const iframeRef = useRef(null);
+  const trackId = song.spotify.match(/track\/([a-zA-Z0-9]+)/)?.[1] || null;
 
   useEffect(() => {
     const iframe = iframeRef.current;
-    if (!iframe) return;
+    if (!iframe || !trackId) return;
 
     iframeRefs.set(trackId, iframe);
 
@@ -70,16 +71,40 @@ export default function SpotifyEmbed({ trackId, title, artist }) {
   }, [trackId]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      src={`https://open.spotify.com/embed/track/${trackId}`}
-      width="100%"
-      height="152"
-      frameBorder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"
-      title={`${title} by ${artist}`}
-      className="pulse-spotify-iframe"
-    />
+    <div className="pulse-card">
+      <div className="pulse-card-artwork">
+        {trackId ? (
+          <iframe
+            ref={iframeRef}
+            src={`https://open.spotify.com/embed/track/${trackId}`}
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title={`${song.title} by ${song.artist}`}
+            className="pulse-spotify-iframe"
+          />
+        ) : (
+          <div className="pulse-card-artwork-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="1.5">
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+            </svg>
+          </div>
+        )}
+      </div>
+      <a
+        href={song.spotify}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="pulse-card-info"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <div className="pulse-card-title">{song.title}</div>
+        <div className="pulse-card-artist">{song.artist}</div>
+      </a>
+    </div>
   );
 }

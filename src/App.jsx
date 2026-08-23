@@ -1,14 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import SpotifyEmbed from "./SpotifyEmbed";
-
-const TRACK_ID_REGEX = /track\/([a-zA-Z0-9]+)/;
-
-function getTrackId(spotifyUrl) {
-  if (!spotifyUrl) return null;
-  const match = spotifyUrl.match(TRACK_ID_REGEX);
-  return match ? match[1] : null;
-}
+import SpotifyCard from "./SpotifyCard";
 
 /* ---------------------------------------------------------
    Design tokens — light mode
@@ -534,31 +526,38 @@ function Projects() {
                   </div>
                 </div>
               </div>
-            ) : (
-              <a key={p.title} href={p.demo} target="_blank" rel="noopener noreferrer"
-                className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
-                <div className="edn-card-glow"></div>
-                <div style={{ position: "relative", zIndex: 2 }}>
-                  <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
-                    <img src={p.img} alt={p.title} className="edn-card-img"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  </div>
-                  <div style={{ padding: 28 }}>
-                    <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
-                    <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
-                      {p.tags.map((t) => (
-                        <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
-                      ))}
+            ) : (() => {
+              const isInternal = p.demo && !p.demo.startsWith("http");
+              const CardWrapper = isInternal ? Link : "a";
+              const wrapperProps = isInternal
+                ? { to: p.demo }
+                : { href: p.demo, target: "_blank", rel: "noopener noreferrer" };
+              return (
+                <CardWrapper key={p.title} {...wrapperProps}
+                  className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
+                  <div className="edn-card-glow"></div>
+                  <div style={{ position: "relative", zIndex: 2 }}>
+                    <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
+                      <img src={p.img} alt={p.title} className="edn-card-img"
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                     </div>
-                    <span className="edn-card-btn"
-                      style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
-                      Live Demo <ArrowIcon className="edn-arrow" />
-                    </span>
+                    <div style={{ padding: 28 }}>
+                      <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
+                      <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
+                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
+                        {p.tags.map((t) => (
+                          <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
+                        ))}
+                      </div>
+                      <span className="edn-card-btn"
+                        style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                        {isInternal ? "View Project" : "Live Demo"} <ArrowIcon className="edn-arrow" />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </a>
-            );
+                </CardWrapper>
+              );
+            })();
           })}
         </div>
       </div>
@@ -1012,26 +1011,33 @@ function MusicPage() {
     <PageWrapper direction="right">
       <section id="pulse" style={{ padding: "160px 6vw 120px", minHeight: "100vh", background: "#FFFFFF" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ marginBottom: 64, display: "flex", flexDirection: "column", gap: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-              <PulseLogo size={96} />
-              <h1 style={{
-                fontSize: "clamp(2.6rem, 6vw, 4rem)",
+          <div style={{ marginBottom: 64, display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
+            <h1 style={{
+              fontSize: "clamp(2.6rem, 6vw, 4rem)",
+              fontWeight: 800,
+              margin: 0,
+              letterSpacing: "-0.04em",
+              color: "#000000",
+              lineHeight: 1,
+            }}>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
                 fontWeight: 800,
-                margin: 0,
-                letterSpacing: "-0.04em",
+                background: "#0F172A",
                 color: "#C6FF00",
-                lineHeight: 1,
-                textShadow: "0 2px 12px rgba(0,0,0,0.08)",
-              }}>Pulse</h1>
-            </div>
+                padding: "2px 8px",
+                borderRadius: 6,
+                display: "inline-block",
+                lineHeight: 1.1,
+              }}>P</span>
+              ulse
+            </h1>
             <div style={{
               marginTop: 16,
-              width: "100%",
-              height: 12,
-              background: "linear-gradient(to bottom, #d4ff4d, #a3cc00, #8fb300)",
+              width: 80,
+              height: 3,
+              background: "#000000",
               borderRadius: 100,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.4)",
             }} />
           </div>
 
@@ -1040,34 +1046,9 @@ function MusicPage() {
               <div key={category.name}>
                 <h3 style={{ fontSize: "clamp(1.3rem, 2vw, 1.6rem)", fontWeight: 700, margin: "0 0 20px", color: "#000000" }}>{category.name}</h3>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 16 }} className="edn-music-grid">
-                  {category.songs.map((song) => {
-                    const trackId = getTrackId(song.spotify);
-                    return (
-                      <div key={song.title} className="pulse-card">
-                        <div className="pulse-card-artwork">
-                          {trackId ? (
-                            <SpotifyEmbed
-                              trackId={trackId}
-                              title={song.title}
-                              artist={song.artist}
-                            />
-                          ) : (
-                            <div className="pulse-card-artwork-placeholder">
-                              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="1.5">
-                                <path d="M9 18V5l12-2v13" />
-                                <circle cx="6" cy="18" r="3" />
-                                <circle cx="18" cy="16" r="3" />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                        <div className="pulse-card-info">
-                          <div className="pulse-card-title">{song.title}</div>
-                          <div className="pulse-card-artist">{song.artist}</div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {category.songs.map((song) => (
+                    <SpotifyCard key={song.title} song={song} />
+                  ))}
                 </div>
               </div>
             ))}
@@ -1231,6 +1212,13 @@ export default function EdenPortfolio() {
           background: #F1F5F9;
         }
 
+        .pulse-card-artwork-img {
+          width: 100%;
+          height: 152px;
+          object-fit: cover;
+          display: block;
+        }
+
         .pulse-card-artwork-placeholder {
           width: 100%;
           height: 152px;
@@ -1268,6 +1256,11 @@ export default function EdenPortfolio() {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+        }
+
+        .pulse-card a {
+          text-decoration: none;
+          color: inherit;
         }
 
         @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
