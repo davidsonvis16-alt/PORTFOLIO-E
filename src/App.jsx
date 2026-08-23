@@ -83,7 +83,7 @@ const MUSIC_CATEGORIES = [
       { title: "God's Plan", artist: "Drake", spotify: "https://open.spotify.com/track/6DCZcZ3Fq7r4Q4vH6Rv8Kq", previewUrl: "/previews/hiphop/gods-plan.mp3" },
       { title: "HUMBLE.", artist: "Kendrick Lamar", spotify: "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS?si=41a0436c81bf4df3", previewUrl: "/previews/hiphop/humble.mp3" },
       { title: "Mo Bamba", artist: "Sheck Wes", spotify: "https://open.spotify.com/track/6tYQqB6T5w4w5r7w8x9z0A", previewUrl: "/previews/hiphop/mo-bamba.mp3" },
-      { title: "Lucid Dreams", artist: "Juice WRLD", spotify: "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS?si=b2f8b31595524638", previewUrl: "/previews/hiphop/lucid-dreams.mp3" },
+      { title: "Lucid Dreams", artist: "Juice WRLD", spotify: "https://open.spotify.com/track/67a0mDgFlYXRznyyImBbJu?si=b6e9052ba7d54270", previewUrl: "/previews/hiphop/lucid-dreams.mp3" },
     ],
   },
   {
