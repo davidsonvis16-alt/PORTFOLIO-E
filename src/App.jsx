@@ -59,11 +59,11 @@ const MUSIC_CATEGORIES = [
   {
     name: "Pop",
     songs: [
-      { title: "Midnight City", artist: "Imagine Dragons", spotify: "https://open.spotify.com/track/7xDd7gl6AGgpiOz5trz4dM?si=07d0ada0892c4381", previewUrl: "/previews/pop/midnight-city.mp3" },
+      { title: "Eyes Closed", artist: "Imagine Dragons", spotify: "https://open.spotify.com/track/7xDd7gl6AGgpiOz5trz4dM?si=07d0ada0892c4381", previewUrl: "/previews/pop/midnight-city.mp3" },
       { title: "Blinding Lights", artist: "The Weeknd", spotify: "https://open.spotify.com/track/0VjIjW4GlUZAMYd2vXMi3b", previewUrl: "/previews/pop/blinding-lights.mp3" },
-      { title: "Levitating", artist: "Dua Lipa", spotify: "https://open.spotify.com/track/6R6PtQkSYMFd7l7GIoWz3k", previewUrl: "/previews/pop/levitating.mp3" },
+      { title: "Fantasy", artist: "Kali Uchis,Don Toliver", spotify: "https://open.spotify.com/track/1dvqHhLNccePPBHq11TW7v?si=d8b40dca8f824abf", previewUrl: "/previews/pop/levitating.mp3" },
       { title: "Watermelon Sugar", artist: "Harry Styles", spotify: "https://open.spotify.com/track/6UelLqGlWMcVH1E5c4H7lY", previewUrl: "/previews/pop/watermelon-sugar.mp3" },
-      { title: "Don't Start Now", artist: "Dua Lipa", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/pop/dont-start-now.mp3" },
+      { title: "Persuasive", artist: "Doechii,SZA", spotify: "https://open.spotify.com/track/67v2UHujFruxWrDmjPYxD6?si=da631ebfbf674ddb", previewUrl: "/previews/pop/dont-start-now.mp3" },
     ],
   },
   {
@@ -79,11 +79,11 @@ const MUSIC_CATEGORIES = [
   {
     name: "Hip Hop",
     songs: [
-      { title: "SICKO MODE", artist: "Travis Scott", spotify: "https://open.spotify.com/track/0tuZ4TuhdZK7D3CNlPvGpV", previewUrl: "/previews/hiphop/sicko-mode.mp3" },
+      { title: "SICKO MODE", artist: "Travis Scott", spotify: "https://open.spotify.com/track/2xLMifQCjDGFmkHkpNLD9h?si=7730627208c0476a" },
       { title: "God's Plan", artist: "Drake", spotify: "https://open.spotify.com/track/6DCZcZ3Fq7r4Q4vH6Rv8Kq", previewUrl: "/previews/hiphop/gods-plan.mp3" },
-      { title: "HUMBLE.", artist: "Kendrick Lamar", spotify: "https://open.spotify.com/track/7KXjTSCq5nL1LoYt6X5v4R", previewUrl: "/previews/hiphop/humble.mp3" },
+      { title: "HUMBLE.", artist: "Kendrick Lamar", spotify: "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS?si=41a0436c81bf4df3", previewUrl: "/previews/hiphop/humble.mp3" },
       { title: "Mo Bamba", artist: "Sheck Wes", spotify: "https://open.spotify.com/track/6tYQqB6T5w4w5r7w8x9z0A", previewUrl: "/previews/hiphop/mo-bamba.mp3" },
-      { title: "Lucid Dreams", artist: "Juice WRLD", spotify: "https://open.spotify.com/track/5X65RcZ9Z3f2j9VfW6v8Xq", previewUrl: "/previews/hiphop/lucid-dreams.mp3" },
+      { title: "Lucid Dreams", artist: "Juice WRLD", spotify: "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS?si=b2f8b31595524638", previewUrl: "/previews/hiphop/lucid-dreams.mp3" },
     ],
   },
   {
