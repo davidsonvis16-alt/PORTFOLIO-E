@@ -41,6 +41,12 @@ const PROJECTS = [
     img: "/beyond%20image.jpeg",
   },
   {
+    title: "Bridges",
+    desc: "A platform connecting people and resources — built to bridge gaps with a clean, fast interface.",
+    tags: ["React", "Vite", "Tailwind"],
+    demo: "https://bridges-theta.vercel.app/",
+  },
+  {
     title: "Dating SaaS",
     desc: "A matchmaking platform with real-time discovery and messaging — coming soon.",
     tags: ["React", "TypeScript", "Tailwind"],
@@ -538,8 +544,14 @@ function Projects() {
                   <div className="edn-card-glow"></div>
                   <div style={{ position: "relative", zIndex: 2 }}>
                     <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
-                      <img src={p.img} alt={p.title} className="edn-card-img"
-                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                      {p.img ? (
+                        <img src={p.img} alt={p.title} className="edn-card-img"
+                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                      ) : (
+                        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #C6FF00 0%, #0F172A 100%)" }}>
+                          <span style={{ fontSize: 48, fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.04em" }}>{p.title.charAt(0)}</span>
+                        </div>
+                      )}
                     </div>
                     <div style={{ padding: 28 }}>
                       <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
@@ -857,31 +869,44 @@ function PageProjects() {
                     </div>
                   </div>
                 </div>
-              ) : (
-                <a key={p.title} href={p.demo} target="_blank" rel="noopener noreferrer"
-                  className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
-                  <div className="edn-card-glow"></div>
-                  <div style={{ position: "relative", zIndex: 2 }}>
-                    <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
-                      <img src={p.img} alt={p.title} className="edn-card-img"
-                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                    </div>
-                    <div style={{ padding: 28 }}>
-                      <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
-                      <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
-                        {p.tags.map((t) => (
-                          <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
-                        ))}
+              ) : (() => {
+                const isInternal = p.demo && !p.demo.startsWith("http");
+                const CardWrapper = isInternal ? Link : "a";
+                const wrapperProps = isInternal
+                  ? { to: p.demo }
+                  : { href: p.demo, target: "_blank", rel: "noopener noreferrer" };
+                return (
+                  <CardWrapper key={p.title} {...wrapperProps}
+                    className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
+                    <div className="edn-card-glow"></div>
+                    <div style={{ position: "relative", zIndex: 2 }}>
+                      <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
+                        {p.img ? (
+                          <img src={p.img} alt={p.title} className="edn-card-img"
+                            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                        ) : (
+                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #C6FF00 0%, #0F172A 100%)" }}>
+                            <span style={{ fontSize: 48, fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.04em" }}>{p.title.charAt(0)}</span>
+                          </div>
+                        )}
                       </div>
-                      <span className="edn-card-btn"
-                        style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
-                        Live Demo <ArrowIcon className="edn-arrow" />
-                      </span>
+                      <div style={{ padding: 28 }}>
+                        <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
+                        <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
+                          {p.tags.map((t) => (
+                            <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
+                          ))}
+                        </div>
+                        <span className="edn-card-btn"
+                          style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          {isInternal ? "View Project" : "Live Demo"} <ArrowIcon className="edn-arrow" />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </a>
-              );
+                  </CardWrapper>
+                );
+              })();
             })}
           </div>
         </div>
