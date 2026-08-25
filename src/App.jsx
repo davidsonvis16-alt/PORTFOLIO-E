@@ -47,6 +47,12 @@ const PROJECTS = [
     demo: "https://bridges-theta.vercel.app/",
   },
   {
+    title: "Arrow",
+    desc: "A sleek, fast web experience — built with precision and purpose.",
+    tags: ["React", "Vite", "Tailwind"],
+    demo: "https://arrow-puce.vercel.app/",
+  },
+  {
     title: "Dating SaaS",
     desc: "A matchmaking platform with real-time discovery and messaging — coming soon.",
     tags: ["React", "TypeScript", "Tailwind"],
