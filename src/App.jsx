@@ -9,6 +9,7 @@ import SpotifyCard from "./SpotifyCard";
    text      #0F172A  near-black
    muted     #64748B  slate gray
    accent    #2563EB  bright blue
+   dark band #0F172A  (stats / contrast section)
 --------------------------------------------------------- */
 
 const PROJECTS = [
@@ -203,11 +204,26 @@ const NAV_ITEMS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
   { id: "why", label: "Why" },
+  { id: "process", label: "Process" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "pricing", label: "Pricing" },
   { id: "pulse", label: "Pulse" },
   { id: "contact", label: "Contact" },
+];
+
+const PROCESS_STEPS = [
+  { n: "01", title: "Discover", desc: "Understand your business, your customers, and what the site actually needs to do." },
+  { n: "02", title: "Design", desc: "A layout and look that fits the brand, reviewed with you before a line of code is written." },
+  { n: "03", title: "Build", desc: "Fast, responsive code, tested on the kind of connection your customers actually use." },
+  { n: "04", title: "Launch", desc: "Live, monitored, and handed over with everything you need to keep running it." },
+];
+
+const STATS = [
+  { label: "Projects Shipped", value: 8, suffix: "+" },
+  { label: "Avg. Load Time", value: 1, suffix: "s", prefix: "<" },
+  { label: "Client Satisfaction", value: 100, suffix: "%" },
+  { label: "Avg. Reply Time", value: 2, suffix: "hr" },
 ];
 
 function ArrowIcon({ className = "" }) {
@@ -302,6 +318,157 @@ function Typewriter({ text, speed = 55, initialDelay = 0 }) {
   );
 }
 
+/* ---------- new: small reusable utilities ---------- */
+
+function useInView(threshold = 0.35) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold }
+    );
+    obs.observe(node);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, inView];
+}
+
+function useCountUp(target, duration, start) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTime = null;
+    let raf;
+    const step = (ts) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      setValue(Math.floor(progress * target));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [start, target, duration]);
+  return value;
+}
+
+/* Rotating word — cycles a single word in place, used once in the hero */
+function RotatingWord({ words, interval = 2200 }) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((v) => (v + 1) % words.length), interval);
+    return () => clearInterval(t);
+  }, [words, interval]);
+  return (
+    <span style={{ position: "relative", display: "inline-grid", overflow: "hidden", verticalAlign: "bottom" }}>
+      <span key={i} style={{ display: "inline-block", color: "#2563EB", fontWeight: 600, animation: "wordIn .5s cubic-bezier(0.16,1,0.3,1) both" }}>
+        {words[i]}
+      </span>
+    </span>
+  );
+}
+
+/* Hand-drawn underline that draws itself once, when scrolled into view */
+function DrawnUnderline({ width = 120, color = "#2563EB" }) {
+  const [ref, inView] = useInView(0.6);
+  return (
+    <svg ref={ref} width={width} height="10" viewBox="0 0 120 10" fill="none" style={{ display: "block", marginTop: 8 }}>
+      <path
+        d="M2 7C20 2 40 2 60 5.5C80 9 100 3 118 5"
+        stroke={color}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        style={{
+          strokeDasharray: 170,
+          strokeDashoffset: inView ? 0 : 170,
+          transition: "stroke-dashoffset 1.1s cubic-bezier(0.16,1,0.3,1)",
+        }}
+      />
+    </svg>
+  );
+}
+
+/* Oversized outlined watermark word, sits behind a section's content */
+function Watermark({ text, side = "right" }) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        top: "50%",
+        [side]: "-1%",
+        transform: "translateY(-50%)",
+        fontSize: "clamp(6rem, 15vw, 13rem)",
+        fontWeight: 800,
+        letterSpacing: "-0.04em",
+        color: "transparent",
+        WebkitTextStroke: "1.5px rgba(15,23,42,0.055)",
+        pointerEvents: "none",
+        zIndex: 0,
+        userSelect: "none",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {text}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------- */
+
+function ScrollProgress() {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement;
+      const height = h.scrollHeight - h.clientHeight;
+      setPct(height > 0 ? (h.scrollTop / height) * 100 : 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, height: 3, width: "100%", zIndex: 200, pointerEvents: "none" }}>
+      <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg, #2563EB, #0F172A)" }} />
+    </div>
+  );
+}
+
+function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 700);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="edn-back-top"
+      aria-label="Back to top"
+      style={{
+        position: "fixed", bottom: 26, right: 26, zIndex: 90,
+        width: 46, height: 46, borderRadius: "50%",
+        background: "#0F172A", color: "#FFFFFF", border: "none", cursor: "pointer",
+        display: show ? "flex" : "none", alignItems: "center", justifyContent: "center",
+        boxShadow: "0 14px 30px rgba(15,23,42,0.28)",
+      }}
+    >
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" />
+      </svg>
+    </button>
+  );
+}
+
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -327,9 +494,9 @@ function Nav() {
           Eden<span style={{ color: "#2563EB" }}>.</span>
         </Link>
 
-      <div style={{ display: "flex", gap: 30 }} className="edn-desktop-nav">
+      <div style={{ display: "flex", gap: 26 }} className="edn-desktop-nav">
         {NAV_ITEMS.map((item) => (
-          <Link key={item.id} to={`/${item.id === 'home' ? '' : item.id}`} style={{ color: "#64748B", textDecoration: "none", fontSize: 14, fontWeight: 500, transition: "color .3s" }}>
+          <Link key={item.id} to={`/${item.id === 'home' ? '' : item.id}`} className="edn-navlink" style={{ fontSize: 14, fontWeight: 500 }}>
             {item.label}
           </Link>
         ))}
@@ -361,6 +528,7 @@ function Hero() {
   const [eFlipping, setEFlipping] = useState(true);
   const [denText, setDenText] = useState("");
   const [denVisible, setDenVisible] = useState(false);
+  const [spot, setSpot] = useState({ x: 50, y: 40 });
 
   useEffect(() => {
     const flipTimer = setTimeout(() => {
@@ -387,8 +555,23 @@ function Hero() {
   }, []);
 
   return (
-    <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "120px 6vw 60px", position: "relative", perspective: 1200 }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "center" }} className="edn-hero-grid">
+    <section
+      id="home"
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setSpot({ x: ((e.clientX - rect.left) / rect.width) * 100, y: ((e.clientY - rect.top) / rect.height) * 100 });
+      }}
+      style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "120px 6vw 60px", position: "relative", perspective: 1200, overflow: "hidden" }}
+    >
+      <div aria-hidden="true" style={{
+        position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
+        background: `radial-gradient(560px circle at ${spot.x}% ${spot.y}%, rgba(37,99,235,0.08), transparent 62%)`,
+      }} />
+      <div className="edn-shape edn-shape-1" aria-hidden="true" />
+      <div className="edn-shape edn-shape-2" aria-hidden="true" />
+      <div className="edn-shape edn-shape-3" aria-hidden="true" />
+
+      <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "center", position: "relative", zIndex: 1 }} className="edn-hero-grid">
         <div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 28, color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>
             <span style={{ width: 24, height: 1, background: "#2563EB", display: "inline-block" }} />
@@ -398,7 +581,9 @@ function Hero() {
             <Typewriter text="Building digital experiences with clarity and purpose." speed={55} initialDelay={600} />
           </h1>
           <p style={{ marginTop: 26, fontSize: 17, lineHeight: 1.7, color: "#64748B", maxWidth: 480, fontWeight: 400 }}>
-            Web developer and designer creating clean, modern websites and digital experiences.
+            Web developer and designer creating clean, modern{" "}
+            <RotatingWord words={["websites", "interfaces", "storefronts", "products"]} />{" "}
+            and digital experiences.
           </p>
           <div className="edn-hero-buttons" style={{ display: "flex", gap: 16, marginTop: 42, flexWrap: "wrap" }}>
             <Link to="/projects" className="edn-btn-primary" style={{ border: "none", padding: "15px 30px", fontSize: 14.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
@@ -464,6 +649,33 @@ function About() {
   );
 }
 
+function StatItem({ stat, start }) {
+  const val = useCountUp(stat.value, 1500, start);
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em" }}>
+        {stat.prefix || ""}{val}{stat.suffix}
+      </div>
+      <div style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", marginTop: 8, textTransform: "uppercase", letterSpacing: "0.08em", fontFamily: "'JetBrains Mono', monospace" }}>
+        {stat.label}
+      </div>
+    </div>
+  );
+}
+
+function Stats() {
+  const [ref, inView] = useInView(0.4);
+  return (
+    <section style={{ background: "#0F172A" }}>
+      <div ref={ref} style={{ maxWidth: 1280, margin: "0 auto", padding: "64px 6vw", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 }} className="edn-stats-grid">
+        {STATS.map((s) => (
+          <StatItem key={s.label} stat={s} start={inView} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function WhyWebsite() {
   return (
     <section id="why" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
@@ -471,6 +683,7 @@ function WhyWebsite() {
         <div style={{ marginBottom: 56 }}>
           <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Why a Website</div>
           <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Why your business needs a website</h2>
+          <DrawnUnderline width={130} />
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 28 }}>
@@ -504,94 +717,140 @@ function WhyWebsite() {
   );
 }
 
-function Projects() {
+function Process() {
   return (
-    <section id="projects" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
+    <section id="process" style={{ padding: "0 6vw 140px", perspective: 1200 }}>
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <div style={{ marginBottom: 56 }}>
-          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Selected Work</div>
-          <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Featured Projects</h2>
+        <div style={{ marginBottom: 64 }}>
+          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Process</div>
+          <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>How a project comes together</h2>
+          <DrawnUnderline width={130} />
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }} className="edn-project-grid">
-          {PROJECTS.map((p) => {
-            const pending = p.status === "pending";
-            return pending ? (
-              <div key={p.title} className="edn-card-pending">
-                <div className="edn-card-glow"></div>
-                <div style={{ position: "relative", zIndex: 2 }}>
-                  <div className="edn-card-placeholder">
-                    <span style={{ opacity: 0.45 }}>
-                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    </span>
-                    <span className="edn-card-pending-badge">Coming Soon</span>
-                  </div>
-                  <div style={{ padding: 28 }}>
-                    <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
-                    <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
-                      {p.tags.map((t) => (
-                        <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
-                      ))}
-                    </div>
-                    <span className="edn-card-pending-label">In Development</span>
-                  </div>
-                </div>
+        <div className="edn-process-track" style={{ position: "relative" }}>
+          <svg className="edn-process-line" viewBox="0 0 1000 4" preserveAspectRatio="none" aria-hidden="true"
+            style={{ position: "absolute", top: 26, left: 0, width: "100%", height: 4 }}>
+            <line x1="0" y1="2" x2="1000" y2="2" stroke="rgba(15,23,42,0.12)" strokeWidth="2" strokeDasharray="6 8" />
+          </svg>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28, position: "relative" }} className="edn-process-grid">
+            {PROCESS_STEPS.map((step) => (
+              <div key={step.n}>
+                <div style={{
+                  width: 52, height: 52, borderRadius: "50%", background: "#F8F9FB",
+                  border: "1.5px solid #0F172A", display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 14.5, fontWeight: 700, color: "#0F172A", marginBottom: 20, position: "relative", zIndex: 2,
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}>{step.n}</div>
+                <h3 style={{ fontSize: 17, fontWeight: 700, margin: "0 0 8px", color: "#0F172A" }}>{step.title}</h3>
+                <p style={{ fontSize: 13.5, lineHeight: 1.65, color: "#64748B", margin: 0 }}>{step.desc}</p>
               </div>
-            ) : (() => {
-              const isInternal = p.demo && !p.demo.startsWith("http");
-              const CardWrapper = isInternal ? Link : "a";
-              const wrapperProps = isInternal
-                ? { to: p.demo }
-                : { href: p.demo, target: "_blank", rel: "noopener noreferrer" };
-              return (
-                <CardWrapper key={p.title} {...wrapperProps}
-                  className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
-                  <div className="edn-card-glow"></div>
-                  <div style={{ position: "relative", zIndex: 2 }}>
-                    <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
-                      {p.img ? (
-                        <img src={p.img} alt={p.title} className="edn-card-img"
-                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                      ) : (
-                        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #C6FF00 0%, #0F172A 100%)" }}>
-                          <span style={{ fontSize: 48, fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.04em" }}>{p.title.charAt(0)}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div style={{ padding: 28 }}>
-                      <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
-                      <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
-                        {p.tags.map((t) => (
-                          <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
-                        ))}
-                      </div>
-                      <span className="edn-card-btn"
-                        style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
-                        {isInternal ? "View Project" : "Live Demo"} <ArrowIcon className="edn-arrow" />
-                      </span>
-                    </div>
-                  </div>
-                </CardWrapper>
-              );
-            })();
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Skills() {
+function ProjectGrid() {
   return (
-    <section id="skills" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }} className="edn-project-grid">
+      {PROJECTS.map((p) => {
+        const pending = p.status === "pending";
+        return pending ? (
+          <div key={p.title} className="edn-card-pending">
+            <div className="edn-card-glow"></div>
+            <div style={{ position: "relative", zIndex: 2 }}>
+              <div className="edn-card-placeholder">
+                <span style={{ opacity: 0.45 }}>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </span>
+                <span className="edn-card-pending-badge">Coming Soon</span>
+              </div>
+              <div style={{ padding: 28 }}>
+                <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
+                <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
+                  {p.tags.map((t) => (
+                    <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
+                  ))}
+                </div>
+                <span className="edn-card-pending-label">In Development</span>
+              </div>
+            </div>
+          </div>
+        ) : (() => {
+          const isInternal = p.demo && !p.demo.startsWith("http");
+          const CardWrapper = isInternal ? Link : "a";
+          const wrapperProps = isInternal
+            ? { to: p.demo }
+            : { href: p.demo, target: "_blank", rel: "noopener noreferrer" };
+          return (
+            <CardWrapper key={p.title} {...wrapperProps}
+              className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
+              <div className="edn-card-glow"></div>
+              <div style={{ position: "relative", zIndex: 2 }}>
+                <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
+                  {p.img ? (
+                    <img src={p.img} alt={p.title} className="edn-card-img"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  ) : (
+                    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #C6FF00 0%, #0F172A 100%)" }}>
+                      <span style={{ fontSize: 48, fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.04em" }}>{p.title.charAt(0)}</span>
+                    </div>
+                  )}
+                </div>
+                <div style={{ padding: 28 }}>
+                  <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
+                  <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
+                    {p.tags.map((t) => (
+                      <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
+                    ))}
+                  </div>
+                  <span className="edn-card-btn"
+                    style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    {isInternal ? "View Project" : "Live Demo"} <ArrowIcon className="edn-arrow" />
+                  </span>
+                </div>
+              </div>
+            </CardWrapper>
+          );
+        })();
+      })}
+    </div>
+  );
+}
+
+function Projects() {
+  return (
+    <section id="projects" style={{ padding: "160px 6vw 120px", perspective: 1200, position: "relative", overflow: "hidden" }}>
+      <Watermark text="WORK" side="right" />
+      <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ marginBottom: 56 }}>
+          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Selected Work</div>
+          <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Featured Projects</h2>
+          <DrawnUnderline width={130} />
+        </div>
+        <ProjectGrid />
+      </div>
+    </section>
+  );
+}
+
+function Skills() {
+  const loopSkills = [...SKILLS, ...SKILLS];
+  return (
+    <section id="skills" style={{ padding: "160px 0 120px", overflow: "hidden" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 6vw" }}>
         <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Toolkit</div>
-        <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 40px", letterSpacing: "-0.02em", color: "#0F172A" }}>Skills</h2>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          {SKILLS.map((s) => (
-            <span key={s} className="edn-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, padding: "10px 18px", borderRadius: 100, border: "1px solid rgba(0,0,0,0.08)", color: "#475569", fontWeight: 500, cursor: "default", background: "#F1F5F9" }}>
+        <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Skills</h2>
+        <DrawnUnderline width={80} />
+      </div>
+      <div className="edn-marquee-wrap" style={{ marginTop: 44 }}>
+        <div className="edn-marquee-track">
+          {loopSkills.map((s, idx) => (
+            <span key={s + idx} className="edn-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, padding: "10px 18px", borderRadius: 100, border: "1px solid rgba(0,0,0,0.08)", color: "#475569", fontWeight: 500, cursor: "default", background: "#F1F5F9", whiteSpace: "nowrap" }}>
               <SkillIcon name={s} />
               {s}
             </span>
@@ -602,10 +861,58 @@ function Skills() {
   );
 }
 
+function PricingGrid() {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginTop: 48 }} className="edn-pricing-grid">
+      {PRICING.map((tier) => (
+        <div key={tier.name} className="edn-price-card" style={{
+          border: tier.featured ? "1.5px solid #0F172A" : "1px solid rgba(0,0,0,0.08)",
+          borderRadius: 20, padding: 32, background: tier.featured ? "#EFF6FF" : "#FFFFFF",
+          color: tier.featured ? "#0F172A" : "#0F172A",
+          display: "flex", flexDirection: "column", position: "relative",
+        }}>
+          {tier.featured && (
+            <span style={{ position: "absolute", top: -12, left: 32, background: "#2563EB", color: "#FFFFFF", fontSize: 10.5, fontWeight: 700, padding: "5px 13px", borderRadius: 100, letterSpacing: "0.05em" }}>
+              MOST BOOKED
+            </span>
+          )}
+          <h3 style={{ fontSize: 19, fontWeight: 700, margin: "6px 0 6px", color: "inherit" }}>{tier.name}</h3>
+          <p style={{ fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.62)" : "#64748B", fontWeight: 400, lineHeight: 1.6, margin: "0 0 20px", minHeight: 54 }}>{tier.desc}</p>
+          <div style={{ marginBottom: 24 }}>
+            {tier.note && <div style={{ fontSize: 11, color: tier.featured ? "rgba(15,23,42,0.5)" : "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>{tier.note}</div>}
+            <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em" }}>{tier.price}</div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28, flexGrow: 1 }}>
+            {tier.features.map((f) => (
+              <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.8)" : "#475569" }}>
+                <CheckIcon /> {f}
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Eden, I'm interested in the ${tier.name} plan (${tier.price}). Can we discuss it?`)}`}
+              target="_blank" rel="noopener noreferrer"
+              style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: "#25D366", color: "#FFF" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.045 1.02-1.045 2.488 0 1.468 1.065 2.887 1.213 3.083.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </a>
+            <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer"
+              style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: tier.featured ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.06)", color: tier.featured ? "#0F172A" : "#0F172A" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+              Instagram
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Pricing() {
   return (
-    <section id="pricing" style={{ padding: "160px 6vw 120px", perspective: 1200 }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+    <section id="pricing" style={{ padding: "160px 6vw 120px", perspective: 1200, position: "relative", overflow: "hidden" }}>
+      <Watermark text="RATES" side="left" />
+      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ marginBottom: 20 }}>
           <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Pricing</div>
           <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 14px", letterSpacing: "-0.02em", color: "#0F172A" }}>What it costs to work together</h2>
@@ -614,49 +921,7 @@ function Pricing() {
             around what your business actually needs before we quote a final number.
           </p>
         </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginTop: 48 }} className="edn-pricing-grid">
-          {PRICING.map((tier) => (
-            <div key={tier.name} className="edn-price-card" style={{
-              border: tier.featured ? "1.5px solid #0F172A" : "1px solid rgba(0,0,0,0.08)",
-              borderRadius: 20, padding: 32, background: tier.featured ? "#EFF6FF" : "#FFFFFF",
-              color: tier.featured ? "#0F172A" : "#0F172A",
-              display: "flex", flexDirection: "column", position: "relative",
-            }}>
-              {tier.featured && (
-                <span style={{ position: "absolute", top: -12, left: 32, background: "#2563EB", color: "#FFFFFF", fontSize: 10.5, fontWeight: 700, padding: "5px 13px", borderRadius: 100, letterSpacing: "0.05em" }}>
-                  MOST BOOKED
-                </span>
-              )}
-              <h3 style={{ fontSize: 19, fontWeight: 700, margin: "6px 0 6px", color: "inherit" }}>{tier.name}</h3>
-              <p style={{ fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.62)" : "#64748B", fontWeight: 400, lineHeight: 1.6, margin: "0 0 20px", minHeight: 54 }}>{tier.desc}</p>
-              <div style={{ marginBottom: 24 }}>
-                {tier.note && <div style={{ fontSize: 11, color: tier.featured ? "rgba(15,23,42,0.5)" : "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>{tier.note}</div>}
-                <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em" }}>{tier.price}</div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28, flexGrow: 1 }}>
-                {tier.features.map((f) => (
-                  <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.8)" : "#475569" }}>
-                    <CheckIcon /> {f}
-                  </div>
-                ))}
-              </div>
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Eden, I'm interested in the ${tier.name} plan (${tier.price}). Can we discuss it?`)}`}
-                  target="_blank" rel="noopener noreferrer"
-                  style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: "#25D366", color: "#FFF" }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.045 1.02-1.045 2.488 0 1.468 1.065 2.887 1.213 3.083.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  WhatsApp
-                </a>
-                <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer"
-                  style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: tier.featured ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.06)", color: tier.featured ? "#0F172A" : "#0F172A" }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-                  Instagram
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
+        <PricingGrid />
       </div>
     </section>
   );
@@ -750,13 +1015,23 @@ function SkillIcon({ name }) {
   );
 }
 
+function PageWrapper({ children, direction }) {
+  return (
+    <div className={`edn-page-${direction}`} style={{ width: "100%" }}>
+      {children}
+    </div>
+  );
+}
+
 function PageHome() {
   return (
     <PageWrapper direction="left">
       <>
         <Hero />
         <About />
+        <Stats />
         <WhyWebsite />
+        <Process />
         <Projects />
         <Skills />
         <Pricing />
@@ -769,29 +1044,7 @@ function PageHome() {
 function PageAbout() {
   return (
     <PageWrapper direction="right">
-      <section id="about" style={{ padding: "160px 6vw 120px", perspective: 1200, minHeight: "100vh" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "0.4fr 1fr", gap: 48 }} className="edn-about-grid">
-          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>About</div>
-          <div style={{ maxWidth: 700 }}>
-            <p style={{ fontSize: "clamp(1.3rem, 2.3vw, 1.8rem)", lineHeight: 1.6, fontWeight: 500, color: "#0F172A", margin: "0 0 22px", letterSpacing: "-0.01em" }}>
-              We build websites for small businesses — mostly restaurants, cafés,
-              and shops around Nairobi.
-            </p>
-            <p style={{ fontSize: 16.5, lineHeight: 1.8, fontWeight: 400, color: "#64748B", margin: "0 0 22px" }}>
-              Self-taught, no agency, no team. We work mainly in{" "}
-              <span style={{ color: "#475569" }}>React</span>. If you want a
-              sense of what we can actually build rather than what we say we can
-              build, <a href="https://bakemart.co.ke/" target="_blank" rel="noopener noreferrer" style={{ color: "#0F172A", textDecoration: "underline", textDecorationColor: "rgba(0,0,0,0.2)", textUnderlineOffset: 3 }}>Bakemart Coffee House</a> is
-              a good place to look — real listings, built to stay fast even on
-              a slow connection. That's the standard we hold every project to.
-            </p>
-            <a href="https://bakemart.co.ke/" target="_blank" rel="noopener noreferrer" className="edn-btn-ghost"
-              style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-              View BakeMart Coffeee House <ArrowIcon className="edn-arrow" />
-            </a>
-          </div>
-        </div>
-      </section>
+      <About />
     </PageWrapper>
   );
 }
@@ -799,42 +1052,17 @@ function PageAbout() {
 function PageWhy() {
   return (
     <PageWrapper direction="left">
-      <section id="why" style={{ padding: "160px 6vw 120px", perspective: 1200, minHeight: "100vh" }}>
+      <WhyWebsite />
+    </PageWrapper>
+  );
+}
 
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ marginBottom: 56 }}>
-            <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Why a Website</div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Why your business needs a website</h2>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 28 }}>
-            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Be found 24/7</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
-                Customers search online before they buy. A website puts your business in front of them anytime — even when your shop is closed.
-              </p>
-            </div>
-            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Look legitimate</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
-                A clean, fast website builds trust instantly. People judge businesses before they walk through the door — make sure that first impression works for you.
-              </p>
-            </div>
-            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Reach beyond your street</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
-                Social media is noisy and temporary. A website is yours — you control the message, the look, and the experience. It scales with your business.
-              </p>
-            </div>
-            <div style={{ border: "1px solid rgba(0,0,0,0.06)", borderRadius: 18, padding: 32, background: "#FFFFFF" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 12px", color: "#0F172A" }}>Why build it with us</h3>
-              <p style={{ fontSize: 14.5, lineHeight: 1.7, color: "#64748B", margin: 0 }}>
-                We build lightweight, fast websites that work on weak connections — because that is how most people browse here. No bloated agencies, no unnecessary overhead. Just a site that performs.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+function PageProcess() {
+  return (
+    <PageWrapper direction="right">
+      <div style={{ paddingTop: 100 }}>
+        <Process />
+      </div>
     </PageWrapper>
   );
 }
@@ -842,82 +1070,7 @@ function PageWhy() {
 function PageProjects() {
   return (
     <PageWrapper direction="right">
-      <section id="projects" style={{ padding: "160px 6vw 120px", perspective: 1200, minHeight: "100vh" }}>
-
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ marginBottom: 56 }}>
-            <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Selected Work</div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: 0, letterSpacing: "-0.02em", color: "#0F172A" }}>Featured Projects</h2>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }} className="edn-project-grid">
-            {PROJECTS.map((p) => {
-              const pending = p.status === "pending";
-              return pending ? (
-                <div key={p.title} className="edn-card-pending">
-                  <div className="edn-card-glow"></div>
-                  <div style={{ position: "relative", zIndex: 2 }}>
-                    <div className="edn-card-placeholder">
-                      <span style={{ opacity: 0.45 }}>
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                      </span>
-                      <span className="edn-card-pending-badge">Coming Soon</span>
-                    </div>
-                    <div style={{ padding: 28 }}>
-                      <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
-                      <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
-                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
-                        {p.tags.map((t) => (
-                          <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
-                        ))}
-                      </div>
-                      <span className="edn-card-pending-label">In Development</span>
-                    </div>
-                  </div>
-                </div>
-              ) : (() => {
-                const isInternal = p.demo && !p.demo.startsWith("http");
-                const CardWrapper = isInternal ? Link : "a";
-                const wrapperProps = isInternal
-                  ? { to: p.demo }
-                  : { href: p.demo, target: "_blank", rel: "noopener noreferrer" };
-                return (
-                  <CardWrapper key={p.title} {...wrapperProps}
-                    className="edn-card" style={{ display: "block", textDecoration: "none", cursor: "pointer" }}>
-                    <div className="edn-card-glow"></div>
-                    <div style={{ position: "relative", zIndex: 2 }}>
-                      <div style={{ height: 220, overflow: "hidden", position: "relative", background: "#F1F5F9" }}>
-                        {p.img ? (
-                          <img src={p.img} alt={p.title} className="edn-card-img"
-                            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                        ) : (
-                          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #C6FF00 0%, #0F172A 100%)" }}>
-                            <span style={{ fontSize: 48, fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.04em" }}>{p.title.charAt(0)}</span>
-                          </div>
-                        )}
-                      </div>
-                      <div style={{ padding: 28 }}>
-                        <h3 className="edn-card-title" style={{ fontSize: 20, fontWeight: 700, margin: "0 0 10px", letterSpacing: "-0.01em" }}>{p.title}</h3>
-                        <p className="edn-card-desc" style={{ fontSize: 14, lineHeight: 1.65, margin: "0 0 18px", fontWeight: 400 }}>{p.desc}</p>
-                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
-                          {p.tags.map((t) => (
-                            <span key={t} className="edn-card-tag" style={{ fontSize: 11, padding: "5px 11px", borderRadius: 100, letterSpacing: "0.02em" }}>{t}</span>
-                          ))}
-                        </div>
-                        <span className="edn-card-btn"
-                          style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
-                          {isInternal ? "View Project" : "Live Demo"} <ArrowIcon className="edn-arrow" />
-                        </span>
-                      </div>
-                    </div>
-                  </CardWrapper>
-                );
-              })();
-            })}
-          </div>
-        </div>
-
-      </section>
+      <Projects />
     </PageWrapper>
   );
 }
@@ -925,21 +1078,7 @@ function PageProjects() {
 function PageSkills() {
   return (
     <PageWrapper direction="left">
-      <section id="skills" style={{ padding: "160px 6vw 120px", perspective: 1200, minHeight: "100vh" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Toolkit</div>
-          <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 40px", letterSpacing: "-0.02em", color: "#0F172A" }}>Skills</h2>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            {SKILLS.map((s) => (
-              <span key={s} className="edn-pill" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13.5, padding: "10px 18px", borderRadius: 100, border: "1px solid rgba(0,0,0,0.08)", color: "#475569", fontWeight: 500, cursor: "default", background: "#F1F5F9" }}>
-                <SkillIcon name={s} />
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-
-      </section>
+      <Skills />
     </PageWrapper>
   );
 }
@@ -947,62 +1086,7 @@ function PageSkills() {
 function PagePricing() {
   return (
     <PageWrapper direction="right">
-      <section id="pricing" style={{ padding: "160px 6vw 120px", perspective: 1200, minHeight: "100vh" }}>
-
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontFamily: "'JetBrains Mono', monospace" }}>Pricing</div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.6vw, 2.8rem)", fontWeight: 800, margin: "0 0 14px", letterSpacing: "-0.02em", color: "#0F172A" }}>What it costs to work together</h2>
-            <p style={{ fontSize: 15, color: "#64748B", fontWeight: 400, maxWidth: 560, lineHeight: 1.7 }}>
-              Rough starting points, not rigid packages. Every site gets scoped
-              around what your business actually needs before we quote a final number.
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginTop: 48 }} className="edn-pricing-grid">
-            {PRICING.map((tier) => (
-              <div key={tier.name} className="edn-price-card" style={{
-                border: tier.featured ? "1.5px solid #0F172A" : "1px solid rgba(0,0,0,0.08)",
-                borderRadius: 20, padding: 32, background: tier.featured ? "#EFF6FF" : "#FFFFFF",
-                color: tier.featured ? "#0F172A" : "#0F172A",
-                display: "flex", flexDirection: "column", position: "relative",
-              }}>
-                {tier.featured && (
-                  <span style={{ position: "absolute", top: -12, left: 32, background: "#2563EB", color: "#FFFFFF", fontSize: 10.5, fontWeight: 700, padding: "5px 13px", borderRadius: 100, letterSpacing: "0.05em" }}>
-                    MOST BOOKED
-                  </span>
-                )}
-                <h3 style={{ fontSize: 19, fontWeight: 700, margin: "6px 0 6px", color: "inherit" }}>{tier.name}</h3>
-                <p style={{ fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.62)" : "#64748B", fontWeight: 400, lineHeight: 1.6, margin: "0 0 20px", minHeight: 54 }}>{tier.desc}</p>
-                <div style={{ marginBottom: 24 }}>
-                  {tier.note && <div style={{ fontSize: 11, color: tier.featured ? "rgba(15,23,42,0.5)" : "#64748B", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>{tier.note}</div>}
-                  <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: "-0.02em" }}>{tier.price}</div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28, flexGrow: 1 }}>
-                  {tier.features.map((f) => (
-                    <div key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: tier.featured ? "rgba(15,23,42,0.8)" : "#475569" }}>
-                      <CheckIcon /> {f}
-                    </div>
-                  ))}
-                </div>
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <a href={`https://wa.me/254142614743?text=${encodeURIComponent(`Hi Eden, I'm interested in the ${tier.name} plan (${tier.price}). Can we discuss it?`)}`}
-                    target="_blank" rel="noopener noreferrer"
-                    style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: "#25D366", color: "#FFF" }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.273.297-1.045 1.02-1.045 2.488 0 1.468 1.065 2.887 1.213 3.083.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    WhatsApp
-                  </a>
-                  <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer"
-                    style={{ flex: 1, minWidth: 120, border: "none", padding: "12px 16px", borderRadius: 100, fontSize: 13.5, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, textDecoration: "none", background: tier.featured ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.06)", color: tier.featured ? "#0F172A" : "#0F172A" }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-                    Instagram
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Pricing />
     </PageWrapper>
   );
 }
@@ -1010,29 +1094,7 @@ function PagePricing() {
 function PageContact() {
   return (
     <PageWrapper direction="left">
-      <section id="contact" style={{ padding: "160px 6vw 120px", minHeight: "100vh", display: "flex", alignItems: "center", perspective: 1200 }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", textAlign: "center", width: "100%" }}>
-          <div style={{ color: "#64748B", fontSize: 12.5, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 20, fontFamily: "'JetBrains Mono', monospace" }}>Contact</div>
-          <h2 style={{ fontSize: "clamp(2.1rem, 5vw, 3.6rem)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.02em", margin: "0 auto 44px", maxWidth: 720, color: "#0F172A" }}>
-            Let&rsquo;s build something meaningful together.
-          </h2>
-          <div style={{ display: "flex", gap: 32, justifyContent: "center", flexWrap: "wrap", fontSize: 14.5 }}>
-            <a href="mailto:davidson.vis.16@gmail.com" className="edn-social" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
-              Email
-            </a>
-            <a href="https://www.instagram.com/vinn_y.codr/" target="_blank" rel="noopener noreferrer" className="edn-social" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-              Instagram
-            </a>
-            <a href="https://wa.me/254142614743" target="_blank" rel="noopener noreferrer" className="edn-social" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-              WhatsApp
-            </a>
-          </div>
-        </div>
-
-      </section>
+      <Contact />
     </PageWrapper>
   );
 }
@@ -1119,22 +1181,14 @@ function PageTransition() {
   );
 }
 
-function PageWrapper({ children, direction }) {
-  return (
-    <div className={`edn-page-${direction}`} style={{ width: "100%" }}>
-      {children}
-    </div>
-  );
-}
-
 export default function EdenPortfolio() {
   const location = useLocation();
-  const pageOrder = ["/", "/about", "/why", "/projects", "/skills", "/pricing", "/pulse", "/contact"];
+  const pageOrder = ["/", "/about", "/why", "/process", "/projects", "/skills", "/pricing", "/pulse", "/contact"];
   const pageIndex = pageOrder.indexOf(location.pathname);
   const direction = pageIndex % 2 === 0 ? "left" : "right";
 
   return (
-    <div className="edn-app-shell" style={{ background: "#F8F9FB", color: "#0F172A", fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div className="edn-app-shell" style={{ background: "#F8F9FB", color: "#0F172A", fontFamily: "'Inter', system-ui, sans-serif", position: "relative" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap');
         * { box-sizing: border-box; }
@@ -1142,12 +1196,21 @@ export default function EdenPortfolio() {
         @keyframes floatSlow { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-10px);} }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes wordIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spinSlow { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
+        @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes heroFlip {
           0% { transform: rotateY(0deg); }
           100% { transform: rotateY(360deg); }
         }
         .edn-hero-mark-wrap { animation: heroFlip 2.2s ease-in-out both; transform-style: preserve-3d; }
         .edn-hero-mark-svg { width: clamp(180px, 25vw, 320px); height: clamp(180px, 25vw, 320px); }
+
+        /* decorative floating shapes used behind the hero */
+        .edn-shape { position:absolute; pointer-events:none; z-index:0; }
+        .edn-shape-1 { width:110px; height:110px; border:1.5px solid rgba(37,99,235,0.18); border-radius:26px; top:10%; right:6%; animation: floatSlow 8s ease-in-out infinite, spinSlow 30s linear infinite; }
+        .edn-shape-2 { width:66px; height:66px; border:1.5px solid rgba(15,23,42,0.1); border-radius:50%; bottom:16%; left:2%; animation: floatSlow 6.5s ease-in-out infinite reverse; }
+        .edn-shape-3 { width:38px; height:38px; background:rgba(37,99,235,0.12); border-radius:10px; top:42%; right:22%; transform: rotate(18deg); animation: floatSlow 5.5s ease-in-out infinite; }
 
         @keyframes slideInLeft {
           from { transform: translateX(-120px); opacity: 0; }
@@ -1223,6 +1286,14 @@ export default function EdenPortfolio() {
 
         .edn-music-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
 
+        /* infinite skills marquee */
+        .edn-marquee-wrap { width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+        .edn-marquee-track { display: flex; gap: 12px; width: max-content; animation: marqueeScroll 30s linear infinite; padding: 4px 6vw; }
+        .edn-marquee-wrap:hover .edn-marquee-track { animation-play-state: paused; }
+
+        .edn-back-top { transition: background .3s, transform .3s; }
+        .edn-back-top:hover { background:#2563EB; transform: translateY(-3px); }
+
         .pulse-card {
           background: #FFFFFF;
           border: 1px solid rgba(0,0,0,0.06);
@@ -1296,11 +1367,12 @@ export default function EdenPortfolio() {
 
         @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 
-        @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
-
         @media (max-width: 1080px) {
           .edn-project-grid { grid-template-columns: repeat(2,1fr) !important; }
           .edn-pricing-grid { grid-template-columns: 1fr !important; max-width: 460px !important; }
+          .edn-stats-grid { grid-template-columns: repeat(2,1fr) !important; row-gap: 32px !important; }
+          .edn-process-grid { grid-template-columns: repeat(2,1fr) !important; row-gap: 40px !important; }
+          .edn-process-line { display: none !important; }
         }
         @media (max-width: 860px) {
           .edn-desktop-nav { display:none !important; }
@@ -1309,16 +1381,20 @@ export default function EdenPortfolio() {
           .edn-hero-visual { height:320px !important; order:0 !important; }
           .edn-about-grid { grid-template-columns:1fr !important; }
           .edn-project-grid { grid-template-columns:repeat(2, 1fr) !important; }
+          .edn-shape-1, .edn-shape-2, .edn-shape-3 { display:none !important; }
         }
         @media (max-width: 520px) {
           .edn-project-grid { grid-template-columns:1fr !important; }
           .edn-hero-visual { height:280px !important; }
           .edn-music-grid { grid-template-columns: 1fr !important; }
+          .edn-process-grid { grid-template-columns: 1fr !important; }
+          .edn-stats-grid { grid-template-columns: repeat(2,1fr) !important; }
         }
         @media (max-width: 420px) {
         }
       `}</style>
 
+      <ScrollProgress />
       <PageTransition />
       <Nav />
 
@@ -1326,6 +1402,7 @@ export default function EdenPortfolio() {
         <Route path="/" element={<PageHome />} />
         <Route path="/about" element={<PageAbout />} />
         <Route path="/why" element={<PageWhy />} />
+        <Route path="/process" element={<PageProcess />} />
         <Route path="/projects" element={<PageProjects />} />
         <Route path="/skills" element={<PageSkills />} />
         <Route path="/pricing" element={<PagePricing />} />
@@ -1334,6 +1411,7 @@ export default function EdenPortfolio() {
       </Routes>
 
       <Footer />
+      <BackToTop />
     </div>
   );
 }
