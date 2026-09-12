@@ -1,0 +1,2 @@
+# Netlify: this is a single-page app, so every route falls back to index.html.
+/*  /index.html  200
