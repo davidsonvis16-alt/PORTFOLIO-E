@@ -1,24 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 
-/* Design tokens. Night-studio palette: warm black, bone text, one ember accent.
-   Ember is scarce — one emphasis per view. WhatsApp green is reserved for the WhatsApp CTA. */
+/* Design tokens mirror the CSS variables in site.css. */
 export const C = {
-  bg: "#0B0A09",
-  bgRaise: "#141210",
-  surface: "#181613",
-  ink: "#EFE9DF",
-  muted: "#8F877C",
-  dim: "#5A544C",
-  accent: "#FF5A1F",
-  accentSoft: "rgba(255,90,31,0.10)",
-  hairline: "rgba(239,233,223,0.10)",
-  whatsapp: "#25D366",
+  ink: "#1D1D1F",
+  sub: "#6E6E73",
+  blue: "#0066CC",
 };
-
-export const SERIF = "'Instrument Serif', 'Times New Roman', serif";
-export const SANS = "'Inter Tight', 'Inter', system-ui, -apple-system, sans-serif";
-/* Mono means "this is measured": prices, dates, tags, stack names. */
-export const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace";
 
 export function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(
@@ -55,7 +42,7 @@ export function useInView(threshold = 0.35) {
 }
 
 /* Adds .is-in to every [data-reveal] element as it scrolls into view,
-   including ones mounted later (lazy routes, late lists). */
+   including ones mounted later (route changes, late lists). */
 export function useRevealAll() {
   useEffect(() => {
     const io = new IntersectionObserver(
