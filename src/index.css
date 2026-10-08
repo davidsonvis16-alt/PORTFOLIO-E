@@ -4,14 +4,13 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
+#root {
+  min-height: 100%;
 }
 
 body {
-  background: #0B0A09;
-  color: #EFE9DF;
+  background: #ffffff;
+  color: #1d1d1f;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
