@@ -140,25 +140,57 @@ html.menu-open { overflow: hidden; }
 .fact p { margin: 6px 0 0; font-size: 15px; line-height: 1.45; }
 .fact-wide p { font-size: 17px; max-width: 720px; }
 
-/* more work carousel */
-.row-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 36px; }
+/* more work — numbered cards with a hard offset shadow */
+.row-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; }
 .row-head .t-sub { margin-top: 10px; }
-.pager { display: flex; gap: 12px; flex-shrink: 0; }
-.pager button { width: 36px; height: 36px; border-radius: 50%; background: #e8e8ed; color: var(--ink); display: flex; align-items: center; justify-content: center; transition: background 0.2s, opacity 0.2s; }
-.pager button:first-child .chev { transform: rotate(180deg); }
-.pager button:hover:not(:disabled) { background: #dcdce1; }
-.pager button:disabled { opacity: 0.35; cursor: default; }
-.track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: max(var(--gut), calc((100vw - var(--wrap)) / 2 + var(--gut))); padding: 4px max(var(--gut), calc((100vw - var(--wrap)) / 2 + var(--gut))) 24px; scrollbar-width: none; }
-.track::-webkit-scrollbar { display: none; }
-.track-end { flex: 0 0 1px; }
-.pcard { position: relative; flex: 0 0 clamp(290px, 27vw, 372px); height: clamp(560px, 46vw, 640px); border-radius: 28px; background: var(--grey); overflow: hidden; scroll-snap-align: start; padding: 32px 30px 0; display: flex; flex-direction: column; transition: transform 0.4s var(--ease); }
-.pcard:hover { transform: scale(1.012); }
-.pcard:nth-child(3n + 2) { background: var(--sand); }
-.pcard-copy { display: flex; flex-direction: column; gap: 10px; }
-.pcard-copy p { margin: 0; font-size: 15px; line-height: 1.45; color: var(--sub); }
-.pcard-tier { font-size: 13px; color: var(--ink); font-weight: 500; }
-.pcard-phone { position: absolute; left: 50%; bottom: -34%; width: 64%; transform: translateX(-50%); transition: transform 0.6s var(--ease); }
-.pcard:hover .pcard-phone { transform: translateX(-50%) translateY(-12px); }
+.wcount { flex-shrink: 0; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 14px; border: 2px solid var(--ink); border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); background: #ffd23f; }
+
+.wgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 32px; padding: 0 8px 8px 0; }
+
+.wcard {
+  --bg: #fff; --fg: var(--ink); --muted: #4a4a4f; --chip: rgba(0, 0, 0, 0.08);
+  position: relative; display: flex; flex-direction: column; color: var(--fg); background: var(--bg);
+  border: 2.5px solid var(--ink); border-radius: 16px; box-shadow: 8px 8px 0 var(--ink);
+  padding: 14px; transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+a.wcard:hover { transform: translate(-4px, -4px); box-shadow: 12px 12px 0 var(--ink); }
+a.wcard:active { transform: translate(6px, 6px); box-shadow: 2px 2px 0 var(--ink); }
+.wcard-red    { --bg: #ff5a36; --fg: #fff; --muted: rgba(255, 255, 255, 0.86); --chip: rgba(0, 0, 0, 0.18); }
+.wcard-blue   { --bg: #2f5bff; --fg: #fff; --muted: rgba(255, 255, 255, 0.86); --chip: rgba(0, 0, 0, 0.2); }
+.wcard-yellow { --bg: #ffd23f; }
+.wcard-green  { --bg: #12b76a; --fg: #fff; --muted: rgba(255, 255, 255, 0.88); --chip: rgba(0, 0, 0, 0.18); }
+.wcard-ink    { --bg: #1d1d1f; --fg: #f5f5f7; --muted: rgba(245, 245, 247, 0.72); --chip: rgba(255, 255, 255, 0.14); }
+.wcard-ink    { box-shadow: 8px 8px 0 #ff5a36; }
+a.wcard-ink:hover { box-shadow: 12px 12px 0 #ff5a36; }
+.wcard-sand   { --bg: var(--sand); }
+
+.wcard-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.wcard-num { font-size: 44px; line-height: 0.9; font-weight: 800; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.wcard-kind { font-size: 11.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; background: var(--chip); text-align: right; }
+
+.wcard-shot { position: relative; aspect-ratio: 16 / 10; border: 2px solid var(--ink); border-radius: 10px; overflow: hidden; background: #fff; }
+.wcard-shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.6s var(--ease); }
+a.wcard:hover .wcard-shot img { transform: scale(1.04); }
+.wcard-shot-empty { display: grid; place-items: center; background: repeating-linear-gradient(-45deg, rgba(0,0,0,0.05) 0 12px, transparent 12px 24px), #fff; }
+.wcard-shot-empty span { font-size: clamp(22px, 2.2vw, 30px); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); text-align: center; padding: 0 16px; }
+
+.wcard-body { display: flex; flex-direction: column; flex: 1; padding: 16px 4px 4px; }
+.wcard-title { margin: 0; font-size: 24px; line-height: 1.1; font-weight: 800; letter-spacing: -0.035em; }
+.wcard-desc { margin: 8px 0 0; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.wcard-tier { margin: 10px 0 0; font-size: 13px; font-weight: 700; }
+.wcard-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 16px; font-size: 13px; }
+.wcard-stack { color: var(--muted); font-weight: 500; }
+.wcard-go { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; font-weight: 700; padding: 7px 12px; border-radius: 8px; background: var(--fg); color: var(--bg); }
+.wcard-ink .wcard-go { background: #ff5a36; color: #fff; }
+
+@media (max-width: 1000px) { .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) {
+  .wgrid { grid-template-columns: 1fr; gap: 28px; }
+  .wcard { box-shadow: 6px 6px 0 var(--ink); }
+  .wcard-ink { box-shadow: 6px 6px 0 #ff5a36; }
+  .row-head { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) { .wcard, .wcard-shot img { transition: none; } }
 
 /* about */
 .about .t-h2 { margin-top: 14px; }
@@ -243,8 +275,6 @@ html.menu-open { overflow: hidden; }
   .lineup .phone:nth-child(1), .lineup .phone:nth-child(5) { display: none; }
   .steps { grid-template-columns: 1fr; }
   .row-head { align-items: flex-start; flex-direction: column; }
-  .pager { display: none; }
-  .pcard { flex-basis: 82vw; height: 560px; }
   .tile { border-radius: 22px; }
 }
 

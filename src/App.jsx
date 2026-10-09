@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { C, useInView, usePrefersReducedMotion, useRevealAll } from "./tokens";
 import { STACK_ICONS } from "./stackIcons";
@@ -49,6 +49,17 @@ const CASE_STUDIES = [
 
 /* Everything else — self-directed builds, not client engagements. Newest first. */
 const OTHER_BUILDS = [
+  {
+    title: "Kahawa & Crumb",
+    tier: "custom",
+    tierWhy: "full ordering, accounts, rewards and six ways to pay",
+    kind: "Café · Food ordering",
+    desc: "A Nairobi coffee house built like a fast-food app — customise any item, M-Pesa, Airtel or card checkout, Crumbs rewards and live order tracking.",
+    stack: "React · Tailwind · Framer Motion",
+    year: "2026",
+    demo: "", /* add the Vercel link once it's deployed */
+    img: "/work/kahawa.jpg",
+  },
   {
     title: "Maison Kiatu",
     tier: "custom",
@@ -535,36 +546,52 @@ function ClientWork() {
   );
 }
 
-/* ---------- more work: card carousel ---------- */
+/* ---------- more work: numbered card grid ---------- */
+
+const CARD_TONES = ["red", "blue", "yellow", "green", "ink", "sand"];
+
+function Shot({ src, title }) {
+  const [broken, setBroken] = useState(false);
+  if (broken) {
+    return (
+      <div className="wcard-shot wcard-shot-empty" aria-hidden="true">
+        <span>{title}</span>
+      </div>
+    );
+  }
+  return (
+    <div className="wcard-shot">
+      <img src={src} alt={`${title} on desktop`} width="1152" height="720" loading="lazy" decoding="async" onError={() => setBroken(true)} />
+    </div>
+  );
+}
+
+function WorkCard({ b, i }) {
+  const n = String(i + 1).padStart(2, "0");
+  const live = b.demo?.startsWith("http");
+  const Tag = live ? "a" : "article";
+  const linkProps = live ? { href: b.demo, target: "_blank", rel: "noopener noreferrer" } : {};
+  return (
+    <Tag className={`wcard wcard-${CARD_TONES[i % CARD_TONES.length]}`} data-reveal {...linkProps}>
+      <div className="wcard-top">
+        <span className="wcard-num">{n}</span>
+        <span className="wcard-kind">{b.kind}</span>
+      </div>
+      <Shot src={b.img} title={b.title} />
+      <div className="wcard-body">
+        <h3 className="wcard-title">{b.title}</h3>
+        <p className="wcard-desc">{b.desc}</p>
+        <p className="wcard-tier">{TIER_NAME[b.tier]} — {b.tierWhy}</p>
+        <div className="wcard-foot">
+          <span className="wcard-stack">{b.stack}</span>
+          <span className="wcard-go">{live ? "View site" : "Coming soon"}{live && <Chevron />}</span>
+        </div>
+      </div>
+    </Tag>
+  );
+}
 
 function MoreWork() {
-  const track = useRef(null);
-  const [edge, setEdge] = useState({ start: true, end: false });
-
-  const update = useCallback(() => {
-    const el = track.current;
-    if (!el) return;
-    setEdge({ start: el.scrollLeft < 8, end: el.scrollLeft + el.clientWidth > el.scrollWidth - 8 });
-  }, []);
-
-  useEffect(() => {
-    const el = track.current;
-    update();
-    el.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      el.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [update]);
-
-  const page = (dir) => {
-    const el = track.current;
-    const card = el.querySelector(".pcard");
-    const step = card ? card.getBoundingClientRect().width + 20 : el.clientWidth * 0.8;
-    el.scrollBy({ left: dir * step * Math.max(1, Math.floor(el.clientWidth / step)), behavior: "smooth" });
-  };
-
   return (
     <section id="more" className="sec sec-tight">
       <div className="wrap">
@@ -573,31 +600,13 @@ function MoreWork() {
             <h2 className="t-h2">More work.</h2>
             <p className="t-sub">Self-directed builds — each priced as if a client had asked for it.</p>
           </div>
-          <div className="pager" aria-label="Scroll projects">
-            <button onClick={() => page(-1)} disabled={edge.start} aria-label="Previous">
-              <Chevron />
-            </button>
-            <button onClick={() => page(1)} disabled={edge.end} aria-label="Next">
-              <Chevron />
-            </button>
-          </div>
+          <span className="wcount">{String(OTHER_BUILDS.length).padStart(2, "0")} builds</span>
         </div>
-      </div>
-      <div className="track" ref={track}>
-        {OTHER_BUILDS.map((b) => (
-          <a key={b.title} href={b.demo} target="_blank" rel="noopener noreferrer" className="pcard">
-            <div className="pcard-copy">
-              <span className="eyebrow">{b.kind}</span>
-              <h3 className="t-h3">{b.title}</h3>
-              <p>{b.desc}</p>
-              <span className="pcard-tier">
-                {TIER_NAME[b.tier]} — {b.tierWhy}
-              </span>
-            </div>
-            <Phone src={phone(b.img)} alt={`${b.title} on a phone`} className="pcard-phone" />
-          </a>
-        ))}
-        <span className="track-end" aria-hidden="true" />
+        <div className="wgrid">
+          {OTHER_BUILDS.map((b, i) => (
+            <WorkCard key={b.title} b={b} i={i} />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -789,7 +798,7 @@ function Footer() {
           </div>
           <div>
             <h4>More work</h4>
-            {OTHER_BUILDS.slice(0, 6).map((b) => (
+            {OTHER_BUILDS.filter((b) => b.demo).slice(0, 6).map((b) => (
               <a key={b.title} href={b.demo} target="_blank" rel="noopener noreferrer">{b.title}</a>
             ))}
           </div>
