@@ -57,7 +57,7 @@ const OTHER_BUILDS = [
     desc: "A Nairobi coffee house built like a fast-food app — customise any item, M-Pesa, Airtel or card checkout, Crumbs rewards and live order tracking.",
     stack: "React · Tailwind · Framer Motion",
     year: "2026",
-    demo: "", /* add the Vercel link once it's deployed */
+    demo: "https://kahawa-xi.vercel.app/",
     img: "/work/kahawa.jpg",
   },
   {
@@ -496,6 +496,7 @@ function Highlights() {
 function CaseTile({ s, tone }) {
   return (
     <article className={`tile tile-${tone}`} data-reveal>
+      <span className="tile-num" aria-hidden="true">{s.n}</span>
       <div className="tile-copy">
         <p className="eyebrow">
           Client {s.n} · {s.place}
@@ -720,7 +721,7 @@ function Pricing() {
         </div>
         <div className="compare">
           {PRICING_TIERS.map((t) => (
-            <div key={t.key} className="plan" data-reveal>
+            <div key={t.key} className={`plan${t.featured ? " plan-featured" : ""}`} data-reveal>
               <span className="plan-flag">{t.featured ? "Best fit for most shops" : " "}</span>
               <h3 className="t-h3">{t.name}</h3>
               <p className="plan-blurb">{t.blurb}</p>
