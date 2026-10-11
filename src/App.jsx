@@ -50,6 +50,18 @@ const CASE_STUDIES = [
 /* Everything else — self-directed builds, not client engagements. Newest first. */
 const OTHER_BUILDS = [
   {
+    title: "Cha Bao",
+    group: "restaurant",
+    tier: "custom",
+    tierWhy: "online ordering, table bookings and a back-office admin",
+    kind: "Asian bistro · Restaurant",
+    desc: "Bao, dim sum and tea in Nairobi — order with M-Pesa, card or PayPal, book a table, and an admin for orders, cancellations and refunds.",
+    stack: "React · TypeScript · Framer Motion",
+    year: "2026",
+    demo: "", /* add the Vercel link once it's deployed */
+    img: "/work/chabao.jpg",
+  },
+  {
     title: "Kahawa & Crumb",
     group: "cafe",
     tier: "custom",
