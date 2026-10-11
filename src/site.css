@@ -185,9 +185,19 @@ a.wcard:hover .wcard-shot img { transform: scale(1.04); }
 
 @media (max-width: 1000px) { .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) {
-  .wgrid { grid-template-columns: 1fr; gap: 28px; }
-  .wcard { box-shadow: 6px 6px 0 var(--ink); }
-  .wcard-ink { box-shadow: 6px 6px 0 #ff5a36; }
+  /* Phones: two compact cards per row — number, type, screenshot, name, link. */
+  .wgrid { gap: 18px 14px; padding: 0 4px 4px 0; }
+  .wcard { padding: 10px; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); }
+  .wcard-ink { box-shadow: 4px 4px 0 #ff5a36; }
+  .wcard-top { flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 8px; }
+  .wcard-num { font-size: 28px; }
+  .wcard-kind { font-size: 9px; padding: 4px 7px; text-align: left; letter-spacing: .04em; }
+  .wcard-shot { border-radius: 7px; }
+  .wcard-body { padding: 10px 0 0; }
+  .wcard-title { font-size: 16px; }
+  .wcard-desc, .wcard-tier, .wcard-stack { display: none; }
+  .wcard-foot { padding-top: 10px; }
+  .wcard-go { font-size: 11.5px; padding: 6px 9px; width: 100%; justify-content: center; }
   .row-head { flex-direction: column; align-items: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) { .wcard, .wcard-shot img { transition: none; } }
