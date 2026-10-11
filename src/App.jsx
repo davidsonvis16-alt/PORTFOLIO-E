@@ -58,7 +58,7 @@ const OTHER_BUILDS = [
     desc: "Bao, dim sum and tea in Nairobi — order with M-Pesa, card or PayPal, book a table, and an admin for orders, cancellations and refunds.",
     stack: "React · TypeScript · Framer Motion",
     year: "2026",
-    demo: "", /* add the Vercel link once it's deployed */
+    demo: "https://chabaokenya.vercel.app/",
     img: "/work/chabao.jpg",
   },
   {
