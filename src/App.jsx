@@ -51,6 +51,7 @@ const CASE_STUDIES = [
 const OTHER_BUILDS = [
   {
     title: "Kahawa & Crumb",
+    group: "cafe",
     tier: "custom",
     tierWhy: "full ordering, accounts, rewards and six ways to pay",
     kind: "Café · Food ordering",
@@ -62,6 +63,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Maison Kiatu",
+    group: "shop",
     tier: "custom",
     tierWhy: "a stocked shop with a bag and WhatsApp ordering",
     kind: "Sneaker shop · E-commerce",
@@ -73,6 +75,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Jave",
+    group: "restaurant",
     tier: "custom",
     tierWhy: "online ordering and table bookings",
     kind: "Restaurant & grill",
@@ -84,6 +87,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Eden Phones",
+    group: "shop",
     tier: "custom",
     tierWhy: "M-Pesa checkout and instalment plans",
     kind: "Phone shop · E-commerce",
@@ -95,6 +99,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Petal",
+    group: "florist",
     tier: "custom",
     tierWhy: "bouquet builder, M-Pesa checkout, delivery cutoff",
     kind: "Florist · E-commerce",
@@ -106,6 +111,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Aldosi Merchants",
+    group: "shop",
     tier: "business",
     tierWhy: "catalogue and brand pages, no checkout",
     kind: "Brand storefront",
@@ -117,6 +123,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Haven",
+    group: "homes",
     tier: "custom",
     tierWhy: "property listings and viewing bookings",
     kind: "Real estate",
@@ -128,6 +135,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Gadellaa Arts",
+    group: "studio",
     tier: "custom",
     tierWhy: "session booking on top of the portfolio pages",
     kind: "Tattoo studio · Nyeri",
@@ -139,6 +147,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Bridges",
+    group: "platform",
     tier: "custom",
     tierWhy: "address search across cities and categories",
     kind: "Delivery platform",
@@ -150,6 +159,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Arrow",
+    group: "platform",
     tier: "custom",
     tierWhy: "mutual-interest matching and gated contact",
     kind: "Dating & discovery",
@@ -161,6 +171,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Kijani Kafe",
+    group: "restaurant",
     tier: "business",
     tierWhy: "menu, story and location over a few pages",
     kind: "Garden bar · Restaurant",
@@ -172,6 +183,7 @@ const OTHER_BUILDS = [
   },
   {
     title: "Beyond Fruits",
+    group: "shop",
     tier: "custom",
     tierWhy: "basket and checkout",
     kind: "Grocery · Delivery",
@@ -592,6 +604,10 @@ function WorkCard({ b, i }) {
   );
 }
 
+/* Cards run in this order of business type, numbered straight through. */
+const WORK_GROUPS = ["restaurant", "cafe", "florist", "homes", "studio", "shop", "platform"];
+const SORTED_BUILDS = [...OTHER_BUILDS].sort((a, b) => WORK_GROUPS.indexOf(a.group) - WORK_GROUPS.indexOf(b.group));
+
 function MoreWork() {
   return (
     <section id="more" className="sec sec-tight">
@@ -604,7 +620,7 @@ function MoreWork() {
           <span className="wcount">{String(OTHER_BUILDS.length).padStart(2, "0")} builds</span>
         </div>
         <div className="wgrid">
-          {OTHER_BUILDS.map((b, i) => (
+          {SORTED_BUILDS.map((b, i) => (
             <WorkCard key={b.title} b={b} i={i} />
           ))}
         </div>
