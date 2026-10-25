@@ -209,12 +209,19 @@ const OTHER_BUILDS = [
 
 const SKILLS = ["HTML", "CSS", "JavaScript", "React", "Next.js", "TypeScript", "Tailwind CSS", "Supabase", "Vite", "Framer Motion", "Git", "M-Pesa", "Responsive Design"];
 
+/* End-of-year offer. Every plan: free hosting, 60% to start and 40% at launch. */
+const OFFER_ENDS = "31 December";
 const PRICING_TIERS = [
   {
     key: "landing",
     name: "Landing Page",
-    price: "15,000",
-    note: "from KSh",
+    was: "15,000",
+    price: "10,000",
+    monthly: "500",
+    split: ["6,000", "4,000"],
+    methods: "M-Pesa",
+    tag: "Save KSh 5,000",
+    perks: ["Free hosting"],
     blurb: "One sharp page that gets you found and gets you messaged.",
     plus: "WHAT YOU GET",
     features: ["1 page, single layout", "WhatsApp button", "Mobile-first, built for 3 bars", "3-day turnaround"],
@@ -223,9 +230,14 @@ const PRICING_TIERS = [
   {
     key: "business",
     name: "Business Site",
-    price: "30,000",
-    note: "from KSh",
+    was: "30,000",
+    price: "25,000",
+    monthly: "1,000",
+    split: ["15,000", "10,000"],
+    methods: "M-Pesa or bank transfer",
+    tag: "Save KSh 5,000",
     featured: true,
+    perks: ["Free hosting"],
     blurb: "The full shopfront — menu, story, location and payments.",
     plus: "EVERYTHING IN LANDING, PLUS",
     features: ["Up to 5 pages", "Custom design, not a stock layout", "M-Pesa payments", "1 round of revisions", "7-day turnaround"],
@@ -234,13 +246,25 @@ const PRICING_TIERS = [
   {
     key: "custom",
     name: "Custom Build",
-    price: "Let's talk",
-    note: "quoted per job",
+    price: "35,000",
+    from: true,
+    monthly: "2,000",
+    split: ["21,000", "14,000"],
+    methods: "M-Pesa or bank transfer",
+    tag: "New price",
+    perks: ["Free hosting", "Free domain"],
     blurb: "When the site has to run part of the business, not just describe it.",
     plus: "EVERYTHING IN BUSINESS, PLUS",
     features: ["Cart and M-Pesa checkout", "Bookings, search or listings", "Database behind the site", "Revisions scoped to the job", "Ongoing support"],
     missing: [],
   },
+];
+
+const PAY_STEPS = [
+  { n: "01", title: "Agree the scope", body: "Tell me what the business needs on WhatsApp. You get a fixed price before any work starts." },
+  { n: "02", title: "Pay 60% to start", body: "The deposit books your slot and work begins the same week." },
+  { n: "03", title: "Review and approve", body: "You see the design first, then the built site, and sign it off." },
+  { n: "04", title: "Pay 40% at launch", body: "The balance is due when the site goes live — hosting included, free." },
 ];
 
 const TIER_NAME = { landing: "Landing Page", business: "Business Site", custom: "Custom Build" };
@@ -744,23 +768,54 @@ function Pricing() {
     <section id="pricing" className="sec">
       <div className="wrap">
         <div className="sec-head center" data-reveal>
+          <span className="offer-pill">End-of-year offer · until {OFFER_ENDS}</span>
           <h2 className="t-h2">Which site is right for you?</h2>
-          <p className="t-sub">Starting points, not rigid packages. Every site is scoped against what the business needs before a final number goes out.</p>
+          <p className="t-sub">Prices are cut for the end of the year, and hosting is free on every plan.</p>
         </div>
         <div className="compare">
           {PRICING_TIERS.map((t) => (
             <div key={t.key} className={`plan${t.featured ? " plan-featured" : ""}`} data-reveal>
-              <span className="plan-flag">{t.featured ? "Best fit for most shops" : " "}</span>
+              <div className="plan-tags">
+                <span className={`price-tag${t.was ? "" : " price-tag-new"}`}>{t.tag}</span>
+                {t.featured && <span className="plan-flag">Best fit for most shops</span>}
+              </div>
               <h3 className="t-h3">{t.name}</h3>
               <p className="plan-blurb">{t.blurb}</p>
-              <p className="plan-price">
-                {t.price === "Let's talk" ? "Quoted per job" : `From KSh ${t.price}`}
-              </p>
+              <div className="plan-price">
+                {t.was && <s className="plan-was">KSh {t.was}</s>}
+                <span className="plan-now">
+                  <small>{t.from ? "From KSh" : "KSh"}</small> {t.price}
+                </span>
+                <span className="plan-monthly">+ KSh {t.monthly}/month maintenance</span>
+              </div>
+              <ul className="plan-perks">
+                {t.perks.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
               <div className="cta-row center">
-                <a href={waLink(`Hi Eden, I'm interested in the ${t.name} option. Can we discuss it?`)} target="_blank" rel="noopener noreferrer" className="btn btn-blue btn-sm">
+                <a href={waLink(`Hi Eden, I'm interested in the ${t.name} at KSh ${t.price} (end-of-year offer). Can we discuss it?`)} target="_blank" rel="noopener noreferrer" className="btn btn-blue btn-sm">
                   Ask about this
                 </a>
               </div>
+              <dl className="plan-pay">
+                <div>
+                  <dt>To start (60%)</dt>
+                  <dd>{t.from ? "from " : ""}KSh {t.split[0]}</dd>
+                </div>
+                <div>
+                  <dt>At launch (40%)</dt>
+                  <dd>{t.from ? "from " : ""}KSh {t.split[1]}</dd>
+                </div>
+                <div>
+                  <dt>Pay by</dt>
+                  <dd>{t.methods}</dd>
+                </div>
+                <div>
+                  <dt>Maintenance</dt>
+                  <dd>Monthly, by M-Pesa</dd>
+                </div>
+              </dl>
               <div className="plan-list">
                 <p className="eyebrow">{t.plus.toLowerCase()}</p>
                 <ul>
@@ -784,6 +839,33 @@ function Pricing() {
               )}
             </div>
           ))}
+        </div>
+
+        <div className="bigger" data-reveal>
+          <div>
+            <span className="eyebrow">Something more complex?</span>
+            <h3 className="t-h3">Let's talk.</h3>
+            <p>Marketplaces, customer accounts, multi-branch systems, integrations — we scope it together and price it to the job.</p>
+          </div>
+          <a href={waLink("Hi Eden, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="btn btn-light">
+            Start the conversation
+          </a>
+        </div>
+
+        <div className="pay" id="payment">
+          <div className="sec-head center" data-reveal>
+            <h3 className="t-h2">How paying works.</h3>
+            <p className="t-sub">Two payments, no surprises. Hosting is free, and the Custom Build comes with a free domain.</p>
+          </div>
+          <ol className="pay-steps">
+            {PAY_STEPS.map((step) => (
+              <li key={step.n} className="pay-step" data-reveal>
+                <span className="pay-n">{step.n}</span>
+                <h4>{step.title}</h4>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>
