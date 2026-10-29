@@ -4,7 +4,7 @@ export const WHATSAPP_NUMBER = "254142614743";
 export const INSTAGRAM = "https://www.instagram.com/vinn_y.codr/";
 export const EMAIL = "davidson.vis.16@gmail.com";
 
-/* Real client work — the two paid builds. Numbers stay hedged
+/* Real client work — live sites in use by the people they were built for. Numbers stay hedged
    until they are actually measured; no invented precision. */
 export const CASE_STUDIES = [
   {
@@ -41,22 +41,27 @@ export const CASE_STUDIES = [
     demo: "https://global-mogul.vercel.app/",
     domain: "global-mogul.vercel.app",
   },
+  {
+    n: "03",
+    client: "Fidel Castrol",
+    place: "Student coach · Homa Bay",
+    need: "A student success coach needed one place to show his coaching record and start conversations — plus a page for the HubSpot study partners he is looking for.",
+    constraint:
+      "Two audiences on one small site: students and parents looking for coaching, and people learning HubSpot. Each gets its own page, its own WhatsApp message and a lead-score quiz, without a heavy app behind it.",
+    spec: [
+      ["STACK", "React · TypeScript · Tailwind"],
+      ["SCOPE", "Coaching site · HubSpot page · Quiz"],
+      ["TARGET", "Usable on a 3-bar connection"],
+      ["STATUS", "Live, in use"],
+    ],
+    img: "/work/castrol.jpg",
+    demo: "https://fidelc.vercel.app/",
+    domain: "fidelc.vercel.app",
+  },
 ];
 
-/* Everything else — built for people or self-directed, not paid client engagements. Newest first. */
+/* Everything else — self-directed builds, not client engagements. Newest first. */
 export const OTHER_BUILDS = [
-  {
-    title: "Fidel Castrol",
-    group: "coach",
-    tier: "business",
-    tierWhy: "two pages, a lead-score quiz and WhatsApp booking",
-    kind: "Student coach · Homa Bay",
-    desc: "A personal site for a student success coach — set like an editorial index, with a second HubSpot page and a lead-score quiz.",
-    stack: "React · TypeScript · Tailwind · Motion",
-    year: "2026",
-    demo: "https://fidelc.vercel.app/",
-    img: "/work/castrol.jpg",
-  },
   {
     title: "Cha Bao",
     group: "restaurant",
@@ -308,7 +313,7 @@ export const WHY_POINTS = [
    on a fixed rig yet. */
 export const LIVE_COUNT = CASE_STUDIES.length + OTHER_BUILDS.filter((b) => b.demo?.startsWith("http")).length;
 export const PROOF = [
-  { value: CASE_STUDIES.length, label: "Paying clients", note: "BakeMart · Global Mogul" },
+  { value: CASE_STUDIES.length, label: "Clients", note: "sites live and in use" },
   { value: LIVE_COUNT, label: "Sites live", note: "client + self-directed" },
   { text: "< 2s", label: "Typical load, 3G", note: "target, not a lab figure" },
   { text: "< 2h", label: "Usual reply time", note: "WhatsApp, working hours" },

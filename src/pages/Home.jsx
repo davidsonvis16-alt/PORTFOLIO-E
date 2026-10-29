@@ -100,7 +100,7 @@ function ClientPreview() {
         </div>
         <div className="duo">
           {CASE_STUDIES.map((s, i) => (
-            <a key={s.n} href={s.demo} target="_blank" rel="noopener noreferrer" className={`duo-card ${i ? "duo-paper" : "duo-ink"}`} data-reveal>
+            <a key={s.n} href={s.demo} target="_blank" rel="noopener noreferrer" className={`duo-card ${i % 2 ? "duo-paper" : "duo-ink"}`} data-reveal>
               <div className="duo-top">
                 <span className="mono">Client {s.n} · {s.place}</span>
                 <span className="mono">{s.domain}</span>
