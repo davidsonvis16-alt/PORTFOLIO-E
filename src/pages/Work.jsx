@@ -90,19 +90,19 @@ function WorkCard({ b, i }) {
 }
 
 /* Cards run in this order of business type, numbered straight through. */
-const WORK_GROUPS = ["coach", "restaurant", "cafe", "florist", "homes", "studio", "shop", "platform"];
+const WORK_GROUPS = ["restaurant", "cafe", "florist", "homes", "studio", "shop", "platform"];
 const SORTED_BUILDS = [...OTHER_BUILDS].sort((a, b) => WORK_GROUPS.indexOf(a.group) - WORK_GROUPS.indexOf(b.group));
 
 export default function Work() {
   return (
     <>
-      <PageHead stop="01" kicker="· Websites" title="The" accent="work." sub={`${CASE_STUDIES.length} paying clients and ${OTHER_BUILDS.length} more builds — every one live and built to load on mobile data.`} />
+      <PageHead stop="01" kicker="· Websites" title="The" accent="work." sub={`${CASE_STUDIES.length} client sites in use and ${OTHER_BUILDS.length} more builds — every one live and built to load on mobile data.`} />
       <section className="sec">
         <div className="wrap">
-          <SecHead kick="Client work" title="Two clients." accent="Both live." />
+          <SecHead kick="Client work" title="Live and" accent="in use." sub={`${CASE_STUDIES.length} clients, every site live and used day to day.`} />
           <div className="tiles">
             {CASE_STUDIES.map((s, i) => (
-              <CaseTile key={s.n} s={s} tone={i === 0 ? "ink" : "paper"} />
+              <CaseTile key={s.n} s={s} tone={i % 2 ? "paper" : "ink"} />
             ))}
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function Work() {
       <section className="sec sec-top0">
         <div className="wrap">
           <div className="row-head" data-reveal>
-            <SecHead kick="More builds" title="More" accent="work." sub="Sites built for people and for practice — each one priced as if a client had asked for it." />
+            <SecHead kick="More builds" title="More" accent="work." sub="Self-directed builds — each one priced as if a client had asked for it." />
             <span className="wcount mono">{String(OTHER_BUILDS.length).padStart(2, "0")} builds</span>
           </div>
           <div className="wgrid">

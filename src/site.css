@@ -218,14 +218,14 @@ html.intro .rise, html.intro .rise-up { animation-play-state: paused; }
 .stops p { margin: 0; font-size: 16px; line-height: 1.5; opacity: 0.86; }
 
 /* home: client duo */
-.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 0 8px 8px 0; }
+.duo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; padding: 0 8px 8px 0; }
 .duo-card { display: flex; flex-direction: column; padding: clamp(22px, 3vw, 32px); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 10px 10px 0 var(--blue); transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease); }
 .duo-card:hover { transform: translate(-3px, -3px); box-shadow: 13px 13px 0 var(--blue); }
 .duo-ink { background: var(--ink); color: #fff; }
 .duo-paper { background: var(--paper); box-shadow: 10px 10px 0 var(--ink); }
 .duo-paper:hover { box-shadow: 13px 13px 0 var(--ink); }
 .duo-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; opacity: 0.7; margin-bottom: 18px; }
-.duo-card > p { margin: 12px 0 28px; font-size: 16px; line-height: 1.5; opacity: 0.8; }
+.duo-card > p { margin: 12px 0 28px; font-size: 15px; line-height: 1.5; opacity: 0.8; }
 .duo-card .devices { margin-top: auto; }
 
 /* home: ad posters */
@@ -482,6 +482,8 @@ a.wcard:hover .wcard-shot img { transform: scale(1.04); }
   .tickets-4 { grid-template-columns: repeat(2, 1fr); }
   .stats { grid-template-columns: repeat(3, 1fr); }
   .why { grid-template-columns: repeat(2, 1fr); }
+  .duo { grid-template-columns: 1fr 1fr; }
+  .duo-card:last-child { grid-column: span 2; }
   .camp-in { grid-template-columns: 1fr; }
   .camp-info { position: static; max-width: 640px; }
   .wgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -495,6 +497,7 @@ a.wcard:hover .wcard-shot img { transform: scale(1.04); }
   .stops li, .route li { border-top: 3px solid currentColor; }
   .route li { border-color: var(--blue); }
   .duo, .tickets-3, .receipts, .about-cols, .notes { grid-template-columns: 1fr; }
+  .duo-card:last-child { grid-column: auto; }
   .tickets-3 { max-width: 480px; }
   .ways { grid-template-columns: 1fr; }
   .way { min-height: 0; }
