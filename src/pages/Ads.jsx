@@ -54,6 +54,12 @@ function Campaign({ c }) {
         </aside>
 
         <div className="bento-box">
+          <p className="swipe mono" aria-hidden="true">
+            <span>
+              <b>{c.pieces.length}</b> pieces · tap to enlarge
+            </span>
+            <span>Swipe →</span>
+          </p>
           <ul className="bento">
             {items.map((it, i) => (
               <li key={it.file} className={`cell ${cellFor(it.file, it.format, c.cover)}`} data-reveal style={{ "--d": `${(i % 6) * 0.05}s` }}>
