@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { useRevealAll } from "./tokens";
+import { useImageFade, useRevealAll } from "./tokens";
 import { AD_CAMPAIGNS, CASE_STUDIES, EMAIL, INSTAGRAM, NAV, PRICING_TIERS, waLink } from "./data";
-import { Arrow, Checker } from "./ui";
+import { Arrow, Checker, PageSkeleton } from "./ui";
 
 const stop = (i) => String(i + 1).padStart(2, "0");
 
@@ -144,6 +144,7 @@ function Footer() {
 export default function Layout() {
   const { pathname, hash } = useLocation();
   useRevealAll();
+  useImageFade();
 
   /* New page starts at the top; a #hash lands on its section. */
   useEffect(() => {
@@ -163,7 +164,9 @@ export default function Layout() {
       </a>
       <Header />
       <main id="main">
-        <Outlet />
+        <Suspense fallback={<PageSkeleton />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
     </div>

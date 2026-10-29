@@ -140,7 +140,7 @@ export function Lightbox({ items, index, onClose, onStep }) {
         </button>
       </div>
       <figure className="lb-fig" onClick={(e) => e.stopPropagation()}>
-        <img src={item.src} alt={item.title} />
+        <img key={item.src} src={item.src} alt={item.title} />
         <figcaption className="d-h3">{item.title}</figcaption>
       </figure>
       <button className="lb-nav lb-prev" onClick={(e) => (e.stopPropagation(), onStep(-1))} aria-label="Previous">
@@ -149,6 +149,27 @@ export function Lightbox({ items, index, onClose, onStep }) {
       <button className="lb-nav lb-next" onClick={(e) => (e.stopPropagation(), onStep(1))} aria-label="Next">
         →
       </button>
+    </div>
+  );
+}
+
+/* Shown while a page's code is still downloading. */
+export function PageSkeleton() {
+  return (
+    <div className="pskel" aria-busy="true" aria-label="Loading">
+      <div className="pskel-head">
+        <div className="wrap">
+          <span className="skel skel-kick" />
+          <span className="skel skel-title" />
+          <span className="skel skel-title skel-short" />
+          <span className="skel skel-line" />
+        </div>
+      </div>
+      <div className="wrap pskel-grid">
+        {[0, 1, 2].map((i) => (
+          <span key={i} className="skel skel-card" />
+        ))}
+      </div>
     </div>
   );
 }
