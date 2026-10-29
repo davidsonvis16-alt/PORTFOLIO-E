@@ -332,6 +332,8 @@ a.wcard:hover .wcard-shot img { transform: scale(1.04); }
 .cell button:hover { transform: translate(-3px, -4px) rotate(var(--tilt, 0.6deg)) scale(1.02); box-shadow: 10px 10px 0 var(--blue); z-index: 3; }
 .cell img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .cell-cover button { box-shadow: 10px 10px 0 var(--blue); }
+.swipe { display: none; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; color: var(--sub); }
+.swipe b { color: var(--ink); }
 .cell-n { position: absolute; top: 8px; left: 8px; padding: 3px 6px; background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: 5px; font-size: 10px; }
 .cell-cap { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; background: var(--white); color: var(--ink); border: 2px solid var(--ink); border-radius: 8px; text-align: left; opacity: 0; transform: translateY(10px); transition: opacity 0.2s var(--ease), transform 0.25s var(--ease); }
 .cell-cap .mono { font-size: 9.5px; color: var(--blue); }
@@ -490,10 +492,6 @@ a.wcard:hover .wcard-shot img { transform: scale(1.04); }
   .stats { grid-template-columns: 1fr 1fr; gap: 16px; }
   .stats .stat:last-child { grid-column: span 2; }
   .tickets-4 { grid-template-columns: 1fr; }
-  .bento { --cols: 2; --gap: 10px; }
-  .cell button { box-shadow: 4px 4px 0 var(--ink); border-radius: 9px; }
-  .cell-cap { display: none; }
-  .cell-cover .cell-cap { display: flex; }
   .why { grid-template-columns: 1fr; }
   .wgrid { gap: 18px 14px; padding: 0 4px 4px 0; }
   .wcard-big { grid-column: span 2; }
@@ -518,6 +516,35 @@ a.wcard:hover .wcard-shot img { transform: scale(1.04); }
   .lb-fig img { max-height: calc(100vh - 190px); }
   .lb-fig figcaption { font-size: 22px; padding: 0 56px; }
   .camp-tabs a { flex: 1 1 calc(50% - 6px); }
+
+  /* Phones: each campaign is a swipeable row of full-size posters
+     instead of a squeezed mosaic. */
+  .camp { padding: 56px 0 48px; }
+  .camp-in { gap: 24px; }
+  .camp-info .d-h2 { font-size: 52px; }
+  .camp-brief { font-size: 16px; margin-top: 12px; }
+  .camp-voice { display: none; }
+  .swatches { margin-top: 16px; }
+  .swatches li { height: 34px; }
+  .swatches .mono { display: none; }
+  .camp-facts { margin: 14px 0 18px; }
+  .camp-facts dd { font-size: 22px; }
+  .camp-info .btn { width: 100%; }
+  .bento-box { margin: 0 calc(var(--gut) * -1); }
+  .bento { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--gut); padding: 4px var(--gut) 14px; scrollbar-width: none; }
+  .bento::-webkit-scrollbar { display: none; }
+  .cell { flex: 0 0 74vw; scroll-snap-align: start; }
+  .cell-tall { flex-basis: 56vw; }
+  .cell-wide { flex-basis: 88vw; }
+  .cell button { display: flex; flex-direction: column; height: auto; border-radius: 12px; box-shadow: 4px 4px 0 var(--ink); background: var(--white); }
+  .cell button:hover { transform: none; box-shadow: 4px 4px 0 var(--ink); }
+  .cell-cover button { box-shadow: 4px 4px 0 var(--blue); }
+  .cell img { height: auto; aspect-ratio: 4 / 5; }
+  .cell-tall img { aspect-ratio: 9 / 16; }
+  .cell-wide img { aspect-ratio: 16 / 10; }
+  .cell-cap { position: static; opacity: 1; transform: none; border: 0; border-top: 2px solid var(--ink); border-radius: 0; padding: 10px 12px 12px; }
+  .cell-cap b { font-size: 19px; }
+  .swipe { display: flex; padding: 0 var(--gut); }
 }
 
 @media (prefers-reduced-motion: reduce) {
