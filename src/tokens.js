@@ -73,3 +73,23 @@ export function useLightbox(length) {
   const step = (d) => setIndex((i) => (i == null ? i : (i + d + length) % length));
   return { index, open: setIndex, close, step };
 }
+
+/* Images start hidden over a skeleton and fade in once loaded.
+   Covers images mounted later too (route changes, lightbox). */
+export function useImageFade() {
+  useEffect(() => {
+    const done = (img) => img.classList.add("is-loaded");
+    const scan = () =>
+      document.querySelectorAll("main img:not(.is-loaded), .lb img:not(.is-loaded)").forEach((img) => {
+        if (img.complete && img.naturalWidth) return done(img);
+        if (img.dataset.watch) return;
+        img.dataset.watch = "1";
+        img.addEventListener("load", () => done(img), { once: true });
+        img.addEventListener("error", () => done(img), { once: true });
+      });
+    scan();
+    const mo = new MutationObserver(scan);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => mo.disconnect();
+  }, []);
+}

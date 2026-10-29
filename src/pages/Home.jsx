@@ -54,11 +54,11 @@ function Hero() {
           {FAN.map((f, i) =>
             f.kind === "ad" ? (
               <div key={f.file} className={`fan-card fan-${i}`}>
-                <img src={adSrc(f.key, f.file, true)} alt={f.alt} width="640" height="800" />
+                <img src={adSrc(f.key, f.file, true)} alt={f.alt} width="640" height="800" fetchPriority="high" />
               </div>
             ) : (
               <div key="site" className={`fan-card fan-${i} fan-phone`}>
-                <img src={phone(f.img)} alt={f.alt} width="390" height="844" />
+                <img src={phone(f.img)} alt={f.alt} width="390" height="844" fetchPriority="high" />
               </div>
             )
           )}

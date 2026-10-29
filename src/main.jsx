@@ -11,3 +11,6 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </StrictMode>,
 )
+
+/* Lift the intro screen in index.html once the first paint is in. */
+setTimeout(() => window.__introDone?.(), 0)

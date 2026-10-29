@@ -1,11 +1,14 @@
+import { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
-import Work from "./pages/Work";
-import Ads from "./pages/Ads";
-import Rates from "./pages/Rates";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
+
+/* Home ships with the first load; every other page downloads when visited. */
+const Work = lazy(() => import("./pages/Work"));
+const Ads = lazy(() => import("./pages/Ads"));
+const Rates = lazy(() => import("./pages/Rates"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
 import "./site.css";
 
 /* Old single-page links land on the page that now holds that section. */
