@@ -66,3 +66,10 @@ export function useRevealAll() {
     };
   }, []);
 }
+
+export function useLightbox(length) {
+  const [index, setIndex] = useState(null);
+  const close = () => setIndex(null);
+  const step = (d) => setIndex((i) => (i == null ? i : (i + d + length) % length));
+  return { index, open: setIndex, close, step };
+}
