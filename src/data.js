@@ -43,8 +43,20 @@ export const CASE_STUDIES = [
   },
 ];
 
-/* Everything else — self-directed builds, not client engagements. Newest first. */
+/* Everything else — built for people or self-directed, not paid client engagements. Newest first. */
 export const OTHER_BUILDS = [
+  {
+    title: "Fidel Castrol",
+    group: "coach",
+    tier: "business",
+    tierWhy: "two pages, a lead-score quiz and WhatsApp booking",
+    kind: "Student coach · Homa Bay",
+    desc: "A personal site for a student success coach — set like an editorial index, with a second HubSpot page and a lead-score quiz.",
+    stack: "React · TypeScript · Tailwind · Motion",
+    year: "2026",
+    demo: "https://fidelc.vercel.app/",
+    img: "/work/castrol.jpg",
+  },
   {
     title: "Cha Bao",
     group: "restaurant",
