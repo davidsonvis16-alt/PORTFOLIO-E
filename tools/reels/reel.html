@@ -1,0 +1,218 @@
+<!doctype html>
+<!-- Motion reels for the concept ad campaigns. Rendered frame by frame by
+     render.mjs (?c=<campaign key>); every animation runs on one 9s timeline
+     so a frame is fully determined by its time. Posters are the campaign's
+     own stills from /public/ads. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@500;800&family=DM+Serif+Display:ital@0;1&display=block" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 720px; height: 1280px; overflow: hidden; background: #000; }
+  .stage { position: relative; width: 720px; height: 1280px; overflow: hidden; }
+  .abs { position: absolute; }
+  .mono { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .anton { font-family: Anton, sans-serif; text-transform: uppercase; line-height: 0.9; }
+  .serif { font-family: "DM Serif Display", serif; line-height: 0.95; }
+  .mask { overflow: hidden; display: block; }
+  .mask > span { display: block; }
+  .serif .mask { padding-bottom: 0.16em; margin-bottom: -0.16em; }
+  .poster { position: absolute; left: 0; width: 720px; height: 900px; overflow: hidden; }
+  .poster img { width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 50%; }
+  .mark { font-family: Inter, sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -0.04em; }
+  .mark i { font-style: normal; color: #000; }
+  .checker { height: 36px; background: repeating-conic-gradient(#111 0 25%, #fff 0 50%) 0 0 / 36px 36px; }
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 96px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+  .segs { display: flex; gap: 10px; }
+  .segs b { width: 64px; height: 6px; background: rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+  .segs b i { position: absolute; inset: 0; background: currentColor; transform-origin: 0 50%; transform: scaleX(0); }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+<script>
+const D = 9000;
+const key = new URLSearchParams(location.search).get("c");
+const src = (f) => `../../public/ads/${key}/${f}.webp`;
+const stage = document.getElementById("stage");
+const el = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return stage.appendChild(t.content.firstChild); };
+
+/* tl(node, [[ms, {css}, easing?], ...]) — keyframes on the shared 9s clock. */
+function tl(node, frames) {
+  const kf = frames.map(([t, css, easing]) => ({ offset: t / D, easing: easing || "linear", ...css }));
+  if (kf[0].offset > 0) kf.unshift({ ...kf[0], offset: 0 });
+  if (kf[kf.length - 1].offset < 1) kf.push({ ...kf[kf.length - 1], offset: 1, easing: "linear" });
+  node.animate(kf, { duration: D, fill: "both" });
+}
+const OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
+const IN_OUT = "cubic-bezier(0.76, 0, 0.24, 1)";
+const SOFT = "cubic-bezier(0.4, 0, 0.2, 1)";
+
+/* Lines that rise out of a mask, one after another. */
+function rise(node, start, step = 120, hold = null) {
+  [...node.querySelectorAll(".mask > span")].forEach((s, i) => {
+    const t = start + i * step;
+    const f = [[t, { transform: "translateY(105%)" }, OUT], [t + 700, { transform: "translateY(0)" }]];
+    if (hold) f.push([hold, { transform: "translateY(0)" }, IN_OUT], [hold + 450, { transform: "translateY(-105%)" }]);
+    tl(s, f);
+  });
+}
+
+/* Progress segments filling, one per poster. */
+function segs(node, windows) {
+  [...node.querySelectorAll(".segs b i")].forEach((i, n) => {
+    const [a, b] = windows[n];
+    tl(i, [[a, { transform: "scaleX(0)" }], [b, { transform: "scaleX(1)" }]]);
+  });
+}
+
+const SCENES = {
+  /* ---- Stage 46: yellow, condensed, the bus pulls in at every stop ---- */
+  stage46() {
+    stage.style.background = "#FFD23F";
+    const posters = [["01-get-off-here", "Stop 01", "Ngara"], ["09-sauce-up-to-the-elbow", "Stop 02", "Westie"], ["13-your-fare-itemised", "Stop 03", "CBD"]];
+    const W = [[1500, 3350], [3350, 5200], [5200, 7000]];
+
+    const intro = el(`<div class="abs" style="left:48px;top:330px;color:#111">
+      <p class="mono" style="margin-bottom:28px">Route 46 · Nairobi</p>
+      <div class="anton" style="font-size:250px"><span class="mask"><span>Next</span></span><span class="mask"><span>stop.</span></span></div></div>`);
+    rise(intro, 150, 140, 1150);
+    tl(intro.querySelector("p"), [[0, { opacity: 0 }], [250, { opacity: 1 }], [1150, { opacity: 1 }], [1450, { opacity: 0 }]]);
+
+    posters.forEach(([, stop, place], i) => {
+      const lab = el(`<div class="abs" style="left:40px;top:58px;color:#111"><div class="anton" style="font-size:96px">${stop}</div><p class="mono" style="margin-top:8px">${place}</p></div>`);
+      const [a, b] = W[i];
+      tl(lab, [[a - 1, { opacity: 0, transform: "translateY(24px)" }], [a + 150, { opacity: 0, transform: "translateY(24px)" }, OUT], [a + 600, { opacity: 1, transform: "translateY(0)" }], [b - 150, { opacity: 1, transform: "translateY(0)" }], [b, { opacity: 0, transform: "translateY(0)" }]]);
+    });
+
+    posters.forEach(([file], i) => {
+      const p = el(`<div class="poster" style="top:216px"><img src="${src(file)}"></div>`);
+      const [a, b] = W[i];
+      tl(p, [[a - 1, { transform: "translateX(100%)" }], [a, { transform: "translateX(100%)" }, OUT], [a + 550, { transform: "translateX(0)" }], [b, { transform: "translateX(0)" }, IN_OUT], [b + 500, { transform: i === 2 ? "translateX(0)" : "translateX(-100%)" }]]);
+      tl(p.querySelector("img"), [[a, { transform: "scale(1.0)" }], [b + 500, { transform: "scale(1.07)" }]]);
+    });
+
+    const bar = el(`<div class="bar" style="color:#111"><span class="mono">Chicken · Burgers · Coke</span><span class="segs"><b><i></i></b><b><i></i></b><b><i></i></b></span></div>`);
+    segs(bar, W);
+    tl(bar, [[1300, { opacity: 0 }], [1600, { opacity: 1 }]]);
+
+    const chk = el(`<div class="checker abs" style="left:0;right:0;top:1148px"></div>`);
+    tl(chk, [[0, { transform: "translateX(-100%)" }], [100, { transform: "translateX(-100%)" }, OUT], [800, { transform: "translateX(0)" }], [1300, { transform: "translateX(0)" }, IN_OUT], [1600, { transform: "translateX(100%)" }], [1601, { transform: "translateX(-100%)" }], [6950, { transform: "translateX(-100%)" }, OUT], [7600, { transform: "translateX(0)" }]]);
+
+    const end = el(`<div class="abs" style="inset:0;background:#111;color:#FFD23F;padding:300px 48px 0">
+      <p class="mono" style="color:#fff;margin-bottom:24px">Chicken &amp; burgers · Nairobi</p>
+      <div class="anton" style="font-size:230px"><span class="mask"><span>Stage</span></span><span class="mask"><span>46.</span></span></div>
+      <p class="mono" style="color:#fff;margin-top:36px">Ngara · Westie · CBD</p>
+      <div class="abs" style="left:0;right:0;bottom:0;height:150px;background:#FFD23F;color:#111;display:flex;align-items:center;justify-content:space-between;padding:0 48px">
+        <span class="mono" style="font-size:18px">Concept campaign by</span><span class="mark">eden<i>.</i></span></div></div>`);
+    tl(end, [[7000, { clipPath: "inset(100% 0 0 0)" }, IN_OUT], [7550, { clipPath: "inset(0% 0 0 0)" }]]);
+    rise(end, 7350, 140);
+    end.querySelectorAll("p").forEach((p) => tl(p, [[7600, { opacity: 0 }], [8000, { opacity: 1 }]]));
+    stage.appendChild(chk);
+  },
+
+  /* ---- The Lineup: black, cream, one blue word, cuts on the beat ---- */
+  lineup() {
+    stage.style.background = "#111";
+    const posters = [["01-sharp-is-a-habit", "Cut 01"], ["04-walk-out-taller", "Cut 02"], ["05-the-menu", "Cut 03"]];
+    const W = [[1500, 3350], [3350, 5200], [5200, 7000]];
+
+    const pole = el(`<div class="abs" style="left:0;top:0;bottom:0;width:30px;background:repeating-linear-gradient(-45deg,#E8322B 0 18px,#F3EEE4 18px 36px,#2B55FF 36px 54px,#F3EEE4 54px 72px);background-size:100% 102px"></div>`);
+    tl(pole, [[0, { backgroundPosition: "0 0" }], [D, { backgroundPosition: "0 918px" }]]);
+
+    const intro = el(`<div class="abs" style="left:72px;top:330px;color:#F3EEE4">
+      <p class="mono" style="margin-bottom:28px">The Lineup · Barber club</p>
+      <div class="anton" style="font-size:200px"><span class="mask"><span>Sharp</span></span><span class="mask"><span>is a</span></span><span class="mask"><span style="color:#2B55FF">habit.</span></span></div></div>`);
+    rise(intro, 120, 110, 1150);
+    tl(intro.querySelector("p"), [[0, { opacity: 0 }], [250, { opacity: 1 }], [1150, { opacity: 1 }], [1400, { opacity: 0 }]]);
+
+    posters.forEach(([file, cut], i) => {
+      const [a, b] = W[i];
+      const p = el(`<div class="poster" style="top:216px;left:30px;width:690px;height:862px"><img src="${src(file)}"></div>`);
+      tl(p, [[a - 1, { opacity: 0 }], [a, { opacity: 1 }], [b, { opacity: 1 }], [b + 1, { opacity: i === 2 ? 1 : 0 }]]);
+      tl(p.querySelector("img"), [[a, { transform: "scale(1.12)" }, OUT], [a + 380, { transform: "scale(1.0)" }], [b, { transform: "scale(1.04)" }]]);
+      const lab = el(`<div class="abs" style="left:72px;right:40px;top:80px;display:flex;justify-content:space-between;align-items:flex-end;color:#F3EEE4"><span class="mono">The Lineup</span><span class="anton" style="font-size:80px">${cut}<span style="color:#2B55FF">/03</span></span></div>`);
+      tl(lab, [[a - 1, { opacity: 0 }], [a, { opacity: 1 }], [b, { opacity: 1 }], [b + 1, { opacity: 0 }]]);
+      const flash = el(`<div class="abs" style="inset:0;background:#F3EEE4;pointer-events:none"></div>`);
+      tl(flash, [[a - 1, { opacity: 0 }], [a, { opacity: 0.85 }], [a + 160, { opacity: 0 }]]);
+    });
+
+    const bar = el(`<div class="bar" style="left:30px;color:#F3EEE4"><span class="mono" style="font-size:18px">Walk-ins welcome · Bookings jump the queue</span><span class="segs" style="color:#2B55FF"><b style="background:rgba(243,238,228,.2)"><i></i></b><b style="background:rgba(243,238,228,.2)"><i></i></b><b style="background:rgba(243,238,228,.2)"><i></i></b></span></div>`);
+    segs(bar, W);
+    tl(bar, [[1300, { opacity: 0 }], [1600, { opacity: 1 }]]);
+
+    const end = el(`<div class="abs" style="inset:0;background:#F3EEE4;color:#111;padding:300px 48px 0 78px">
+      <p class="mono" style="margin-bottom:24px">Barber club · Nairobi</p>
+      <div class="anton" style="font-size:200px"><span class="mask"><span>The</span></span><span class="mask"><span>Lineup.</span></span></div>
+      <p class="anton" style="font-size:64px;margin-top:40px;color:#2B55FF">Book before Friday.</p>
+      <div class="abs" style="left:30px;right:0;bottom:0;height:150px;border-top:3px solid #111;display:flex;align-items:center;justify-content:space-between;padding:0 48px">
+        <span class="mono" style="font-size:18px">Concept campaign by</span><span class="mark">eden<i>.</i></span></div></div>`);
+    tl(end, [[7000, { clipPath: "inset(0 100% 0 0)" }, IN_OUT], [7500, { clipPath: "inset(0 0% 0 0)" }]]);
+    rise(end, 7300, 140);
+    end.querySelectorAll("p").forEach((p) => tl(p, [[7650, { opacity: 0 }], [8050, { opacity: 1 }]]));
+    stage.appendChild(pole);
+  },
+
+  /* ---- Latch Homes: warm, slow, serif — nothing shouts ---- */
+  latch() {
+    stage.style.background = "#F3EEE4";
+    const posters = ["04-the-home-that-says-yes", "02-sunlight-included", "09-latch-after-dark"];
+    const W = [[1700, 3600], [3600, 5400], [5400, 7100]];
+
+    const intro = el(`<div class="abs" style="left:56px;top:360px;color:#1F4A36">
+      <p class="mono" style="margin-bottom:30px;color:#C8603A">Latch Homes · Rentals · Nairobi</p>
+      <div class="serif" style="font-size:170px"><span class="mask"><span>Home,</span></span><span class="mask"><span style="font-style:italic;color:#C8603A">finally.</span></span></div></div>`);
+    tl(intro, [[0, { opacity: 0, transform: "translateY(30px)" }, SOFT], [900, { opacity: 1, transform: "translateY(0)" }], [1400, { opacity: 1, transform: "translateY(0)" }, SOFT], [1900, { opacity: 0, transform: "translateY(-20px)" }]]);
+
+    const head = el(`<p class="mono abs" style="left:56px;top:96px;color:#1F4A36">Latch Homes</p>`);
+    tl(head, [[1500, { opacity: 0 }], [2000, { opacity: 1 }]]);
+
+    posters.forEach((file, i) => {
+      const [a, b] = W[i];
+      const p = el(`<div class="poster" style="top:190px;left:40px;width:640px;height:800px;border-radius:22px"><img src="${src(file)}"></div>`);
+      tl(p, [[a - 300, { opacity: 0 }], [a + 500, { opacity: 1 }, SOFT], [b + 300, { opacity: 1 }]]);
+      const origin = ["50% 30%", "70% 60%", "30% 50%"][i];
+      p.querySelector("img").style.transformOrigin = origin;
+      tl(p.querySelector("img"), [[a - 300, { transform: "scale(1.0)" }], [b + 800, { transform: "scale(1.09)" }]]);
+    });
+
+    ["Keys in 7 days — or your deposit back.", "East-facing bedrooms in Kileleshwa.", "Lavington, after dark."].forEach((t, i) => {
+      const s = el(`<div class="abs serif" style="left:56px;right:56px;top:1030px;font-size:42px;color:#1F4A36">${t}</div>`);
+      const [a, b] = W[i];
+      tl(s, [[a, { opacity: 0, transform: "translateY(14px)" }, SOFT], [a + 600, { opacity: 1, transform: "translateY(0)" }], [b - 200, { opacity: 1, transform: "translateY(0)" }, SOFT], [b + 200, { opacity: 0, transform: "translateY(0)" }]]);
+    });
+
+    const bar = el(`<div class="bar" style="color:#C8603A;height:110px"><span class="mono" style="font-size:18px;color:#1F4A36">Viewing fee: zero</span><span class="segs"><b><i></i></b><b><i></i></b><b><i></i></b></span></div>`);
+    segs(bar, W);
+    tl(bar, [[1500, { opacity: 0 }], [2000, { opacity: 1 }]]);
+
+    const end = el(`<div class="abs" style="inset:0;background:#1F4A36;color:#F3EEE4;padding:330px 56px 0">
+      <p class="mono" style="color:#C9A458;margin-bottom:30px">Rentals · Nairobi</p>
+      <div class="serif" style="font-size:150px"><span class="mask"><span>Latch</span></span><span class="mask"><span>Homes.</span></span></div>
+      <p class="serif" style="font-size:56px;font-style:italic;color:#C9A458;margin-top:40px">Wake up somewhere better.</p>
+      <div class="abs" style="left:0;right:0;bottom:0;height:150px;background:#F3EEE4;color:#111;display:flex;align-items:center;justify-content:space-between;padding:0 56px">
+        <span class="mono" style="font-size:18px">Concept campaign by</span><span class="mark">eden<i>.</i></span></div></div>`);
+    tl(end, [[7100, { opacity: 0 }, SOFT], [7800, { opacity: 1 }]]);
+    end.querySelectorAll(".mask > span").forEach((s, i) => tl(s, [[7300 + i * 200, { transform: "translateY(105%)" }, OUT], [8100 + i * 200, { transform: "translateY(0)" }]]));
+    end.querySelectorAll("p").forEach((p) => tl(p, [[7900, { opacity: 0 }], [8400, { opacity: 1 }]]));
+  },
+};
+
+SCENES[key]();
+
+/* Ready once fonts and every poster have decoded; then the clock is paused for stepping. */
+window.__ready = Promise.all([
+  document.fonts.ready,
+  ...[...document.images].map((i) => i.decode().catch(() => {})),
+]).then(() => {
+  document.getAnimations().forEach((a) => a.pause());
+  return true;
+});
+window.__seek = (ms) => {
+  document.getAnimations().forEach((a) => (a.currentTime = ms));
+  return new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(true))));
+};
+</script>
+</body>
+</html>
