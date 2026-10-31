@@ -10,6 +10,7 @@ export const CASE_STUDIES = [
   {
     n: "01",
     client: "BakeMart Coffee House",
+    icon: "cup",
     place: "Nakuru",
     need: "The only open-kitchen coffee shop in Nakuru needed a menu customers could read before walking in, and orders they could take without a phone call.",
     constraint:
@@ -27,6 +28,7 @@ export const CASE_STUDIES = [
   {
     n: "02",
     client: "Global Mogul",
+    icon: "book",
     place: "Founder & author site",
     need: "An entrepreneurs lab and its founder needed one home for everything they put out — the book, a reading list, talks, and a marketplace.",
     constraint:
@@ -44,6 +46,7 @@ export const CASE_STUDIES = [
   {
     n: "03",
     client: "Fidel Castrol",
+    icon: "cap",
     place: "Student coach · Homa Bay",
     need: "A student success coach needed one place to show his coaching record and start conversations — plus a page for the HubSpot study partners he is looking for.",
     constraint:
@@ -64,6 +67,8 @@ export const CASE_STUDIES = [
 export const OTHER_BUILDS = [
   {
     title: "Cha Bao",
+    addons: ["ordering", "bookings", "admin", "pay"],
+    icon: "bowl",
     group: "restaurant",
     tier: "custom",
     tierWhy: "online ordering, table bookings and a back-office admin",
@@ -76,6 +81,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Kahawa & Crumb",
+    addons: ["ordering", "accounts", "tracking", "pay", "customiser"],
+    icon: "cup",
     group: "cafe",
     tier: "custom",
     tierWhy: "full ordering, accounts, rewards and six ways to pay",
@@ -88,6 +95,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Maison Kiatu",
+    addons: ["catalogue", "bag", "grading"],
+    icon: "shoe",
     group: "shop",
     tier: "custom",
     tierWhy: "a stocked shop with a bag and WhatsApp ordering",
@@ -100,6 +109,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Jave",
+    addons: ["ordering", "bookings", "pay"],
+    icon: "flame",
     group: "restaurant",
     tier: "custom",
     tierWhy: "online ordering and table bookings",
@@ -112,6 +123,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Eden Phones",
+    addons: ["catalogue", "ordering", "instalments", "zones"],
+    icon: "device",
     group: "shop",
     tier: "custom",
     tierWhy: "M-Pesa checkout and instalment plans",
@@ -124,6 +137,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Petal",
+    addons: ["builder", "ordering", "zones"],
+    icon: "flower",
     group: "florist",
     tier: "custom",
     tierWhy: "bouquet builder, M-Pesa checkout, delivery cutoff",
@@ -136,6 +151,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Aldosi Merchants",
+    addons: ["catalogue", "motion"],
+    icon: "flame",
     group: "shop",
     tier: "business",
     tierWhy: "catalogue and brand pages, no checkout",
@@ -148,6 +165,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Haven",
+    addons: ["listings", "bookings", "motion"],
+    icon: "home",
     group: "homes",
     tier: "custom",
     tierWhy: "property listings and viewing bookings",
@@ -160,6 +179,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Gadellaa Arts",
+    addons: ["gallery", "bookings", "deposits"],
+    icon: "pen",
     group: "studio",
     tier: "custom",
     tierWhy: "session booking on top of the portfolio pages",
@@ -172,6 +193,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Bridges",
+    addons: ["coverage", "categories", "ordering"],
+    icon: "truck",
     group: "platform",
     tier: "custom",
     tierWhy: "address search across cities and categories",
@@ -184,6 +207,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Arrow",
+    addons: ["profiles", "matching", "gated"],
+    icon: "heart",
     group: "platform",
     tier: "custom",
     tierWhy: "mutual-interest matching and gated contact",
@@ -196,6 +221,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Kijani Kafe",
+    addons: ["gallery"],
+    icon: "leaf",
     group: "restaurant",
     tier: "business",
     tierWhy: "menu, story and location over a few pages",
@@ -208,6 +235,8 @@ export const OTHER_BUILDS = [
   },
   {
     title: "Beyond Fruits",
+    addons: ["catalogue", "ordering", "zones", "gallery"],
+    icon: "apple",
     group: "shop",
     tier: "custom",
     tierWhy: "basket and checkout",
@@ -245,6 +274,7 @@ export const PRICING_TIERS = [
     name: "Business Site",
     was: "30,000",
     price: "25,000",
+    from: true,
     monthly: "1,000",
     split: ["15,000", "10,000"],
     methods: "M-Pesa or bank transfer",
@@ -279,6 +309,43 @@ export const PAY_STEPS = [
   { n: "03", title: "Review and approve", body: "You see the design first, then the built site, and sign it off." },
   { n: "04", title: "Pay 40% at launch", body: "The balance is due when the site goes live — hosting included, free." },
 ];
+
+/* What a site costs, built up from what it does. Every build starts as a
+   custom-designed site of up to 5 pages; each feature adds its own price.
+   The end-of-year offer takes 15% off the total (at least KSh 5,000 —
+   the same 5,000 the Landing and Business plans come down by). */
+export const BASE_SITE = ["Custom-designed site, up to 5 pages", 30000];
+export const ADDONS = {
+  ordering: ["Online ordering & cart, M-Pesa checkout", 10000],
+  bookings: ["Table, viewing or session bookings", 5000],
+  admin: ["Admin for orders, cancellations & refunds", 8000],
+  accounts: ["Customer accounts & rewards", 7000],
+  tracking: ["Live order tracking", 4000],
+  pay: ["Card, PayPal & Airtel on top of M-Pesa", 3000],
+  customiser: ["Item customiser — sizes & extras", 3000],
+  catalogue: ["Product catalogue with filters", 6000],
+  bag: ["Bag & WhatsApp ordering", 4000],
+  grading: ["Condition grade on every item", 2000],
+  instalments: ["Instalment plans (Lipa Mdogo Mdogo)", 5000],
+  zones: ["Delivery zones & cut-off times", 3000],
+  builder: ["Build-your-own configurator", 6000],
+  listings: ["Listings with search", 8000],
+  motion: ["Motion & cinematic design", 3000],
+  gallery: ["Photo gallery, kept light for mobile data", 2000],
+  deposits: ["M-Pesa booking deposits", 4000],
+  coverage: ["Address search across cities", 8000],
+  categories: ["Multi-category browsing", 5000],
+  profiles: ["Accounts & profiles", 8000],
+  matching: ["Mutual-interest matching", 8000],
+  gated: ["WhatsApp contact unlocked on a match", 4000],
+};
+export const ksh = (n) => `KSh ${n.toLocaleString("en-US")}`;
+export const priceOf = (b) => {
+  const lines = [BASE_SITE, ...b.addons.map((k) => ADDONS[k])];
+  const total = lines.reduce((sum, [, v]) => sum + v, 0);
+  const off = Math.max(5000, Math.round((total * 0.15) / 500) * 500);
+  return { lines, total, off, now: total - off };
+};
 
 export const TIER_NAME = { landing: "Landing Page", business: "Business Site", custom: "Custom Build" };
 
@@ -324,7 +391,6 @@ export const waLink = (text) => `https://wa.me/${WHATSAPP_NUMBER}${text ? `?text
 /* Phone-size screenshot of the same site. */
 export const phone = (img) => img.replace("/work/", "/work/m/");
 
-/* Pages, numbered like stops on a route. */
 export const NAV = [
   { to: "/work", label: "Work" },
   { to: "/ads", label: "Ads" },
@@ -333,24 +399,61 @@ export const NAV = [
   { to: "/contact", label: "Contact" },
 ];
 
+/* Shelves of builds by kind of business, like a recipe site's categories. */
+export const WORK_SHELVES = [
+  { id: "food", title: "Restaurants & cafés", icon: "utensils", groups: ["restaurant", "cafe"] },
+  { id: "shops", title: "Shops & delivery", icon: "bag", groups: ["shop", "florist"] },
+  { id: "more", title: "Homes, studios & apps", icon: "home", groups: ["homes", "studio", "platform"] },
+];
+
+/* The category row under the header. */
+export const CATEGORIES = [
+  { to: "/work", label: "All work" },
+  { to: "/work#clients", label: "Client sites", icon: "star" },
+  { to: "/work#food", label: "Restaurants & cafés", icon: "utensils" },
+  { to: "/work#shops", label: "Shops", icon: "bag" },
+  { to: "/work#more", label: "Homes & apps", icon: "home" },
+  { to: "/ads", label: "Ad campaigns", icon: "image" },
+  { to: "/ads#video", label: "Video ads", icon: "play" },
+  { to: "/rates", label: "Prices", icon: "tag" },
+];
+
+/* Each project's little avatar: its initial on a tint drawn from the
+   picture's colour family, so the card footers echo the photos. */
+const TINTS = [
+  ["#FFE6A8", "#5C4300"],
+  ["#D9F0D3", "#1E4D1A"],
+  ["#FFD6CC", "#6B2112"],
+  ["#D6E4FF", "#18326B"],
+  ["#EADBFF", "#3E1E6B"],
+  ["#D4F1EE", "#0F4A44"],
+];
+export const avatarFor = (name, icon, i = 0) => {
+  const [bg, fg] = TINTS[(name.charCodeAt(0) + i) % TINTS.length];
+  return { letter: name[0], icon, bg, fg };
+};
+export const TIER_SHORT = { landing: "Landing", business: "Business", custom: "Custom" };
+
 /* Ad campaigns — concept work, not client engagements.
    Each piece: [file, headline, format]. Files live in /public/ads/<key>/,
-   with a smaller copy in /s/ for the grid. "Video" pieces are WebM reels
-   (rendered by tools/reels) with a JPEG poster frame in /s/. */
+   with a smaller copy in /s/ for the grid. "Video" pieces are voiced MP4
+   adverts (rendered by tools/reels) with a JPEG poster frame in /s/. */
 export const AD_CAMPAIGNS = [
   {
     key: "stage46",
     n: "01",
     name: "Stage 46",
+    icon: "burger",
     sector: "Chicken & burgers · Nairobi",
     brief:
       "A chicken-and-burger joint dressed as a matatu route. Fares, tickets, receipts and stops — every post plays the same joke: the food is where you get off.",
     voice: "Loud, yellow, condensed. Hazard stripes and checker flags.",
     palette: ["#FFD23F", "#111111", "#E8322B", "#F3EEE4"],
     cover: "01-get-off-here",
+    videoLength: "17s",
     pieces: [
       ["01-get-off-here", "Get off here.", "Feed 4:5"],
-      ["reel", "Motion reel", "Video 9:16"],
+      ["advert", "Video ad", "Video 9:16"],
       ["02-zero-overlapping", "Ice cold. Zero overlapping.", "Feed 4:5"],
       ["03-the-111-double-story", "The 111 Double.", "Story 9:16"],
       ["04-room-for-one-more", "Room for one more.", "Feed 4:5"],
@@ -374,15 +477,17 @@ export const AD_CAMPAIGNS = [
     key: "lineup",
     n: "02",
     name: "The Lineup",
+    icon: "scissors",
     sector: "Barber club · Nairobi",
     brief:
       "A barbershop that sells precision. Black, cream and barber-pole blue, tight type, a price menu and a booking story with the Saturday slots laid out.",
     voice: "Sharp and dry. One blue word per headline.",
     palette: ["#111111", "#2B55FF", "#F3EEE4", "#E8322B"],
     cover: "01-sharp-is-a-habit",
+    videoLength: "16s",
     pieces: [
       ["01-sharp-is-a-habit", "Sharp is a habit.", "Feed 4:5"],
-      ["reel", "Motion reel", "Video 9:16"],
+      ["advert", "Video ad", "Video 9:16"],
       ["02-set-a-ruler-by", "Lines you could set a ruler by.", "Feed 4:5"],
       ["03-tools-of-the-trade", "Tools of the trade.", "Feed 4:5"],
       ["04-walk-out-taller", "Walk in. Walk out taller.", "Feed 4:5"],
@@ -397,15 +502,17 @@ export const AD_CAMPAIGNS = [
     key: "latch",
     n: "03",
     name: "Latch Homes",
+    icon: "key",
     sector: "Rentals · Nairobi",
     brief:
       "A rental agency that answers what tenants actually worry about — viewing fees, deposits, landlords, moving day. Serif headlines and warm light instead of shouting.",
     voice: "Calm and warm. Forest green, terracotta and ochre.",
     palette: ["#1F4A36", "#C8603A", "#C9A458", "#F3EEE4"],
     cover: "04-the-home-that-says-yes",
+    videoLength: "21s",
     pieces: [
       ["01-viewing-fee-zero", "Viewing fee: zero.", "Feed 4:5"],
-      ["reel", "Motion reel", "Video 9:16"],
+      ["advert", "Video ad", "Video 9:16"],
       ["02-sunlight-included", "Sunlight included.", "Feed 4:5"],
       ["03-bedsitter-to-bungalow", "Bedsitter to bungalow.", "Feed 4:5"],
       ["04-the-home-that-says-yes", "The home that finally says yes.", "Feed 4:5"],
@@ -421,7 +528,7 @@ export const AD_CAMPAIGNS = [
 
 export const AD_COUNT = AD_CAMPAIGNS.reduce((n, c) => n + c.pieces.length, 0);
 export const adSrc = (key, file, small = false) => `/ads/${key}/${small ? "s/" : ""}${file}.webp`;
-export const adVideo = (key, file) => ({ src: `/ads/${key}/${file}.webm`, poster: `/ads/${key}/s/${file}.jpg` });
+export const adVideo = (key, file) => ({ src: `/ads/${key}/${file}.mp4`, poster: `/ads/${key}/s/${file}.jpg` });
 export const isVideo = (format) => format.startsWith("Video");
 
 /* What a client gets — the route, stop by stop. */

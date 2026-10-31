@@ -1,0 +1,379 @@
+{
+  "_comment": "Voiced adverts for the concept campaigns. Every claim is taken from the campaign's own posters. Shots crop into a poster: fx/fy = focus point (0-1 of the image), z0->z1 = zoom over the shot (1 = image covers the 9:16 frame). mode 'contain' shows the whole poster on the brand colour. cap = caption typed on screen.",
+  "stage46": {
+    "voice": "en_US-ryan-high",
+    "pace": 0.92,
+    "bpm": 100,
+    "music": "drums",
+    "cut": "punch",
+    "colors": {
+      "bg": "#FFD23F",
+      "ink": "#111111",
+      "cap": "#111111",
+      "capText": "#FFD23F",
+      "accent": "#E8322B"
+    },
+    "font": "anton",
+    "bug": {
+      "sheet": "logos",
+      "x0": 0.05,
+      "y0": 0.069,
+      "x1": 0.45,
+      "y1": 0.466
+    },
+    "lines": [
+      {
+        "say": "Hungry? Next stop... Stage forty-six.",
+        "shots": [
+          {
+            "img": "01-get-off-here",
+            "fx": 0.5,
+            "fy": 0.32,
+            "z0": 2.1,
+            "z1": 2.45,
+            "cap": "HUNGRY?"
+          },
+          {
+            "img": "03-the-111-double-story",
+            "fx": 0.5,
+            "fy": 0.45,
+            "z0": 1.0,
+            "z1": 1.12,
+            "cap": "NEXT STOP: STAGE 46",
+            "capY": 230
+          }
+        ]
+      },
+      {
+        "say": "Fire chicken, sauced up to the elbow.",
+        "shots": [
+          {
+            "img": "09-sauce-up-to-the-elbow",
+            "fx": 0.6,
+            "fy": 0.78,
+            "z0": 1.9,
+            "z1": 2.3,
+            "cap": "SAUCED UP TO THE ELBOW"
+          }
+        ]
+      },
+      {
+        "say": "The one-eleven double. Built stop by stop.",
+        "shots": [
+          {
+            "img": "10-unwrap-the-111",
+            "fx": 0.5,
+            "fy": 0.42,
+            "z0": 1.7,
+            "z1": 2.0,
+            "cap": "THE 111 DOUBLE"
+          },
+          {
+            "img": "08-built-stop-by-stop",
+            "fx": 0.4,
+            "fy": 0.55,
+            "z0": 1.45,
+            "z1": 1.7,
+            "cap": "BUILT STOP BY STOP"
+          }
+        ]
+      },
+      {
+        "say": "Chips. And an ice cold Coke on every fare.",
+        "shots": [
+          {
+            "img": "11-crunch-hour",
+            "fx": 0.3,
+            "fy": 0.56,
+            "z0": 2.0,
+            "z1": 2.3,
+            "cap": "CHIPS."
+          },
+          {
+            "img": "06-end-of-the-line",
+            "fx": 0.42,
+            "fy": 0.6,
+            "z0": 1.5,
+            "z1": 1.75,
+            "cap": "ICE COLD COKE"
+          },
+          {
+            "img": "12-its-raining-coke",
+            "fx": 0.5,
+            "fy": 0.3,
+            "z0": 1.3,
+            "z1": 1.5
+          }
+        ]
+      },
+      {
+        "say": "Ngara. Westie. C B D.",
+        "shots": [
+          {
+            "img": "13-your-fare-itemised",
+            "fx": 0.42,
+            "fy": 0.62,
+            "z0": 1.45,
+            "z1": 1.65,
+            "cap": "NGARA · WESTIE · CBD"
+          }
+        ]
+      },
+      {
+        "say": "Stage forty-six. Get off here.",
+        "shots": [
+          {
+            "img": "01-get-off-here",
+            "mode": "contain",
+            "z0": 1.0,
+            "z1": 1.05
+          }
+        ]
+      }
+    ],
+    "end": {
+      "bg": "#111111",
+      "logo": {
+        "sheet": "logos",
+        "x0": 0.05,
+        "y0": 0.56,
+        "x1": 0.45,
+        "y1": 0.92
+      },
+      "tag": "GET OFF HERE.",
+      "tagColor": "#FFD23F",
+      "foot": "#FFD23F"
+    }
+  },
+  "lineup": {
+    "voice": "en_GB-alan-medium",
+    "pace": 1.0,
+    "bpm": 88,
+    "music": "boom",
+    "cut": "punch",
+    "colors": {
+      "bg": "#111111",
+      "ink": "#F3EEE4",
+      "cap": "#F3EEE4",
+      "capText": "#111111",
+      "accent": "#2B55FF"
+    },
+    "font": "anton",
+    "bug": {
+      "sheet": "logos",
+      "x0": 0.4564,
+      "y0": 0.56,
+      "x1": 0.6621,
+      "y1": 0.929
+    },
+    "lines": [
+      {
+        "say": "Sharp isn't luck.",
+        "shots": [
+          {
+            "img": "01-sharp-is-a-habit",
+            "fx": 0.5,
+            "fy": 0.3,
+            "z0": 1.8,
+            "z1": 2.0,
+            "cap": "SHARP ISN'T LUCK."
+          }
+        ]
+      },
+      {
+        "say": "It's a habit.",
+        "shots": [
+          {
+            "img": "02-set-a-ruler-by",
+            "fx": 0.72,
+            "fy": 0.33,
+            "z0": 1.9,
+            "z1": 2.15,
+            "cap": "IT'S A HABIT."
+          }
+        ]
+      },
+      {
+        "say": "Skin fades. Line-ups. Beards, handled.",
+        "shots": [
+          {
+            "img": "07-beards-handled",
+            "fx": 0.5,
+            "fy": 0.3,
+            "z0": 1.5,
+            "z1": 1.75,
+            "cap": "SKIN FADES."
+          },
+          {
+            "img": "03-tools-of-the-trade",
+            "fx": 0.55,
+            "fy": 0.6,
+            "z0": 1.6,
+            "z1": 1.85,
+            "cap": "LINE-UPS."
+          },
+          {
+            "img": "07-beards-handled",
+            "fx": 0.5,
+            "fy": 0.3,
+            "z0": 2.0,
+            "z1": 2.25,
+            "cap": "BEARDS, HANDLED."
+          }
+        ]
+      },
+      {
+        "say": "Walk in. Walk out taller.",
+        "shots": [
+          {
+            "img": "04-walk-out-taller",
+            "fx": 0.5,
+            "fy": 0.6,
+            "z0": 1.55,
+            "z1": 1.8,
+            "cap": "WALK OUT TALLER."
+          }
+        ]
+      },
+      {
+        "say": "Saturday slots go fast. Book it before Friday.",
+        "shots": [
+          {
+            "img": "08-book-before-friday-story",
+            "fx": 0.5,
+            "fy": 0.5,
+            "z0": 1.0,
+            "z1": 1.08
+          }
+        ]
+      }
+    ],
+    "end": {
+      "bg": "#111111",
+      "logo": {
+        "sheet": "logos",
+        "x0": 0.0436,
+        "y0": 0.0697,
+        "x1": 0.6064,
+        "y1": 0.4994
+      },
+      "tag": "BOOK BEFORE FRIDAY.",
+      "tagColor": "#2B55FF",
+      "foot": "#F3EEE4"
+    }
+  },
+  "latch": {
+    "voice": "en_GB-jenny_dioco-medium",
+    "pace": 1.08,
+    "bpm": 72,
+    "music": "pad",
+    "cut": "dissolve",
+    "colors": {
+      "bg": "#F3EEE4",
+      "ink": "#1F4A36",
+      "cap": "#F3EEE4",
+      "capText": "#1F4A36",
+      "accent": "#C8603A"
+    },
+    "font": "serif",
+    "bug": {
+      "sheet": "logos",
+      "x0": 0.3564,
+      "y0": 0.5497,
+      "x1": 0.6307,
+      "y1": 0.929
+    },
+    "lines": [
+      {
+        "say": "Looking for a place in Nairobi? No viewing fees. Ever.",
+        "shots": [
+          {
+            "img": "01-viewing-fee-zero",
+            "fx": 0.6,
+            "fy": 0.25,
+            "z0": 1.6,
+            "z1": 1.8,
+            "cap": "No viewing fees. Ever."
+          }
+        ]
+      },
+      {
+        "say": "East-facing bedrooms. Sunlight included.",
+        "shots": [
+          {
+            "img": "02-sunlight-included",
+            "fx": 0.6,
+            "fy": 0.5,
+            "z0": 1.35,
+            "z1": 1.55,
+            "cap": "Sunlight included."
+          }
+        ]
+      },
+      {
+        "say": "Repairs fixed in forty-eight hours, by a landlord who's actually nice.",
+        "shots": [
+          {
+            "img": "05-landlord-but-nice",
+            "fx": 0.78,
+            "fy": 0.45,
+            "z0": 1.6,
+            "z1": 1.8,
+            "cap": "Repairs in 48 hours."
+          }
+        ]
+      },
+      {
+        "say": "Moving day? Truck, crew and boxes, booked.",
+        "shots": [
+          {
+            "img": "06-moving-day-no-drama",
+            "fx": 0.5,
+            "fy": 0.58,
+            "z0": 1.35,
+            "z1": 1.55,
+            "cap": "Moving day, no drama."
+          }
+        ]
+      },
+      {
+        "say": "Keys in seven days.",
+        "shots": [
+          {
+            "img": "04-the-home-that-says-yes",
+            "fx": 0.55,
+            "fy": 0.38,
+            "z0": 1.5,
+            "z1": 1.75,
+            "cap": "Keys in 7 days."
+          }
+        ]
+      },
+      {
+        "say": "Latch Homes. The home that finally says yes.",
+        "shots": [
+          {
+            "img": "09-latch-after-dark",
+            "fx": 0.55,
+            "fy": 0.62,
+            "z0": 1.3,
+            "z1": 1.45
+          }
+        ]
+      }
+    ],
+    "end": {
+      "bg": "#1F4A36",
+      "logo": {
+        "sheet": "logos",
+        "x0": 0.0436,
+        "y0": 0.0697,
+        "x1": 0.4814,
+        "y1": 0.4903
+      },
+      "tag": "The home that finally says yes.",
+      "tagColor": "#C9A458",
+      "foot": "#F3EEE4"
+    }
+  }
+}
