@@ -335,7 +335,8 @@ export const NAV = [
 
 /* Ad campaigns — concept work, not client engagements.
    Each piece: [file, headline, format]. Files live in /public/ads/<key>/,
-   with a smaller copy in /s/ for the grid. */
+   with a smaller copy in /s/ for the grid. "Video" pieces are WebM reels
+   (rendered by tools/reels) with a JPEG poster frame in /s/. */
 export const AD_CAMPAIGNS = [
   {
     key: "stage46",
@@ -349,6 +350,7 @@ export const AD_CAMPAIGNS = [
     cover: "01-get-off-here",
     pieces: [
       ["01-get-off-here", "Get off here.", "Feed 4:5"],
+      ["reel", "Motion reel", "Video 9:16"],
       ["02-zero-overlapping", "Ice cold. Zero overlapping.", "Feed 4:5"],
       ["03-the-111-double-story", "The 111 Double.", "Story 9:16"],
       ["04-room-for-one-more", "Room for one more.", "Feed 4:5"],
@@ -380,6 +382,7 @@ export const AD_CAMPAIGNS = [
     cover: "01-sharp-is-a-habit",
     pieces: [
       ["01-sharp-is-a-habit", "Sharp is a habit.", "Feed 4:5"],
+      ["reel", "Motion reel", "Video 9:16"],
       ["02-set-a-ruler-by", "Lines you could set a ruler by.", "Feed 4:5"],
       ["03-tools-of-the-trade", "Tools of the trade.", "Feed 4:5"],
       ["04-walk-out-taller", "Walk in. Walk out taller.", "Feed 4:5"],
@@ -402,6 +405,7 @@ export const AD_CAMPAIGNS = [
     cover: "04-the-home-that-says-yes",
     pieces: [
       ["01-viewing-fee-zero", "Viewing fee: zero.", "Feed 4:5"],
+      ["reel", "Motion reel", "Video 9:16"],
       ["02-sunlight-included", "Sunlight included.", "Feed 4:5"],
       ["03-bedsitter-to-bungalow", "Bedsitter to bungalow.", "Feed 4:5"],
       ["04-the-home-that-says-yes", "The home that finally says yes.", "Feed 4:5"],
@@ -417,6 +421,8 @@ export const AD_CAMPAIGNS = [
 
 export const AD_COUNT = AD_CAMPAIGNS.reduce((n, c) => n + c.pieces.length, 0);
 export const adSrc = (key, file, small = false) => `/ads/${key}/${small ? "s/" : ""}${file}.webp`;
+export const adVideo = (key, file) => ({ src: `/ads/${key}/${file}.webm`, poster: `/ads/${key}/s/${file}.jpg` });
+export const isVideo = (format) => format.startsWith("Video");
 
 /* What a client gets — the route, stop by stop. */
 export const SERVICES = [

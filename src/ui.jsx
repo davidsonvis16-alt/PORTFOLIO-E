@@ -140,7 +140,11 @@ export function Lightbox({ items, index, onClose, onStep }) {
         </button>
       </div>
       <figure className="lb-fig" onClick={(e) => e.stopPropagation()}>
-        <img key={item.src} src={item.src} alt={item.title} />
+        {item.video ? (
+          <video key={item.src} src={item.src} poster={item.poster} controls autoPlay loop playsInline aria-label={item.title} />
+        ) : (
+          <img key={item.src} src={item.src} alt={item.title} />
+        )}
         <figcaption className="d-h3">{item.title}</figcaption>
       </figure>
       <button className="lb-nav lb-prev" onClick={(e) => (e.stopPropagation(), onStep(-1))} aria-label="Previous">

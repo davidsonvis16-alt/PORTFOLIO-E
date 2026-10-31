@@ -1,6 +1,7 @@
-import { AD_CAMPAIGNS, AD_COUNT, adSrc, waLink } from "../data";
+import { useEffect, useRef } from "react";
+import { AD_CAMPAIGNS, AD_COUNT, adSrc, adVideo, isVideo, waLink } from "../data";
 import { AdPlans } from "../plans";
-import { useLightbox } from "../tokens";
+import { useLightbox, usePrefersReducedMotion } from "../tokens";
 import { Arrow, Lightbox, PageHead, SecHead } from "../ui";
 
 /* Bento cell size from the piece's format: the cover poster gets the
@@ -9,12 +10,29 @@ import { Arrow, Lightbox, PageHead, SecHead } from "../ui";
 function cellFor(file, format, cover) {
   if (file === cover) return "cell-cover";
   if (format.startsWith("Billboard") || format.startsWith("Brand")) return "cell-wide";
-  if (format.startsWith("Story")) return "cell-tall";
+  if (format.startsWith("Story") || isVideo(format)) return "cell-tall";
   return "cell-feed";
 }
 
+/* Muted loop that only plays while it is on screen, and never for
+   people who have asked for less motion — the poster frame stands in. */
+function CellVideo({ src, poster, title }) {
+  const ref = useRef(null);
+  const reduced = usePrefersReducedMotion();
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || reduced) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.4 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, [reduced]);
+  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="none" aria-label={title} />;
+}
+
 function Campaign({ c }) {
-  const items = c.pieces.map(([file, title, format]) => ({ file, title, format, src: adSrc(c.key, file) }));
+  const items = c.pieces.map(([file, title, format]) =>
+    isVideo(format) ? { file, title, format, video: true, ...adVideo(c.key, file) } : { file, title, format, src: adSrc(c.key, file) }
+  );
   const lb = useLightbox(items.length);
 
   return (
@@ -64,7 +82,12 @@ function Campaign({ c }) {
             {items.map((it, i) => (
               <li key={it.file} className={`cell ${cellFor(it.file, it.format, c.cover)}`} data-reveal style={{ "--d": `${(i % 6) * 0.05}s` }}>
                 <button onClick={() => lb.open(i)} aria-label={`View ${it.title}`}>
-                  <img src={adSrc(c.key, it.file, it.file !== c.cover)} alt={it.title} loading="lazy" decoding="async" />
+                  {it.video ? (
+                    <CellVideo src={it.src} poster={it.poster} title={it.title} />
+                  ) : (
+                    <img src={adSrc(c.key, it.file, it.file !== c.cover)} alt={it.title} loading="lazy" decoding="async" />
+                  )}
+                  {it.video && <span className="cell-play mono">▶ Reel</span>}
                   <span className="cell-cap">
                     <span className="mono">{it.format}</span>
                     <b>{it.title}</b>
@@ -84,7 +107,7 @@ function Campaign({ c }) {
 export default function Ads() {
   return (
     <>
-      <PageHead stop="02" kicker="· Ad campaigns" title="Ads that" accent="stop traffic." sub={`Three concept campaigns, ${AD_COUNT} pieces — feed posts, stories, billboards and brand sheets. Tap any one to see it full size.`}>
+      <PageHead stop="02" kicker="· Ad campaigns" title="Ads that" accent="stop traffic." sub={`Three concept campaigns, ${AD_COUNT} pieces — feed posts, stories, billboards, brand sheets and motion reels. Tap any one to see it full size.`}>
         <nav className="camp-tabs rise" style={{ animationDelay: "0.24s" }} aria-label="Campaigns">
           {AD_CAMPAIGNS.map((c) => (
             <a key={c.key} href={`#${c.key}`}>
