@@ -1,73 +1,106 @@
 import { Suspense, useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useImageFade, useRevealAll } from "./tokens";
-import { AD_CAMPAIGNS, CASE_STUDIES, EMAIL, INSTAGRAM, NAV, PRICING_TIERS, waLink } from "./data";
-import { Arrow, Checker, PageSkeleton } from "./ui";
+import { CATEGORIES, EMAIL, INSTAGRAM, NAV, OFFER_ENDS, PRICING_TIERS, waLink } from "./data";
+import { Icon, Mark, PageSkeleton } from "./ui";
 
-const stop = (i) => String(i + 1).padStart(2, "0");
-
-/* The eden. signature, written the way it sits in the corner of every ad. */
-function Mark({ className = "" }) {
+/* Search lives in the header; it filters the Work page. */
+function Search({ onDone }) {
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [q, setQ] = useState(params.get("q") ?? "");
+  const go = (value) => {
+    const v = value.trim();
+    navigate(v ? `/work?q=${encodeURIComponent(v)}` : "/work", { replace: pathname === "/work" });
+  };
   return (
-    <span className={`mark ${className}`} aria-label="eden">
-      eden<i>.</i>
-    </span>
+    <form
+      className="search"
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        go(q);
+        onDone?.();
+      }}
+    >
+      <Icon name="search" />
+      <input
+        type="search"
+        value={q}
+        onChange={(e) => {
+          setQ(e.target.value);
+          if (pathname === "/work") go(e.target.value);
+        }}
+        placeholder="Search sites, ads, cafés, shops…"
+        aria-label="Search the work"
+      />
+    </form>
   );
 }
 
 function Header() {
-  const [open, setOpen] = useState(false);
+  /* The menu remembers where it was opened; navigating anywhere closes it. */
+  const { pathname, hash } = useLocation();
+  const here = pathname + hash;
+  const [openAt, setOpenAt] = useState(null);
+  const open = openAt === here;
+  const setOpen = (fn) => setOpenAt((fn(open) ? here : null));
   useEffect(() => {
     document.documentElement.classList.toggle("menu-open", open);
   }, [open]);
-  const close = () => setOpen(false);
 
   return (
     <>
-      <header className={`hdr ${open ? "is-open" : ""}`}>
-        <div className="hdr-in">
-          <Link to="/" className="hdr-logo" onClick={close}>
+      <Link to="/rates" className="promo">
+        End-of-year offer: websites from KSh {PRICING_TIERS[0].price}, free hosting — until {OFFER_ENDS}
+      </Link>
+      <header className="hdr">
+        <div className="wrap hdr-row">
+          <Link to="/" className="hdr-logo" aria-label="eden — home">
             <Mark />
+            <span className="hdr-tag">Websites &amp; ads</span>
           </Link>
-          <nav className="hdr-nav" aria-label="Primary">
-            {NAV.map((n, i) => (
-              <NavLink key={n.to} to={n.to} className={({ isActive }) => (isActive ? "is-on" : "")}>
-                <i>{stop(i)}</i>
-                {n.label}
-              </NavLink>
-            ))}
-          </nav>
-          <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="btn btn-ink btn-sm hdr-cta">
-            Start a project <Arrow />
-          </a>
-          <button className="hdr-burger" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Menu">
-            <span />
-            <span />
-          </button>
+          <div className="hdr-search">
+            <Search />
+          </div>
+          <div className="hdr-acts">
+            <a href={waLink("Hi Eden, I'd like to ask about a project.")} target="_blank" rel="noopener noreferrer" className="pill pill-grey">
+              WhatsApp
+            </a>
+            <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="pill pill-lime">
+              Start a project
+            </a>
+            <button className="hdr-menu" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Menu">
+              <Icon name={open ? "close" : "menu"} size={20} />
+            </button>
+          </div>
         </div>
+        <nav className="wrap cats" aria-label="Categories">
+          {CATEGORIES.map((c) => (
+            <Link key={c.to} to={c.to} className={pathname + hash === c.to ? "is-on" : ""}>
+              {c.icon && <Icon name={c.icon} size={15} />}
+              {c.label}
+            </Link>
+          ))}
+          <Link to="/about" className={pathname === "/about" ? "is-on" : ""}>
+            About
+          </Link>
+        </nav>
       </header>
 
-      {/* Phone menu: the pages as stops on one route line. */}
-      <div className={`route-menu ${open ? "is-open" : ""}`} aria-hidden={!open}>
-        <p className="mono route-menu-kick">Route · Eden — every stop</p>
+      <div className={`sheet ${open ? "is-open" : ""}`} aria-hidden={!open}>
+        <Search onDone={() => setOpenAt(null)} />
         <nav>
-          {[{ to: "/", label: "Home" }, ...NAV].map((n, i) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end
-              onClick={close}
-              tabIndex={open ? 0 : -1}
-              className={({ isActive }) => (isActive ? "is-on" : "")}
-              style={{ transitionDelay: open ? `${0.05 * i}s` : "0s" }}
-            >
-              <i>{String(i).padStart(2, "0")}</i>
+          {[{ to: "/", label: "Home" }, ...NAV].map((n) => (
+            <NavLink key={n.to} to={n.to} end tabIndex={open ? 0 : -1} className={({ isActive }) => (isActive ? "is-on" : "")}>
               {n.label}
+              <Icon name="chev" />
             </NavLink>
           ))}
         </nav>
-        <a href={waLink()} target="_blank" rel="noopener noreferrer" className="btn btn-blue" tabIndex={open ? 0 : -1}>
-          Message on WhatsApp <Arrow />
+        <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="pill pill-lime pill-big" tabIndex={open ? 0 : -1}>
+          Start a project on WhatsApp
         </a>
       </div>
     </>
@@ -77,66 +110,21 @@ function Header() {
 function Footer() {
   return (
     <footer className="foot">
-      <Checker />
-      <div className="wrap">
-        <div className="foot-top">
-          <div>
-            <p className="foot-word" aria-hidden="true">
-              <Mark />
-            </p>
-            <p className="foot-line">Websites and ad campaigns for Nairobi and Nakuru businesses.</p>
-          </div>
-          <a href={waLink("Hi Eden, I'd like to talk about a project.")} target="_blank" rel="noopener noreferrer" className="btn btn-blue">
-            This is your stop <Arrow />
+      <div className="wrap foot-row">
+        <span className="foot-left">
+          <Mark /> © 2026 · Nairobi / Nakuru
+        </span>
+        <nav className="foot-links" aria-label="Contact">
+          <a href={waLink()} target="_blank" rel="noopener noreferrer">
+            WhatsApp
           </a>
-        </div>
-        <div className="foot-cols">
-          <div>
-            <h4 className="mono">Pages</h4>
-            {NAV.map((n) => (
-              <Link key={n.to} to={n.to}>
-                {n.label}
-              </Link>
-            ))}
-          </div>
-          <div>
-            <h4 className="mono">Client work</h4>
-            {CASE_STUDIES.map((s) => (
-              <a key={s.n} href={s.demo} target="_blank" rel="noopener noreferrer">
-                {s.client}
-              </a>
-            ))}
-          </div>
-          <div>
-            <h4 className="mono">Ads</h4>
-            {AD_CAMPAIGNS.map((c) => (
-              <Link key={c.key} to={`/ads#${c.key}`}>
-                {c.name}
-              </Link>
-            ))}
-          </div>
-          <div>
-            <h4 className="mono">Contact</h4>
-            <a href={waLink()} target="_blank" rel="noopener noreferrer">
-              WhatsApp
-            </a>
-            <a href={`mailto:${EMAIL}`}>Email</a>
-            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">
-              Instagram
-            </a>
-          </div>
-        </div>
-        <ol className="foot-notes">
-          <li>Load time is the target every build is held to on a 3G connection — not a lab measurement.</li>
-          <li>Reply time applies to WhatsApp messages during working hours, Nairobi time.</li>
-          <li>Stage 46, The Lineup and Latch Homes are concept campaigns, not client work.</li>
-        </ol>
-        <div className="foot-base mono">
-          <span>© 2026 Eden</span>
-          <span>{PRICING_TIERS.length} site plans · 4 ad packages</span>
-          <span>Nairobi / Nakuru, Kenya</span>
-        </div>
+          <a href={`mailto:${EMAIL}`}>Email</a>
+          <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">
+            Instagram
+          </a>
+        </nav>
       </div>
+      <p className="wrap foot-note">Ad campaigns shown are concepts, not client work. Load times are targets, not lab measurements.</p>
     </footer>
   );
 }
@@ -150,7 +138,7 @@ export default function Layout() {
   useEffect(() => {
     const el = hash && document.getElementById(hash.slice(1));
     if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 70;
+      const top = el.getBoundingClientRect().top + window.scrollY - 120;
       window.scrollTo({ top, behavior: "auto" });
     } else {
       window.scrollTo(0, 0);

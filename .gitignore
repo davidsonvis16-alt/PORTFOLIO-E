@@ -23,5 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-# reel test stills
+# advert tooling: renders, voice models, pip packages
 tools/reels/out
+tools/reels/voices
+tools/reels/.pylib

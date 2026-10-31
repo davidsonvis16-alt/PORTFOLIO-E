@@ -1,0 +1,177 @@
+<!doctype html>
+<!-- One voiced advert, drawn frame by frame by render-ad.mjs:
+     __init(timeline) builds the shots, __seek(t) poses everything for time t.
+     Shots crop into the campaign's own posters; captions type in time
+     with the voiceover; the brand's logo sheet supplies the logos. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@600&family=Inter:wght@800&display=swap" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 720px; height: 1280px; overflow: hidden; background: #000; }
+  #stage { position: relative; width: 720px; height: 1280px; overflow: hidden; }
+  .shot { position: absolute; inset: 0; overflow: hidden; visibility: hidden; }
+  .shot img { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .cap { position: absolute; left: 84px; right: 84px; top: 860px; display: flex; justify-content: center; text-align: center; pointer-events: none; }
+  .cap span { display: inline; padding: 6px 18px 10px; line-height: 1.32; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .anton .cap span { font-family: Anton, sans-serif; font-size: 72px; text-transform: uppercase; letter-spacing: 0.005em; }
+  .serif .cap span { font-family: "DM Serif Display", serif; font-size: 60px; line-height: 1.38; border-radius: 10px; padding: 4px 20px 8px; }
+  .caret { display: inline-block; width: 0.08em; height: 0.82em; margin-left: 0.06em; vertical-align: -0.06em; }
+  .bug { position: absolute; z-index: 100; left: 80px; top: 48px; background-repeat: no-repeat; }
+  .end { position: absolute; z-index: 200; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 44px; visibility: hidden; }
+  .end .logo { background-repeat: no-repeat; }
+  .end .tag { min-height: 1em; text-align: center; padding: 0 84px; }
+  .anton .end .tag { font-family: Anton, sans-serif; font-size: 84px; text-transform: uppercase; }
+  .serif .end .tag { font-family: "DM Serif Display", serif; font-style: italic; font-size: 60px; }
+  .foot { position: absolute; left: 0; right: 0; bottom: 56px; display: flex; justify-content: center; align-items: baseline; gap: 14px; }
+  .foot .mono { font-family: "IBM Plex Mono", monospace; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+  .foot .mark { font-family: Inter, sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -0.04em; }
+  .foot .mark i { font-style: normal; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+const W = 720, H = 1280;
+const stage = document.getElementById("stage");
+let TL, SHOTS = [], END, sheet = { w: 1, h: 1 };
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = (p) => 1 - Math.pow(1 - p, 2.2);               // camera drift
+const outBack = (p) => 1 - Math.pow(1 - p, 3);
+
+function load(src) {
+  return new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(i); i.src = src; });
+}
+
+/* An element showing one crop (fractions) of the logo sheet at a given width. */
+function crop(el, c, src, width) {
+  const cw = (c.x1 - c.x0) * sheet.w, ch = (c.y1 - c.y0) * sheet.h;
+  const k = width / cw;
+  Object.assign(el.style, {
+    width: `${width}px`, height: `${ch * k}px`, backgroundImage: `url(${src})`,
+    backgroundSize: `${sheet.w * k}px ${sheet.h * k}px`, backgroundPosition: `${-c.x0 * sheet.w * k}px ${-c.y0 * sheet.h * k}px`,
+    borderRadius: `${0.019 * sheet.w * k}px`,  // the sheet's cards are rounded; clip its background off the corners
+  });
+}
+
+window.__init = async (tl) => {
+  TL = tl;
+  const s = tl.spec, base = `../../public/ads/${tl.key}/`;
+  document.body.className = s.font;
+  stage.style.background = s.colors.bg;
+
+  const logoSrc = `${base}${s.bug.sheet}.webp`;
+  const logoImg = await load(logoSrc);
+  sheet = { w: logoImg.naturalWidth, h: logoImg.naturalHeight };
+
+  /* Shot windows: each line owns the time up to the next line, split across its shots. */
+  const lines = tl.lines;
+  lines.forEach((ln, i) => {
+    const a = i === 0 ? 0 : ln.t0 - 0.12;
+    const b = i === lines.length - 1 ? tl.end : lines[i + 1].t0 - 0.12;
+    const n = s.lines[i].shots.length;
+    s.lines[i].shots.forEach((sh, j) => SHOTS.push({ ...sh, s0: a + ((b - a) * j) / n, s1: a + ((b - a) * (j + 1)) / n }));
+  });
+
+  for (const sh of SHOTS) {
+    const img = await load(`${base}${sh.img}.webp`);
+    sh.nw = img.naturalWidth; sh.nh = img.naturalHeight;
+    const box = document.createElement("div");
+    box.className = "shot";
+    if (sh.mode === "contain") box.style.background = s.colors.bg;
+    img.style.width = `${sh.nw}px`; img.style.height = `${sh.nh}px`;
+    box.appendChild(img);
+    if (sh.cap) {
+      const cap = document.createElement("div");
+      cap.className = "cap";
+      cap.innerHTML = `<span style="background:${s.colors.cap};color:${s.colors.capText}"><b class="txt" style="font-weight:inherit"></b><i class="caret" style="background:${s.colors.accent}"></i></span>`;
+      if (sh.capY) cap.style.top = `${sh.capY}px`;
+      box.appendChild(cap);
+      sh.txt = cap.querySelector(".txt"); sh.caret = cap.querySelector(".caret");
+    }
+    stage.appendChild(box);
+    sh.box = box; sh.el = img;
+  }
+
+  const bug = document.createElement("div");
+  bug.className = "bug";
+  crop(bug, s.bug, logoSrc, 150);
+  stage.appendChild(bug);
+
+  END = document.createElement("div");
+  END.className = "end";
+  END.style.background = s.end.bg;
+  END.innerHTML = `<div class="logo"></div><div class="tag" style="color:${s.end.tagColor}"></div>
+    <div class="foot" style="color:${s.end.foot}"><span class="mono">Concept campaign by</span><span class="mark">eden<i>.</i></span></div>`;
+  crop(END.querySelector(".logo"), s.end.logo, logoSrc, 520);  // inside the strip a tall phone crops off the sides
+  stage.appendChild(END);
+
+  // Load every face now; one first used on the end card would otherwise arrive too late to draw.
+  await Promise.all(['72px Anton', 'italic 60px "DM Serif Display"', '60px "DM Serif Display"', '800 40px Inter', '600 18px "IBM Plex Mono"'].map((f) => document.fonts.load(f)));
+  await document.fonts.ready;
+  return true;
+};
+
+/* Characters typed by time dt into a caption of length n. */
+function typed(n, dt, span) {
+  const dur = clamp(0.035 * n + 0.15, 0.3, span * 0.55);
+  return clamp(Math.floor(((dt - 0.06) / dur) * n), 0, n);
+}
+
+window.__seek = (t) => {
+  const s = TL.spec, punch = s.cut === "punch";
+  for (const sh of SHOTS) {
+    const fadeIn = punch ? 0 : 0.45;
+    const on = t >= sh.s0 - fadeIn && t < sh.s1 + (punch ? 0 : 0.0);
+    sh.box.style.visibility = on || (sh === SHOTS[SHOTS.length - 1] && t >= sh.s0) ? "visible" : "hidden";
+    if (sh.box.style.visibility === "hidden") continue;
+    sh.box.style.opacity = punch ? 1 : clamp((t - (sh.s0 - fadeIn)) / fadeIn, 0, 1);
+    sh.box.style.zIndex = SHOTS.indexOf(sh) + 1;
+
+    const span = sh.s1 - sh.s0;
+    const p = clamp((t - sh.s0) / span, 0, 1);
+    let z = sh.z0 + (sh.z1 - sh.z0) * ease(p);
+    const dt = t - sh.s0;
+    if (punch && dt < 0.24) z *= 1 + 0.12 * Math.pow(1 - dt / 0.24, 2);
+
+    let scale, x, y;
+    if (sh.mode === "contain") {
+      scale = ((W * 0.9) / sh.nw) * z;
+      x = (W - sh.nw * scale) / 2;
+      y = (H - sh.nh * scale) / 2 + 40;
+    } else {
+      scale = Math.max(W / sh.nw, H / sh.nh) * z;
+      const dw = sh.nw * scale, dh = sh.nh * scale;
+      x = clamp(W / 2 - sh.fx * dw, W - dw, 0);
+      y = clamp(H / 2 - sh.fy * dh, H - dh, 0);
+    }
+    sh.el.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${scale.toFixed(5)})`;
+
+    if (sh.txt) {
+      const n = typed(sh.cap.length, dt, span);
+      sh.txt.textContent = sh.cap.slice(0, n);
+      sh.txt.parentElement.style.visibility = n > 0 ? "visible" : "hidden";
+      const done = n >= sh.cap.length;
+      sh.caret.style.opacity = !done || Math.floor(dt * 2.5) % 2 === 0 ? 1 : 0;
+    }
+  }
+
+  /* End card */
+  const e = t - TL.end;
+  END.style.visibility = e >= 0 ? "visible" : "hidden";
+  if (e >= 0) {
+    const p = clamp(e / 0.4, 0, 1);
+    END.style.clipPath = punch ? `inset(${((1 - outBack(p)) * 100).toFixed(2)}% 0 0 0)` : "none";
+    END.style.opacity = punch ? 1 : outBack(clamp(e / 0.6, 0, 1));
+    const logo = END.querySelector(".logo");
+    logo.style.transform = `scale(${(0.9 + 0.1 * outBack(clamp((e - 0.1) / 0.6, 0, 1))).toFixed(4)})`;
+    const tag = END.querySelector(".tag"), text = s.end.tag;
+    tag.textContent = text.slice(0, clamp(Math.floor(((e - 0.45) / (0.04 * text.length + 0.2)) * text.length), 0, text.length));
+    END.querySelector(".foot").style.opacity = clamp((e - 0.9) / 0.4, 0, 1);
+  }
+  return new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(true))));
+};
+</script>
+</body>
+</html>
