@@ -27,3 +27,8 @@ dist-ssr
 tools/reels/out
 tools/reels/voices
 tools/reels/.pylib
+
+# poster tooling: Pexels photos, cut-outs, page builds
+tools/posters/photos
+tools/posters/cut
+tools/posters/out

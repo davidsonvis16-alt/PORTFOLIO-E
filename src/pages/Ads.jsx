@@ -36,7 +36,7 @@ export default function Ads() {
   const videos = useLightbox(VIDEO_ITEMS.length);
   return (
     <>
-      <PageTop title="Ad campaigns" sub={`Three concept campaigns, ${AD_COUNT} pieces — posters, stories, billboards and voiced video ads. Tap any one to see it full screen.`}>
+      <PageTop title="Ad campaigns" sub={`Six concept businesses, ${AD_COUNT} pieces — promo posters with prices and a number to call, plus voiced video ads. Tap any one to see it full screen.`}>
         <nav className="chips rise" style={{ animationDelay: "0.12s" }} aria-label="Jump to">
           <a href="#video">
             <Icon name="play" size={14} /> Video ads
