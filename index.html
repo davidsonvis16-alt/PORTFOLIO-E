@@ -3,25 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Eden — websites and ad campaigns for shops, cafés and restaurants in Nairobi and Nakuru, built for mobile data." />
-    <meta name="theme-color" content="#d9ec3c" />
+    <meta name="description" content="eden. — websites and ad campaigns for shops, cafés and restaurants in Nairobi and Nakuru. Built to load on mobile data, fixed prices in shillings, M-Pesa built in." />
+    <meta name="theme-color" content="#f7f6f2" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=Inter:opsz,wght@14..32,400..700&display=swap" />
-    <link rel="icon" type="image/jpeg" href="/favicon image.jpeg" />
-    <link rel="apple-touch-icon" href="/favicon image.jpeg" />
-    <meta property="og:title" content="Eden — Web Developer & Designer" />
-    <meta property="og:description" content="Web developer and designer creating clean, modern websites and digital experiences." />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap" />
+    <link rel="icon" type="image/svg+xml" href="/eden-mark.svg" />
+    <meta property="og:title" content="eden. — Websites &amp; ad campaigns, Nairobi" />
+    <meta property="og:description" content="Websites and ad campaigns for shops, cafés and restaurants in Nairobi and Nakuru." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Eden — Web Developer & Designer" />
-    <meta name="twitter:description" content="Web developer and designer creating clean, modern websites and digital experiences." />
-    <title>Eden — Websites & Ad Campaigns</title>
+    <meta name="twitter:title" content="eden. — Websites &amp; ad campaigns, Nairobi" />
+    <meta name="twitter:description" content="Websites and ad campaigns for shops, cafés and restaurants in Nairobi and Nakuru." />
+    <title>eden. — Websites &amp; ad campaigns, Nairobi</title>
     <style>
       /* Intro: eden. on a white page for 1.3s, drawn before any JS loads. */
-      #intro { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #fff; transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0.5s; }
+      #intro { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #f7f6f2; transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0.5s; }
       #intro.out { opacity: 0; visibility: hidden; }
-      #intro span { font-family: "Archivo", "Inter", -apple-system, Arial, sans-serif; font-stretch: 112%; font-weight: 800; font-size: clamp(56px, 12vw, 120px); letter-spacing: -0.045em; line-height: 1; color: #121212; animation: intro-in 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+      #intro span { font-family: "Inter", -apple-system, Arial, sans-serif; font-weight: 700; font-size: clamp(56px, 12vw, 120px); letter-spacing: -0.05em; line-height: 1; color: #111111; animation: intro-in 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
       #intro i { font-style: normal; display: inline-block; animation: intro-dot 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) 0.55s both; }
       @keyframes intro-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
       @keyframes intro-dot { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
@@ -55,53 +54,32 @@
     <div id="root"></div>
     <noscript>
       <style>
-        .ns { max-width: 780px; margin: 0 auto; padding: 48px 24px 72px; font-family: system-ui, -apple-system, sans-serif; color: #1d1d1f; background: #ffffff; line-height: 1.7; }
-        .ns h1 { font-size: 1.9rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 16px; }
-        .ns h2 { font-size: 1.05rem; margin: 40px 0 10px; }
-        .ns p { color: #6e6e73; margin: 0 0 14px; }
-        .ns .tag, .ns .spec { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: 0.1em; color: #6e6e73; }
-        .ns hr { border: none; border-top: 1px solid #d2d2d7; margin: 28px 0; }
-        .ns a { color: #0066cc; }
-        .ns ul { margin: 0 0 14px; padding-left: 20px; color: #6e6e73; }
+        .ns { max-width: 760px; margin: 0 auto; padding: 56px 24px 80px; font-family: system-ui, -apple-system, sans-serif; color: #111; background: #f7f6f2; line-height: 1.6; }
+        .ns h1 { font-size: 2.6rem; line-height: 1; letter-spacing: -0.04em; margin: 0 0 20px; }
+        .ns h2 { font-size: 1rem; margin: 40px 0 8px; }
+        .ns p, .ns li { color: #5d5d58; }
+        .ns a { color: #2433ff; }
+        .ns ul { padding-left: 20px; }
       </style>
       <div class="ns">
-        <div class="tag">EDEN — WEB DEVELOPER, NAIROBI / NAKURU</div>
-        <h1>Websites that work on the connection your customers actually have.</h1>
-        <p>Lightweight sites for shops, cafés and restaurants in Nairobi and Nakuru — built for patchy mobile data. No agency, no team, mostly React.</p>
-        <hr />
-        <h2>Work</h2>
-        <p>
-          <strong>BakeMart Coffee House</strong>, Nakuru — menu and online ordering on Supabase.
-          <a href="https://bakemart.co.ke">bakemart.co.ke</a>
-        </p>
-        <p>
-          <strong>Global Mogul</strong> — a founder and author site: the book, a reading list, talks and a marketplace.
-          <a href="https://global-mogul.vercel.app/">global-mogul.vercel.app</a>
-        </p>
-        <p>
-          <strong>Fidel Castrol</strong>, Homa Bay — a student success coach's site, with a HubSpot page and a lead-score quiz.
-          <a href="https://fidelc.vercel.app">fidelc.vercel.app</a>
-        </p>
-        <p class="spec">ALSO LIVE: chabaokenya.vercel.app · shoeske.vercel.app · hotelke.vercel.app · phoneske-gamma.vercel.app · floristke.vercel.app · aldosi-merchants.vercel.app · homeskenya.vercel.app · gadella.vercel.app · kijani-kafe.vercel.app · beyond-taupe-one.vercel.app · bridges-theta.vercel.app · arrow-puce.vercel.app</p>
-        <p>
-          <strong>Ad campaigns</strong> — concept campaigns for Stage 46 (chicken &amp; burgers), The Lineup (barber club) and Latch Homes (rentals).
-        </p>
-        <hr />
-        <h2>Rates</h2>
+        <p>eden. — Nairobi / Nakuru</p>
+        <h1>Websites and ads for shops, cafés and restaurants.</h1>
+        <p>Websites that load on three bars of signal, and the posters and video ads that send customers to them. Fixed prices in shillings, M-Pesa built in, hosting free.</p>
+        <h2>Client work</h2>
         <ul>
-          <li>Landing page — KSh 10,000 (end-of-year offer, was 15,000) + KSh 500/month maintenance. One page, WhatsApp button, 3-day turnaround.</li>
-          <li>Business site — KSh 25,000 (end-of-year offer, was 30,000) + KSh 1,000/month maintenance. Up to 5 pages, custom design, WhatsApp + M-Pesa, 7-day turnaround.</li>
-          <li>Custom build — from KSh 35,000 + KSh 2,000/month maintenance, free domain. Bigger projects quoted per job.</li>
-          <li>Ad design — KSh 2,000 per poster · Monthly content KSh 15,000/month · Brand campaign KSh 20,000 · Full campaign KSh 35,000. Ad spend not included.</li>
-          <li>Hosting is free on every plan. Payment: 60% to start, 40% at launch.</li>
+          <li>BakeMart Coffee House, Nakuru — <a href="https://bakemart.co.ke">bakemart.co.ke</a></li>
+          <li>Global Mogul — <a href="https://global-mogul.vercel.app/">global-mogul.vercel.app</a></li>
+          <li>Fidel Castrol, Homa Bay — <a href="https://fidelc.vercel.app/">fidelc.vercel.app</a></li>
         </ul>
-        <hr />
+        <h2>Prices</h2>
+        <ul>
+          <li>Landing page — KSh 10,000 (end-of-year, was 15,000) + KSh 500/month</li>
+          <li>Business site — from KSh 25,000 (end-of-year, was 30,000) + KSh 1,000/month</li>
+          <li>Custom build — from KSh 35,000 + KSh 2,000/month, free domain</li>
+          <li>Ad design — from KSh 2,000 a poster. Hosting is free on every plan.</li>
+        </ul>
         <h2>Contact</h2>
-        <p>
-          WhatsApp <a href="https://wa.me/254142614743">+254 142 614 743</a> ·
-          Email <a href="mailto:davidson.vis.16@gmail.com">davidson.vis.16@gmail.com</a> ·
-          Instagram <a href="https://www.instagram.com/vinn_y.codr/">@vinn_y.codr</a>
-        </p>
+        <p><a href="mailto:davidson.vis.16@gmail.com">davidson.vis.16@gmail.com</a> · WhatsApp <a href="https://wa.me/254142614743">+254 142 614 743</a> · <a href="https://www.instagram.com/vinn_y.codr/">Instagram</a></p>
       </div>
     </noscript>
     <script type="module" src="/src/main.jsx"></script>

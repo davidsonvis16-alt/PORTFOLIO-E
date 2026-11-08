@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { STACK_ICONS } from "./stackIcons";
+import { PLACEHOLDER } from "./data";
 
 /* Generic glyphs for entries with no public brand mark — never an imitation logo. */
 const GLYPHS = {
@@ -290,6 +291,49 @@ export function PageSkeleton() {
           <span key={i} className="skel skel-card" />
         ))}
       </div>
+    </div>
+  );
+}
+
+/* A link to "/#section" also scrolls when that hash is already in the URL,
+   so pressing About twice still takes you to About. */
+export function HashLink({ to, onClick, ...rest }) {
+  const { pathname, hash } = useLocation();
+  return (
+    <Link
+      to={to}
+      onClick={(e) => {
+        onClick?.(e);
+        const [path, id] = to.split("#");
+        if (id && (path || "/") === pathname && `#${id}` === hash) {
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        }
+      }}
+      {...rest}
+    />
+  );
+}
+
+
+/* Marks a detail we do not have yet, so it never reads as a claim. */
+export function Placeholder({ what }) {
+  return (
+    <span className="ph">
+      {PLACEHOLDER} <span>— {what}</span>
+    </span>
+  );
+}
+
+/* Section label: a number and a name in the left column, with an optional
+   line of context under it. */
+export function SecHead({ n, title, id, note }) {
+  return (
+    <div className="sec-head">
+      <span className="idx">{n}</span>
+      <h2 id={id} className="sec-title">
+        {title}
+      </h2>
+      {note && <p className="sec-note">{note}</p>}
     </div>
   );
 }

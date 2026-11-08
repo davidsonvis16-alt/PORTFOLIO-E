@@ -1,43 +1,8 @@
-import { Suspense, useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { useImageFade, useRevealAll } from "./tokens";
-import { CATEGORIES, EMAIL, INSTAGRAM, NAV, OFFER_ENDS, PRICING_TIERS, waLink } from "./data";
-import { Icon, Mark, PageSkeleton } from "./ui";
-
-/* Search lives in the header; it filters the Work page. */
-function Search({ onDone }) {
-  const [params] = useSearchParams();
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const [q, setQ] = useState(params.get("q") ?? "");
-  const go = (value) => {
-    const v = value.trim();
-    navigate(v ? `/work?q=${encodeURIComponent(v)}` : "/work", { replace: pathname === "/work" });
-  };
-  return (
-    <form
-      className="search"
-      role="search"
-      onSubmit={(e) => {
-        e.preventDefault();
-        go(q);
-        onDone?.();
-      }}
-    >
-      <Icon name="search" />
-      <input
-        type="search"
-        value={q}
-        onChange={(e) => {
-          setQ(e.target.value);
-          if (pathname === "/work") go(e.target.value);
-        }}
-        placeholder="Search sites, ads, cafés, shops…"
-        aria-label="Search the work"
-      />
-    </form>
-  );
-}
+import { Suspense, useEffect, useRef, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { useRevealAll } from "./tokens";
+import { EMAIL, INSTAGRAM, LINE, SITE_NAV, waLink } from "./data";
+import { HashLink, Mark } from "./ui";
 
 function Header() {
   /* The menu remembers where it was opened; navigating anywhere closes it. */
@@ -45,65 +10,59 @@ function Header() {
   const here = pathname + hash;
   const [openAt, setOpenAt] = useState(null);
   const open = openAt === here;
-  const setOpen = (fn) => setOpenAt((fn(open) ? here : null));
+  const close = () => setOpenAt(null);
   useEffect(() => {
     document.documentElement.classList.toggle("menu-open", open);
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpenAt(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  return (
-    <>
-      <Link to="/rates" className="promo">
-        End-of-year offer: websites from KSh {PRICING_TIERS[0].price}, free hosting — until {OFFER_ENDS}
-      </Link>
-      <header className="hdr">
-        <div className="wrap hdr-row">
-          <Link to="/" className="hdr-logo" aria-label="eden — home">
-            <Mark />
-            <span className="hdr-tag">Websites &amp; ads</span>
-          </Link>
-          <div className="hdr-search">
-            <Search />
-          </div>
-          <div className="hdr-acts">
-            <a href={waLink("Hi Eden, I'd like to ask about a project.")} target="_blank" rel="noopener noreferrer" className="pill pill-grey">
-              WhatsApp
-            </a>
-            <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="pill pill-lime">
-              Start a project
-            </a>
-            <button className="hdr-menu" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Menu">
-              <Icon name={open ? "close" : "menu"} size={20} />
-            </button>
-          </div>
-        </div>
-        <nav className="wrap cats" aria-label="Categories">
-          {CATEGORIES.map((c) => (
-            <Link key={c.to} to={c.to} className={pathname + hash === c.to ? "is-on" : ""}>
-              {c.icon && <Icon name={c.icon} size={15} />}
-              {c.label}
-            </Link>
-          ))}
-          <Link to="/about" className={pathname === "/about" ? "is-on" : ""}>
-            About
-          </Link>
-        </nav>
-      </header>
+  const isOn = (to) => (to.startsWith("/#") ? pathname === "/" && hash === to.slice(1) : pathname === to);
 
-      <div className={`sheet ${open ? "is-open" : ""}`} aria-hidden={!open}>
-        <Search onDone={() => setOpenAt(null)} />
-        <nav>
-          {[{ to: "/", label: "Home" }, ...NAV].map((n) => (
-            <NavLink key={n.to} to={n.to} end tabIndex={open ? 0 : -1} className={({ isActive }) => (isActive ? "is-on" : "")}>
+  return (
+    <header className="hdr">
+      <div className="wrap hdr-row">
+        <Link to="/" className="hdr-logo" aria-label="eden. — home" onClick={close}>
+          <Mark />
+        </Link>
+        <nav className="hdr-nav" aria-label="Main">
+          {SITE_NAV.map((n) => (
+            <HashLink key={n.to} to={n.to} className="ulink" aria-current={isOn(n.to) ? "page" : undefined}>
               {n.label}
-              <Icon name="chev" />
-            </NavLink>
+            </HashLink>
           ))}
         </nav>
-        <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="pill pill-lime pill-big" tabIndex={open ? 0 : -1}>
-          Start a project on WhatsApp
+        <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="talk">
+          Start a project <span aria-hidden="true">↗</span>
+          <span className="sr">on WhatsApp (opens in a new tab)</span>
         </a>
+        <button
+          className="hdr-menu"
+          onClick={() => setOpenAt(open ? null : here)}
+          aria-expanded={open}
+          aria-controls="menu"
+        >
+          {open ? "Close" : "Menu"}
+        </button>
       </div>
-    </>
+
+      <div id="menu" className={`sheet ${open ? "is-open" : ""}`} hidden={!open}>
+        <nav className="wrap sheet-nav" aria-label="Main">
+          {SITE_NAV.map((n, i) => (
+            <HashLink key={n.to} to={n.to} onClick={close}>
+              <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+              {n.label}
+            </HashLink>
+          ))}
+          <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" onClick={close} className="sheet-talk">
+            <span className="idx">↗</span>
+            Start a project
+          </a>
+        </nav>
+      </div>
+    </header>
   );
 }
 
@@ -111,20 +70,23 @@ function Footer() {
   return (
     <footer className="foot">
       <div className="wrap foot-row">
-        <span className="foot-left">
-          <Mark /> © 2026 · Nairobi / Nakuru
-        </span>
+        <Link to="/" aria-label="eden. — home">
+          <Mark />
+        </Link>
+        <p className="foot-tag">{LINE}</p>
         <nav className="foot-links" aria-label="Contact">
-          <a href={waLink()} target="_blank" rel="noopener noreferrer">
+          <a href={waLink()} target="_blank" rel="noopener noreferrer" className="ulink">
             WhatsApp
           </a>
-          <a href={`mailto:${EMAIL}`}>Email</a>
-          <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer">
+          <a href={`mailto:${EMAIL}`} className="ulink">
+            Email
+          </a>
+          <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="ulink">
             Instagram
           </a>
         </nav>
+        <p className="foot-note">© {new Date().getFullYear()} eden. Ad campaigns shown are concepts, not client work.</p>
       </div>
-      <p className="wrap foot-note">Ad campaigns shown are concepts, not client work. Load times are targets, not lab measurements.</p>
     </footer>
   );
 }
@@ -132,17 +94,17 @@ function Footer() {
 export default function Layout() {
   const { pathname, hash } = useLocation();
   useRevealAll();
-  useImageFade();
 
-  /* New page starts at the top; a #hash lands on its section. */
+  /* New page starts at the top; a #hash lands on its section, gliding
+     there when it is on the page already open. */
+  const lastPath = useRef(pathname);
   useEffect(() => {
+    const samePage = lastPath.current === pathname;
+    lastPath.current = pathname;
     const el = hash && document.getElementById(hash.slice(1));
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 120;
-      window.scrollTo({ top, behavior: "auto" });
-    } else {
-      window.scrollTo(0, 0);
-    }
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (el) el.scrollIntoView({ behavior: samePage && !calm ? "smooth" : "auto" });
+    else window.scrollTo(0, 0);
   }, [pathname, hash]);
 
   return (
@@ -151,8 +113,8 @@ export default function Layout() {
         Skip to content
       </a>
       <Header />
-      <main id="main">
-        <Suspense fallback={<PageSkeleton />}>
+      <main id="main" tabIndex={-1}>
+        <Suspense fallback={<div className="page-wait" aria-busy="true" />}>
           <Outlet />
         </Suspense>
       </main>

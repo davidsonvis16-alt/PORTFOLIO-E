@@ -1,40 +1,45 @@
-import { ADDONS, BASE_SITE, OFFER_ENDS, OTHER_BUILDS, ksh, priceOf, waLink } from "../data";
-import { AdPlans, PaySteps, SitePlans } from "../plans";
-import { PageTop } from "../ui";
+import { ADDONS, AD_BUNDLE, AD_TERMS, BASE_SITE, OFFER_ENDS, OTHER_BUILDS, ksh, priceOf, waLink } from "../data";
+import { AdRows, PriceRows, Steps } from "../blocks";
+import { SecHead } from "../ui";
 
 export default function Rates() {
+  const builds = [...OTHER_BUILDS].sort((a, b) => priceOf(b).total - priceOf(a).total);
   return (
     <>
-      <PageTop title="Prices" sub={`End-of-year offer until ${OFFER_ENDS}. Fixed prices agreed before any work starts, and free hosting on every website.`}>
-        <nav className="chips rise" style={{ animationDelay: "0.12s" }} aria-label="Jump to">
-          <a href="#sites">Websites</a>
-          <a href="#addons">What adds to the price</a>
-          <a href="#builds">What the builds cost</a>
-          <a href="#ads">Ad design</a>
-          <a href="#paying">How paying works</a>
+      <section className="wrap page-top" aria-labelledby="rates-title">
+        <span className="idx rise">End-of-year prices until {OFFER_ENDS}</span>
+        <h1 id="rates-title" className="page-title rise">
+          Prices<span className="dot">.</span>
+        </h1>
+        <p className="page-sub rise">Fixed prices, agreed before any work starts. Free hosting on every website. M-Pesa or bank transfer.</p>
+        <nav className="jump rise" aria-label="Jump to">
+          <a href="#sites" className="ulink">Websites</a>
+          <a href="#addons" className="ulink">What adds to the price</a>
+          <a href="#builds" className="ulink">What the builds cost</a>
+          <a href="#ads" className="ulink">Ad design</a>
+          <a href="#paying" className="ulink">Paying</a>
         </nav>
-      </PageTop>
+      </section>
 
-      <section id="sites" className="wrap block">
-        <h2 className="h2">Websites</h2>
-        <SitePlans />
-        <div className="bigger">
-          <div>
-            <h3 className="h3">Something more complex?</h3>
-            <p>Marketplaces, customer accounts, multi-branch systems, integrations — we scope it together and price it to the job.</p>
-          </div>
-          <a href={waLink("Hi Eden, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="pill pill-lime">
-            Let's talk
+      <section id="sites" className="wrap sec" aria-labelledby="sites-title">
+        <SecHead n="01" title="Websites" id="sites-title" note="Each plan includes everything in the one before it." />
+        <PriceRows />
+        <div className="sec-end">
+          <p>Something more complex? Marketplaces, customer accounts, multi-branch systems — scoped together and priced to the job.</p>
+          <a href={waLink("Hi Eden, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
+            Talk it through <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
-      <section id="addons" className="wrap block">
-        <h2 className="h2">What adds to the price</h2>
-        <p className="shelf-sub">
-          Every build starts as a custom-designed site of up to 5 pages ({ksh(BASE_SITE[1])}). Each feature adds its own price, and the end-of-year offer takes 15% off the total.
-        </p>
-        <ul className="menu-list">
+      <section id="addons" className="wrap sec" aria-labelledby="addons-title">
+        <SecHead
+          n="02"
+          title="What adds to the price"
+          id="addons-title"
+          note={`Every build starts as a custom-designed site of up to 5 pages (${ksh(BASE_SITE[1])}). Each feature adds its own price; the end-of-year offer takes 15% off the total.`}
+        />
+        <ul className="ledger">
           {Object.values(ADDONS)
             .sort((a, b) => b[1] - a[1])
             .map(([name, v]) => (
@@ -46,9 +51,8 @@ export default function Rates() {
         </ul>
       </section>
 
-      <section id="builds" className="wrap block">
-        <h2 className="h2">What the builds would cost</h2>
-        <p className="shelf-sub">Each of my own builds, priced as if you asked for one like it today. Client sites aren't listed — their prices are between me and them.</p>
+      <section id="builds" className="wrap sec" aria-labelledby="builds-title">
+        <SecHead n="03" title="What the builds would cost" id="builds-title" note="My own builds, priced as if you asked for one like it today. Client prices stay between me and them." />
         <div className="table-wrap">
           <table className="cost">
             <thead>
@@ -56,46 +60,45 @@ export default function Rates() {
                 <th scope="col">Site</th>
                 <th scope="col">What drives the price</th>
                 <th scope="col">Normal</th>
-                <th scope="col">End-of-year</th>
+                <th scope="col">Until {OFFER_ENDS}</th>
               </tr>
             </thead>
             <tbody>
-              {[...OTHER_BUILDS]
-                .sort((a, b) => priceOf(b).total - priceOf(a).total)
-                .map((b) => {
-                  const p = priceOf(b);
-                  return (
-                    <tr key={b.title}>
-                      <th scope="row">
-                        <a href={b.demo} target="_blank" rel="noopener noreferrer">
-                          {b.title}
-                        </a>
-                      </th>
-                      <td>{b.addons.map((k) => ADDONS[k][0]).join(" · ")}</td>
-                      <td>
-                        <s>{ksh(p.total)}</s>
-                      </td>
-                      <td>
-                        <b>{ksh(p.now)}</b>
-                      </td>
-                    </tr>
-                  );
-                })}
+              {builds.map((b) => {
+                const p = priceOf(b);
+                return (
+                  <tr key={b.title}>
+                    <th scope="row">
+                      <a href={b.demo} target="_blank" rel="noopener noreferrer" className="ulink">
+                        {b.title}
+                      </a>
+                    </th>
+                    <td>{b.addons.map((k) => ADDONS[k][0]).join(" · ")}</td>
+                    <td>
+                      <s>{ksh(p.total)}</s>
+                    </td>
+                    <td>
+                      <b>{ksh(p.now)}</b>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </section>
 
-      <section id="ads" className="wrap block">
-        <h2 className="h2">Ad design</h2>
-        <p className="shelf-sub">Per poster, a monthly content plan, or a whole campaign in one go.</p>
-        <AdPlans />
+      <section id="ads" className="wrap sec" aria-labelledby="ads-title">
+        <SecHead n="04" title="Ad design" id="ads-title" note="Per poster, a monthly content plan, or a whole campaign in one go." />
+        <AdRows />
+        <p className="fine">
+          {AD_TERMS} {AD_BUNDLE}
+        </p>
       </section>
 
-      <section id="paying" className="wrap block">
-        <h2 className="h2">How paying works</h2>
-        <p className="shelf-sub">Two payments, no surprises. The Custom Build comes with a free domain.</p>
-        <PaySteps />
+      <section id="paying" className="wrap sec" aria-labelledby="paying-title">
+        <SecHead n="05" title="How paying works" id="paying-title" note="Two payments, no surprises. The Custom Build comes with a free domain." />
+        <Steps />
       </section>
     </>
   );
