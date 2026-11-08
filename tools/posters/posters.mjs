@@ -1,0 +1,176 @@
+/* Six concept businesses, eight posters each. Photos are Pexels (free licence),
+   saved as photos/<pexels id>.jpg; cut-outs are cut/<id>.png made by cutout.py.
+   Phone numbers are placeholders (0700 000 …) — these are demos. */
+
+const F = (...fams) => fams.map((f) => `family=${f}`).join("&");
+const sparkle = (c) => `<svg width="38" height="38" viewBox="0 0 24 24" fill="${c}"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>`;
+
+export const BRANDS = {
+  stage46: {
+    main: "#FFD23F", main2: "#FFC21A", ink: "#111111", onMain: "#111111", accent: "#E8322B", onAccent: "#ffffff", paper: "#ffffff",
+    display: "'Anton'", body: "'Archivo'", script: "'Yellowtail'",
+    fonts: F("Anton", "Yellowtail", "Archivo:wght@400;600;700;800"),
+    phone: "0700 000 046", where: "NGARA · WESTLANDS · CBD",
+    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:14px;background:#FFD23F;border:6px solid #111;border-radius:16px;padding:6px 20px 6px 16px;box-shadow:6px 6px 0 #111;color:#111">
+      <span style="font:400 92px/1 Anton">46</span><span style="line-height:1"><b style="font:400 46px/1 Anton;letter-spacing:2px">STAGE →</b><br><span style="font:800 15px Archivo;letter-spacing:3px">CHICKEN · BURGERS</span></span></div>`,
+  },
+  lineup: {
+    main: "#2B55FF", main2: "#1F45E6", ink: "#111111", ink2: "#111111", onMain: "#ffffff", accent: "#E8322B", onAccent: "#ffffff", paper: "#F3EEE4",
+    display: "'Bebas Neue'", body: "'Inter'", script: "'Permanent Marker'", track: "1px",
+    fonts: F("Bebas+Neue", "Permanent+Marker", "Inter:wght@400;600;700;800"),
+    phone: "0700 000 101", where: "NGONG ROAD · NAIROBI",
+    logo: (m, s) => `<div style="zoom:${s};color:${m === "chip" ? "#111" : "#fff"};line-height:1">
+      <div style="font:400 92px/.9 'Bebas Neue';letter-spacing:5px;position:relative;display:inline-block">THE LINEUP<i style="position:absolute;left:-6px;right:-6px;bottom:-4px;height:6px;background:#E8322B"></i></div>
+      <div style="font:700 16px Inter;letter-spacing:7px;margin-top:14px">BARBER CLUB · NAIROBI</div></div>`,
+  },
+  latch: {
+    main: "#1F4A36", main2: "#24573F", ink: "#1F2A24", ink2: "#1F4A36", onMain: "#F3EEE4", accent: "#C8603A", onAccent: "#ffffff", accent2: "#C8603A", paper: "#F3EEE4",
+    display: "'Fraunces'", body: "'DM Sans'", script: "'Caveat'", caps: false, track: "-2px", pop: "#C9A458", phoneFont: "'DM Sans'",
+    css: ".d{font-weight:600}",
+    fonts: F("Fraunces:opsz,wght@9..144,600", "Caveat:wght@600", "DM+Sans:wght@400;600;700;800"),
+    phone: "0700 000 707", where: "WESTLANDS · KILIMANI · KILELESHWA",
+    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:16px;color:${m === "chip" ? "#1F4A36" : "#F3EEE4"}">
+      <span style="width:70px;height:86px;border-radius:14px;background:${m === "chip" ? "#1F4A36" : "#F3EEE4"};color:${m === "chip" ? "#F3EEE4" : "#1F4A36"};display:grid;place-items:center;font:600 50px Fraunces;position:relative">L<i style="position:absolute;top:-14px;width:30px;height:22px;border:5px solid currentColor;border-bottom:0;border-radius:16px 16px 0 0;color:${m === "chip" ? "#1F4A36" : "#F3EEE4"}"></i></span>
+      <span style="line-height:1"><span style="font:600 84px/.9 Fraunces;letter-spacing:-2px">latch</span><br><span style="font:700 15px 'DM Sans';letter-spacing:6px">HOMES · NAIROBI</span></span></div>`,
+  },
+  slice: {
+    main: "#D62828", main2: "#B71F1F", ink: "#2B1A12", ink2: "#2B1A12", onMain: "#FFF3D6", accent: "#FFC93C", onAccent: "#2B1A12", accent2: "#D62828", paper: "#FFF3D6",
+    display: "'Lilita One'", body: "'Poppins'", script: "'Pacifico'",
+    fonts: F("Lilita+One", "Pacifico", "Poppins:wght@400;600;700;800"),
+    phone: "0700 000 254", where: "KILIMANI · YAYA · KILELESHWA",
+    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:14px">
+      <span style="width:96px;height:96px;border-radius:50%;background:#FFC93C;display:grid;place-items:center;border:5px solid ${m === "chip" ? "#D62828" : "#FFF3D6"}"><svg width="58" height="58" viewBox="0 0 24 24"><path d="M2 5c6-3 14-3 20 0L12 23z" fill="#D62828"/><path d="M4.4 7.6c5-2 10.2-2 15.2 0" stroke="#FFF3D6" stroke-width="1.6" fill="none"/><circle cx="10" cy="11" r="1.6" fill="#FFF3D6"/><circle cx="14" cy="14" r="1.4" fill="#FFF3D6"/></svg></span>
+      <span style="font:400 66px/.86 'Lilita One';color:${m === "chip" ? "#D62828" : "#FFF3D6"}">SLICE<br><span style="color:${m === "chip" ? "#2B1A12" : "#FFC93C"}">254</span></span></div>`,
+  },
+  glow: {
+    main: "#F4C5D2", main2: "#EDB0C2", ink: "#3D1533", ink2: "#3D1533", onMain: "#3D1533", accent: "#3D1533", onAccent: "#F4C5D2", paper: "#FFF7F9",
+    display: "'Playfair Display'", body: "'Poppins'", script: "'Great Vibes'", caps: false, track: "-1px", phoneFont: "'Poppins'",
+    css: ".d{font-weight:700;font-style:italic}",
+    fonts: F("Playfair+Display:ital,wght@1,700", "Great+Vibes", "Poppins:wght@400;600;700;800"),
+    phone: "0700 000 333", where: "GLOW STUDIO · KILIMANI",
+    logo: (m, s) => `<div style="zoom:${s};color:${m === "light" ? "#fff" : "#3D1533"};line-height:1">
+      <span style="display:inline-flex;align-items:flex-start;gap:4px"><span style="font:italic 700 96px/.9 'Playfair Display'">glow</span>${sparkle(m === "light" ? "#F4C5D2" : "#3D1533")}</span>
+      <div style="font:700 15px Poppins;letter-spacing:8px;margin-top:6px">STUDIO · KILIMANI</div></div>`,
+  },
+  iron: {
+    main: "#FF5A1F", main2: "#F04A10", ink: "#0E0E0E", ink2: "#0E0E0E", onMain: "#0E0E0E", accent: "#0E0E0E", onAccent: "#FF5A1F", paper: "#F2F2F0",
+    display: "'Oswald'", body: "'Barlow'", script: "'Permanent Marker'",
+    css: ".d{font-weight:700}",
+    fonts: F("Oswald:wght@700", "Permanent+Marker", "Barlow:wght@400;600;700;800"),
+    phone: "0700 000 900", where: "IRON YARD · RUAKA",
+    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:14px;color:${m === "light" ? "#fff" : "#0E0E0E"}">
+      <span style="background:${m === "on" ? "#0E0E0E" : "#FF5A1F"};color:${m === "on" ? "#FF5A1F" : "#0E0E0E"};font:700 64px/1 Oswald;padding:6px 16px;transform:skew(-10deg)">IY</span>
+      <span style="font:700 50px/.92 Oswald;letter-spacing:3px">IRON<br>YARD</span></div>`,
+  },
+};
+
+export const POSTERS = {
+  stage46: [
+    { file: "01-crispy-chicken-burger", title: "Crispy chicken burger, 450/=", t: "stack", lines: ["Crispy", "Chicken", "Burger"], size: 128, top: 220, headInk: "#111", sub: "w. chips & a cold Coke", subInk: "#E8322B",
+      hero: "17121731.png", heroStyle: "left:40px;top:650px;width:620px;height:410px", side: "7429792.png", sideStyle: "left:640px;top:650px;width:200px;height:380px;transform:rotate(10deg)",
+      price: "450/=", burstStyle: "right:26px;top:420px;width:260px;height:260px", strip: "Free delivery · Ngara, Westie, CBD" },
+    { file: "02-two-burgers-one-price", title: "2 burgers, 1 price", t: "bogo", lines: ["2 Burgers", "1 Price"], headInk: "#111", kicker: "TUESDAY & THURSDAY", kickInk: "#E8322B", size: 205,
+      hero: "27988502.png", heroStyle: "left:120px;top:700px;width:480px;height:500px", side: "6045036.png", sideStyle: "right:30px;top:660px;width:470px;height:420px;transform:rotate(-12deg)",
+      price: "550/=", burstStyle: "left:20px;top:900px;width:250px;height:250px", script: "Double up!", scriptRight: 70 },
+    { file: "03-family-feast", title: "8 pieces + chips & 2 Cokes", t: "photo", img: "14686447.jpg", pos: "50% 62%", big: "8", what: "PIECES", what2: "+ CHIPS & 2 COKES · FOR", price: "1,200", badge: "Family feast!",
+      hero: "9706990.png", heroStyle: "left:770px;top:860px;width:210px;height:460px;transform:rotate(12deg)" },
+    { file: "04-wings-on-fire", title: "Wings on fire", t: "split", img: "12178045.jpg", pos: "50% 45%", bg: "#111", headInk: "#fff", kickInk: "#FFD23F", kicker: "NEW ON THE ROUTE",
+      lines: ["Wings", "on fire."], sub: "10 hot wings, chips and a cooling dip. Sweat included.", price: "650/=", burstBg: "#FFD23F", burstInk: "#111" },
+    { file: "05-the-fare", title: "The fare — menu", t: "menu", bg: "#111", headInk: "#FFD23F", priceInk: "#FFD23F", head: "The Fare", kicker: "MENU · ROUTE 46", foot: "+ COKE 80/=",
+      items: [["551991.jpg", "Stage Burger", "Beef, cheese, chips", "450", "65% 50%"], ["6045036.jpg", "Crispy Chicken", "Fried thigh, slaw, sauce", "480", "50% 55%"], ["12178045.jpg", "6 Hot Wings", "With a cooling dip", "400", "50% 30%"], ["33254639.jpg", "Tenders", "4 pieces + chips", "420", "50% 50%"]] },
+    { file: "06-free-coke", title: "Free Coke with any combo", t: "hero", lines: ["Free", "Coke."], size: 200, ray1: "#FFD23F", ray2: "#FFC21A",
+      hero: "7429792.png", heroStyle: "left:330px;top:520px;width:400px;height:660px;transform:rotate(-8deg)", price: "FREE", priceTop: "WITH ANY", priceNote: "COMBO", burstStyle: "right:50px;top:560px;width:280px;height:280px", foot: "Every combo, every stop." },
+    { file: "07-lunch-sorted", title: "Lunch, sorted — 400/=", t: "frame", img: "12118979.jpg", pos: "50% 55%", kicker: "LUNCH STOP · 12–3PM", lines: ["Lunch,", "sorted."],
+      sub: "2 pieces, chips and a soda. Out in five minutes.", price: "400/=" },
+    { file: "08-every-stop", title: "Free delivery, every stop", t: "collage", imgs: [["551991.jpg", "55% 50%"], ["4113625.jpg", "50% 55%"], ["37228289.jpg", "40% 50%"], ["9207184.jpg", "50% 30%"]],
+      badgeTop: "FREE DELIVERY", badge: "Every<br>stop.", badgeNote: "Ngara · Westie · CBD", foot: "Order till 10pm" },
+  ],
+  slice: [
+    { file: "01-large-pepperoni", title: "Large pepperoni + free Coke", t: "stack", lines: ["Large", "Pepperoni"], size: 150, headInk: "#FFF3D6", sub: "+ a free Coke, every time", subInk: "#FFC93C",
+      hero: "29829308.png", heroStyle: "left:40px;top:610px;width:500px;height:500px", side: "7429792.png", sideStyle: "left:470px;top:700px;width:200px;height:360px;transform:rotate(10deg)",
+      price: "1,200", priceTop: "KSH", burstStyle: "right:60px;top:640px;width:280px;height:280px", ctaTop: "CALL OR WHATSAPP", strip: "Free delivery within 5 km" },
+    { file: "02-tuesday-two-for-one", title: "Buy a large, get a medium free", t: "bogo", lines: ["Buy a large,", "get a medium"], size: 140, headInk: "#FFF3D6", kicker: "FREE · EVERY TUESDAY", kickInk: "#FFC93C",
+      hero: "17907810.png", heroStyle: "left:330px;top:640px;width:560px;height:560px", side: "9706990.png", sideStyle: "left:120px;top:760px;width:190px;height:420px;transform:rotate(-12deg)", script: "Tuesday treat", scriptRight: 60 },
+    { file: "03-weekend-deal", title: "2 large pizzas + soda, 2,200", t: "photo", img: "31587831.jpg", pos: "60% 60%", big: "2", what: "LARGE", what2: "PIZZAS + 1.25L SODA FOR", price: "2,200", badge: "Weekend deal!", tagLeft: 280 },
+    { file: "04-door-in-30", title: "Hot at your door in 30", t: "split", img: "9461653.jpg", pos: "50% 30%", headInk: "#FFF3D6", kickInk: "#FFC93C", kicker: "KILIMANI · LAVINGTON · YAYA",
+      lines: ["Hot at your", "door in 30."], sub: "Delivery is free within 5 km. Still steaming when it lands.", price: "FREE", priceTop: "DELIVERY", priceNote: "WITHIN 5KM", burstStyle: "right:50px;top:540px;width:280px;height:280px" },
+    { file: "05-the-menu", title: "The menu", t: "menu", bg: "#2B1A12", headInk: "#FFC93C", priceInk: "#FFC93C", head: "The Menu", kicker: "LARGE · 12 INCH", foot: "FREE DELIVERY",
+      items: [["17907810.jpg", "Pepperoni", "Mozzarella, beef pepperoni", "1,000"], ["845808.jpg", "Margherita", "Tomato, mozzarella, basil", "800", "50% 75%"], ["32007632.jpg", "BBQ Chicken", "Chicken, onion, BBQ glaze", "1,100", "50% 70%"], ["6068717.jpg", "Meat Feast", "Beef, sausage, pepperoni", "1,200", "50% 75%"]] },
+    { file: "06-lunch-slice", title: "Lunch slice, 150/=", t: "hero", lines: ["Lunch", "slice."], size: 180, headInk: "#FFF3D6", ray1: "#D62828", ray2: "#C42222",
+      hero: "4109050.png", heroStyle: "left:290px;top:520px;width:500px;height:640px;transform:rotate(-6deg)", price: "150/=", priceTop: "A SLICE", priceNote: "12–3PM", burstStyle: "right:40px;top:560px;width:280px;height:280px", foot: "Walk in at Yaya Centre" },
+    { file: "07-fired-at-400", title: "Fired at 400°C", t: "frame", img: "11447751.jpg", pos: "50% 50%", kicker: "WOOD-FIRED · YAYA", lines: ["Fired at", "400°C."], sub: "Ninety seconds in the oven. Crisp base, soft middle." },
+    { file: "08-party-pack", title: "Party pack — 4 large, 4,000", t: "collage", imgs: [["6068717.jpg", "50% 70%"], ["3915857.jpg", "50% 50%"], ["32007632.jpg", "50% 60%"], ["845808.jpg", "50% 70%"]],
+      badgeTop: "PARTY PACK", badge: "4 Large", badgeNote: "4,000/= · Fridays", foot: "Feeds ten. Order by 5pm." },
+  ],
+  lineup: [
+    { file: "01-fresh-fade-friday", title: "Fresh fade Friday, 500/=", t: "stack", align: "left", lines: ["Fresh", "Fade", "Friday"], size: 190, top: 230, headInk: "#fff", sub: "every Friday, all day", subInk: "#111",
+      hero: "39559324.png", heroStyle: "right:0;top:300px;width:560px;height:760px", price: "500/=", priceTop: "ANY FADE", burstStyle: "left:40px;top:830px;width:230px;height:230px", ctaTop: "BOOK A CHAIR", strip: "Walk-ins till 9pm" },
+    { file: "02-bring-a-friend", title: "Bring a friend — 2 cuts, 800/=", t: "bogo", lines: ["Bring a", "friend."], headInk: "#fff", kicker: "2 CUTS · ONE PRICE", kickInk: "#111",
+      hero: "39559270.jpg", shape: "ring", pos: "40% 50%", heroStyle: "left:330px;top:640px;width:520px;height:520px", side: "37836122.jpg", sideShape: "ring", sidePos: "50% 30%", sideStyle: "right:30px;top:560px;width:260px;height:260px",
+      price: "800/=", priceTop: "2 CUTS", callLine: "Book a chair:", button: "Book now" },
+    { file: "03-the-full-service", title: "Fade, beard & hot towel — 900/=", t: "photo", img: "13450758.jpg", pos: "50% 40%", big: "3", what: "IN ONE", what2: "FADE + BEARD + HOT TOWEL", price: "900/=", badge: "The full service", ctaTop: "TO BOOK, CALL", tagLeft: 250 },
+    { file: "04-walk-ins-till-9", title: "Walk-ins till 9pm", t: "split", img: "7447146.jpg", pos: "50% 40%", bg: "#111", headInk: "#F3EEE4", kickInk: "#2B55FF", kicker: "OPEN 7 DAYS",
+      lines: ["Walk-ins", "till 9pm."], size: 150, sub: "No appointment, no queue drama. Coffee while you wait." },
+    { file: "05-the-menu", title: "The menu", t: "menu", bg: "#111", headInk: "#F3EEE4", priceInk: "#2B55FF", head: "The Menu", kicker: "PRICES IN KSH", foot: "WALK-INS WELCOME",
+      items: [["39559324.jpg", "Fade", "Skin, low, mid or high", "600", "50% 30%"], ["12706272.jpg", "Cut & Style", "Scissors or clipper", "500", "40% 40%"], ["3998414.jpg", "Beard", "Line-up, trim, hot oil", "300", "50% 50%"], ["37836122.jpg", "Kids", "Under 12s", "350", "50% 30%"]] },
+    { file: "06-open-7-days", title: "Open 7 days", t: "hero", lines: ["Open", "7 days."], size: 190, headInk: "#fff", ray1: "#2B55FF", ray2: "#2149EE",
+      hero: "16474397.png", heroStyle: "left:400px;top:470px;width:290px;height:720px", price: "9PM", priceTop: "OPEN TILL", priceNote: "DAILY", burstStyle: "right:60px;top:600px;width:270px;height:270px", foot: "Mon–Sun · 8am–9pm" },
+    { file: "07-beards-handled", title: "Beards, handled — 300/=", t: "frame", img: "3998414.jpg", pos: "50% 45%", kicker: "BEARD MENU", lines: ["Beards,", "handled."], size: 130, sub: "Trim, line-up and hot oil. Twenty minutes.", price: "300/=" },
+    { file: "08-kids-saturdays", title: "Kids cuts, Saturdays", t: "collage", imgs: [["2014808.jpg", "50% 40%"], ["37836122.jpg", "50% 30%"], ["39559270.jpg", "40% 50%"], ["1319459.jpg", "50% 50%"]],
+      badgeTop: "SATURDAYS", badge: "Kids<br>350/=", badgeSize: 110, badgeNote: "Under 12s · all day", foot: "Bring the little ones" },
+  ],
+  latch: [
+    { file: "01-viewing-fee-zero", title: "Viewing fee: zero", t: "stack", align: "left", lines: ["Viewing", "fee: zero."], size: 150, top: 230, headInk: "#F3EEE4", sub: "see ten homes, pay nothing", subInk: "#C9A458",
+      hero: "7587828.jpg", shape: "card", heroStyle: "left:70px;top:620px;width:600px;height:440px;box-shadow:0 26px 50px rgba(0,0,0,.25)", price: "0/=", priceTop: "VIEWING", priceNote: "FEE",
+      burstStyle: "right:80px;top:600px;width:270px;height:270px", ctaTop: "BOOK A VIEWING", strip: "Westlands · Kilimani · Kileleshwa" },
+    { file: "02-no-agent-drama", title: "No agent drama", t: "bogo", lines: ["No agent", "drama."], size: 180, headInk: "#F3EEE4", kicker: "DEPOSIT IN TWO PARTS", kickInk: "#C9A458",
+      hero: "7167073.jpg", shape: "arch", pos: "40% 50%", heroStyle: "left:300px;top:600px;width:480px;height:600px;box-shadow:0 26px 50px rgba(0,0,0,.25)", side: "6934170.jpg", sideShape: "ring", sideStyle: "right:30px;top:640px;width:250px;height:250px",
+      script: "Just keys.", scriptRight: 50, callLine: "Viewings:", button: "Book a viewing" },
+    { file: "03-two-bed-kileleshwa", title: "2 bed, Kileleshwa — 45K", t: "photo", img: "18285958.jpg", pos: "45% 50%", big: "2", what: "BEDROOMS", what2: "KILELESHWA · LIFT · PARKING", price: "45K", badge: "Per month", ctaTop: "TO VIEW, CALL", where: "LATCH HOMES · NAIROBI", tagLeft: 250 },
+    { file: "04-checked-in-person", title: "Every listing checked in person", t: "split", img: "6934170.jpg", pos: "50% 50%", headInk: "#F3EEE4", kickInk: "#C9A458", kicker: "BEDSITTER TO BUNGALOW",
+      lines: ["Checked in", "person."], size: 130, sub: "We walk every home before you see it. The photos are the real flat.", foot: "NAIROBI" },
+    { file: "05-this-week", title: "This week's homes", t: "menu", bg: "#1F4A36", headInk: "#C9A458", priceInk: "#C9A458", head: "This week", kicker: "RENT PER MONTH", footBg: "#C8603A", footInk: "#fff", foot: "NO VIEWING FEE",
+      items: [["7836571.jpg", "Studio · Ngara", "Water 24/7, third floor", "15K"], ["8135505.jpg", "1 Bed · Kilimani", "Balcony, backup power", "30K"], ["7587828.jpg", "2 Bed · Kileleshwa", "Lift, parking, gym", "45K"], ["276746.jpg", "3 Bed · Lavington", "Garden, DSQ", "90K"]] },
+    { file: "06-twelve-units-left", title: "New block — 12 units left", t: "hero", lines: ["12 units", "left."], size: 170, headInk: "#1F4A36", ray1: "#E3C27A", ray2: "#D9B565",
+      hero: "1330753.jpg", shape: "arch", pos: "50% 50%", heroStyle: "left:230px;top:500px;width:560px;height:660px;box-shadow:0 26px 50px rgba(0,0,0,.25)", price: "35K", priceTop: "FROM", priceNote: "A MONTH",
+      burstBg: "#C8603A", burstInk: "#fff", burstStyle: "right:40px;top:520px;width:270px;height:270px", foot: "New block, Kilimani" },
+    { file: "07-deposit-split", title: "Deposit, split in two", t: "frame", img: "7511695.jpg", pos: "50% 50%", kicker: "MOVE IN THIS MONTH", lines: ["Deposit,", "split in two."], size: 108, sub: "Half when you sign, half a month later." },
+    { file: "08-sunlight-included", title: "Sunlight included", t: "collage", imgs: [["280239.jpg", "50% 50%"], ["7546648.jpg", "40% 50%"], ["7167073.jpg", "40% 50%"], ["6699988.jpg", "50% 50%"]],
+      badgeTop: "SUNLIGHT", badge: "Included.", badgeSize: 100, badgeNote: "Big windows, every listing", foot: "Find yours this week" },
+  ],
+  glow: [
+    { file: "01-gel-nails", title: "Gel nails from 800/=", t: "stack", lines: ["Gel nails", "that last."], size: 150, headInk: "#3D1533", sub: "three weeks, no chips", subInk: "#3D1533",
+      hero: "34835304.jpg", shape: "arch", pos: "50% 45%", heroStyle: "left:90px;top:610px;width:400px;height:430px;box-shadow:0 26px 50px rgba(61,21,51,.3)", side: "2281695.jpg", sideShape: "ring", sidePos: "50% 60%", sideStyle: "left:450px;top:780px;width:250px;height:250px",
+      price: "800/=", priceTop: "FROM", burstStyle: "right:60px;top:640px;width:270px;height:270px", ctaTop: "BOOK ON WHATSAPP", strip: "Kilimani · Open till 8pm" },
+    { file: "02-mani-pedi-wednesday", title: "Mani + pedi Wednesdays, 1,500/=", t: "bogo", lines: ["Mani +", "Pedi."], size: 200, headInk: "#3D1533", kicker: "WEDNESDAYS ONLY", kickInk: "#fff",
+      hero: "7321734.jpg", shape: "ring", pos: "50% 50%", heroStyle: "left:330px;top:640px;width:520px;height:520px", side: "20758448.jpg", sideShape: "ring", sideStyle: "right:30px;top:560px;width:250px;height:250px",
+      price: "1,500", priceTop: "BOTH", callLine: "Book a slot:", button: "Book now" },
+    { file: "03-lash-lift", title: "Lash lift, 1,200/=", t: "photo", img: "36930354.jpg", pos: "50% 40%", big: "3", what: "WEEKS", what2: "OF LASHES · LIFT & TINT", price: "1,200", badge: "Lash lift", ctaTop: "TO BOOK, CALL", tagLeft: 250 },
+    { file: "04-knotless-braids", title: "Knotless braids from 2,500/=", t: "split", img: "4671331.jpg", pos: "50% 40%", bg: "#3D1533", headInk: "#F4C5D2", kickInk: "#fff", kicker: "KNOTLESS · BOHO · CORNROWS",
+      lines: ["Braids from", "2,500."], size: 128, sub: "Hair included on medium and long. Bring a picture." },
+    { file: "05-price-list", title: "Price list", t: "menu", bg: "#3D1533", headInk: "#F4C5D2", priceInk: "#F4C5D2", ink: "#fff", head: "Price list", kicker: "KSH · KILIMANI", foot: "BOOK ON WHATSAPP",
+      items: [["34835304.jpg", "Gel manicure", "Shape, cuticles, gel", "800", "50% 45%"], ["34871553.jpg", "Acrylic set", "Any length, any art", "1,500", "50% 45%"], ["36930354.jpg", "Lash lift", "Lift and tint", "1,200", "50% 35%"], ["34191088.jpg", "Knotless braids", "Medium, hair included", "2,500"]] },
+    { file: "06-bridal-glam", title: "Bridal glam — now booking", t: "hero", lines: ["Bridal", "glam."], size: 180, headInk: "#3D1533", ray1: "#F4C5D2", ray2: "#EDB0C2",
+      hero: "2011414.jpg", shape: "ring", pos: "50% 30%", heroStyle: "left:240px;top:520px;width:600px;height:600px", price: "DEC", priceTop: "BOOKING", priceNote: "& JAN", burstStyle: "right:40px;top:520px;width:270px;height:270px", foot: "Trials on weekdays" },
+    { file: "07-bring-your-pinterest", title: "Bring your Pinterest", t: "frame", img: "7066298.jpg", pos: "50% 50%", kicker: "NAIL ART", lines: ["Bring your", "Pinterest."], size: 110, sub: "Show us the picture. We'll match it — or tell you honestly if we can't." },
+    { file: "08-first-visit", title: "First visit, 20% off", t: "collage", imgs: [["34871553.jpg", "50% 45%"], ["3997392.jpg", "50% 50%"], ["20758448.jpg", "50% 50%"], ["30062508.jpg", "50% 30%"]],
+      badgeTop: "FIRST VISIT", badge: "20% off", badgeSize: 110, badgeNote: "Any service, any day", foot: "Glow Studio, Kilimani" },
+  ],
+  iron: [
+    { file: "01-no-joining-fee", title: "No joining fee in November", t: "stack", align: "left", lines: ["No", "joining", "fee."], size: 170, top: 220, headInk: "#0E0E0E", sub: "all of November", subInk: "#fff",
+      hero: "8555305.png", heroStyle: "right:10px;top:250px;width:560px;height:840px", price: "3,500", priceTop: "KSH", priceNote: "A MONTH", burstStyle: "left:340px;top:760px;width:250px;height:250px", ctaTop: "CALL OR WALK IN", strip: "Open 5am – 10pm" },
+    { file: "02-train-two-pay-one", title: "Train 2, pay 1", t: "bogo", lines: ["Train 2,", "pay 1."], size: 210, headInk: "#0E0E0E", kicker: "BRING A PARTNER", kickInk: "#fff",
+      hero: "24244667.jpg", shape: "ring", pos: "50% 30%", heroStyle: "left:330px;top:640px;width:520px;height:520px", side: "4720764.jpg", sideShape: "ring", sidePos: "50% 30%", sideStyle: "right:30px;top:560px;width:260px;height:260px",
+      price: "3,500", priceTop: "FOR TWO", callLine: "Join today:", button: "Join now" },
+    { file: "03-six-am-class", title: "6am class, 500/=", t: "photo", img: "18060117.jpg", pos: "62% 50%", big: "6", what: "AM CLASS", what2: "20 PEOPLE · 1 COACH · 45 MIN", price: "500/=", badge: "Drop-in price", ctaTop: "TO BOOK, CALL", tagLeft: 250 },
+    { file: "04-personal-training", title: "Personal training — 4 sessions", t: "split", img: "6551439.jpg", pos: "50% 30%", bg: "#0E0E0E", headInk: "#fff", kickInk: "#FF5A1F", kicker: "PERSONAL TRAINING",
+      lines: ["4 sessions.", "One plan."], sub: "A coach who writes it down — and checks you did it.", price: "6,000", priceTop: "KSH", burstBg: "#FF5A1F", burstInk: "#0E0E0E" },
+    { file: "05-price-list", title: "Price list", t: "menu", bg: "#0E0E0E", headInk: "#FF5A1F", priceInk: "#FF5A1F", head: "Price list", kicker: "KSH", foot: "NO JOINING FEE",
+      items: [["4720524.jpg", "Day pass", "Full gym and showers", "500", "50% 25%"], ["17210041.jpg", "Monthly", "Unlimited, all classes", "3,500", "50% 25%"], ["24244667.jpg", "3 months", "Save 1,500", "9,000", "50% 25%"], ["6551439.jpg", "PT session", "One-on-one, 60 min", "1,500", "50% 25%"]] },
+    { file: "06-start-light", title: "First week free", t: "hero", lines: ["Start light.", "Start today."], size: 130, headInk: "#0E0E0E", ray1: "#FF5A1F", ray2: "#F04A10",
+      hero: "16679868.png", heroStyle: "left:360px;top:460px;width:360px;height:620px;transform:rotate(-10deg)", price: "FREE", priceTop: "FIRST", priceNote: "WEEK", burstStyle: "right:50px;top:560px;width:270px;height:270px", foot: "Walk in, we'll show you round" },
+    { file: "07-five-to-ten", title: "Open 5am to 10pm", t: "frame", img: "4720764.jpg", pos: "50% 35%", kicker: "OPEN EARLY · CLOSE LATE", lines: ["5am", "to 10pm."], size: 130, sub: "Before work, after work, or both." },
+    { file: "08-first-week-free", title: "First week free", t: "collage", imgs: [["12250460.jpg", "50% 50%"], ["3916766.jpg", "50% 50%"], ["6628962.jpg", "50% 50%"], ["17210041.jpg", "50% 25%"]],
+      badgeTop: "FIRST WEEK", badge: "Free.", badgeNote: "No card, no catch", foot: "Iron Yard, Ruaka" },
+  ],
+};

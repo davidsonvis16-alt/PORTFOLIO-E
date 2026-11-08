@@ -19,16 +19,18 @@ function Intro() {
 }
 
 const FRESH_ADS = [
-  ["stage46", "01-get-off-here"],
-  ["lineup", "01-sharp-is-a-habit"],
-  ["latch", "02-sunlight-included"],
-  ["stage46", "09-sauce-up-to-the-elbow"],
-  ["lineup", "04-walk-out-taller"],
-  ["latch", "04-the-home-that-says-yes"],
-  ["stage46", "12-its-raining-coke"],
-  ["lineup", "07-beards-handled"],
-  ["latch", "09-latch-after-dark"],
-  ["stage46", "13-your-fare-itemised"],
+  ["stage46", "01-crispy-chicken-burger"],
+  ["slice", "03-weekend-deal"],
+  ["lineup", "01-fresh-fade-friday"],
+  ["glow", "02-mani-pedi-wednesday"],
+  ["iron", "01-no-joining-fee"],
+  ["latch", "01-viewing-fee-zero"],
+  ["stage46", "06-free-coke"],
+  ["slice", "01-large-pepperoni"],
+  ["glow", "05-price-list"],
+  ["iron", "04-personal-training"],
+  ["lineup", "03-the-full-service"],
+  ["stage46", "03-family-feast"],
 ];
 
 export default function Home() {
@@ -62,7 +64,7 @@ export default function Home() {
         ))}
       </Shelf>
 
-      <Shelf title="Fresh ads" icon="image" sub="Three concept campaigns — a chicken joint, a barber and a rental agency" more={<Link to="/ads" className="more">See all</Link>}>
+      <Shelf title="Fresh ads" icon="image" sub="Six concept businesses — chicken, pizza, a barber, a beauty studio, a gym and a rental agency" more={<Link to="/ads" className="more">See all</Link>}>
         {fresh.map((it, i) => (
           <AdCard key={it.key + it.file} it={it} onOpen={() => ads.open(i)} />
         ))}
