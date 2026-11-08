@@ -206,7 +206,7 @@ export const OTHER_BUILDS = [
     img: "/work/bridges.jpg",
   },
   {
-    title: "Arrow",
+    title: "Finderr",
     addons: ["profiles", "matching", "gated"],
     icon: "heart",
     group: "platform",
@@ -638,3 +638,32 @@ export const AD_TIERS = [
 
 export const AD_TERMS = "Ad spend on Instagram, Facebook or TikTok is paid by you, directly to the platform — it's never inside these prices.";
 export const AD_BUNDLE = "Book a campaign with any website and take KSh 3,000 off the campaign.";
+
+/* ---------- the typographic site ----------
+   Copy for the redesign, in Eden's own words from the pages above. Anything
+   not yet known is shown as a PLACEHOLDER rather than guessed. */
+export const PLACEHOLDER = "Placeholder";
+export const LOCATION = "Nairobi / Nakuru";
+export const LINE = "Websites and ad campaigns for businesses in Nairobi.";
+
+export const SITE_NAV = [
+  { to: "/work", label: "Work" },
+  { to: "/ads", label: "Ads" },
+  { to: "/rates", label: "Prices" },
+  { to: "/about", label: "About" },
+  { to: "/#contact", label: "Contact" },
+];
+
+/* Where each client is and what kind of business it is. */
+export const CASE_META = {
+  "BakeMart Coffee House": { sector: "Coffee house", location: "Nakuru" },
+  "Global Mogul": { sector: "Founder & author", location: PLACEHOLDER },
+  "Fidel Castrol": { sector: "Student coaching", location: "Homa Bay" },
+};
+
+/* Counts taken from the data above, so they stay true as work is added. */
+export const FACTS = [
+  { value: CASE_STUDIES.length, label: "client sites, live and in use" },
+  { value: OTHER_BUILDS.filter((b) => b.demo?.startsWith("http")).length, label: "self-initiated builds, all live" },
+  { value: AD_COUNT, label: "ad pieces across six concept brands" },
+];
