@@ -96,6 +96,7 @@ export function AdRows() {
           </ul>
           <p className="price-cost">
             <b>KSh {t.price}</b>
+            {t.was && <s>KSh {t.was}</s>}
             <span className="price-month">{t.unit}</span>
           </p>
         </li>

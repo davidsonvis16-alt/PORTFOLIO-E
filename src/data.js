@@ -251,18 +251,22 @@ export const OTHER_BUILDS = [
 
 export const SKILLS = ["HTML", "CSS", "JavaScript", "React", "Next.js", "TypeScript", "Tailwind CSS", "Supabase", "Vite", "Framer Motion", "Git", "M-Pesa", "Responsive Design"];
 
-/* End-of-year offer. Every plan: free hosting, 60% to start and 40% at launch. */
+/* Prices set 2026-11-08 against what Nairobi freelancers charge: a landing
+   page for 15–25k, a business site for 35–60k, a site with ordering and
+   M-Pesa checkout for 70k and up. End-of-year offer: about 15% off every
+   plan. Every plan: free hosting, 60% to start and 40% at launch. The
+   monthly fee covers updates, fixes and keeping the site online. */
 export const OFFER_ENDS = "31 December";
 export const PRICING_TIERS = [
   {
     key: "landing",
     name: "Landing Page",
-    was: "15,000",
-    price: "10,000",
-    monthly: "500",
-    split: ["6,000", "4,000"],
+    was: "18,000",
+    price: "15,000",
+    monthly: "1,000",
+    split: ["9,000", "6,000"],
     methods: "M-Pesa",
-    tag: "Save KSh 5,000",
+    tag: "Save KSh 3,000",
     perks: ["Free hosting"],
     blurb: "One sharp page that gets you found and gets you messaged.",
     plus: "WHAT YOU GET",
@@ -272,13 +276,13 @@ export const PRICING_TIERS = [
   {
     key: "business",
     name: "Business Site",
-    was: "30,000",
-    price: "25,000",
+    was: "40,000",
+    price: "34,000",
     from: true,
-    monthly: "1,000",
-    split: ["15,000", "10,000"],
+    monthly: "1,500",
+    split: ["20,400", "13,600"],
     methods: "M-Pesa or bank transfer",
-    tag: "Save KSh 5,000",
+    tag: "Save KSh 6,000",
     featured: true,
     perks: ["Free hosting"],
     blurb: "The full shopfront — menu, story, location and payments.",
@@ -289,12 +293,13 @@ export const PRICING_TIERS = [
   {
     key: "custom",
     name: "Custom Build",
-    price: "35,000",
+    was: "75,000",
+    price: "64,000",
     from: true,
-    monthly: "2,000",
-    split: ["21,000", "14,000"],
+    monthly: "3,000",
+    split: ["38,400", "25,600"],
     methods: "M-Pesa or bank transfer",
-    tag: "New price",
+    tag: "Save KSh 11,000",
     perks: ["Free hosting", "Free domain"],
     blurb: "When the site has to run part of the business, not just describe it.",
     plus: "EVERYTHING IN BUSINESS, PLUS",
@@ -312,38 +317,38 @@ export const PAY_STEPS = [
 
 /* What a site costs, built up from what it does. Every build starts as a
    custom-designed site of up to 5 pages; each feature adds its own price.
-   The end-of-year offer takes 15% off the total (at least KSh 5,000 —
-   the same 5,000 the Landing and Business plans come down by). */
-export const BASE_SITE = ["Custom-designed site, up to 5 pages", 30000];
+   The base is the Business Site's normal price. The end-of-year offer
+   takes 15% off the total, rounded to the nearest 500. */
+export const BASE_SITE = ["Custom-designed site, up to 5 pages", 40000];
 export const ADDONS = {
-  ordering: ["Online ordering & cart, M-Pesa checkout", 10000],
-  bookings: ["Table, viewing or session bookings", 5000],
-  admin: ["Admin for orders, cancellations & refunds", 8000],
-  accounts: ["Customer accounts & rewards", 7000],
-  tracking: ["Live order tracking", 4000],
-  pay: ["Card, PayPal & Airtel on top of M-Pesa", 3000],
-  customiser: ["Item customiser — sizes & extras", 3000],
-  catalogue: ["Product catalogue with filters", 6000],
-  bag: ["Bag & WhatsApp ordering", 4000],
+  ordering: ["Online ordering & cart, M-Pesa checkout", 20000],
+  bookings: ["Table, viewing or session bookings", 8000],
+  admin: ["Admin for orders, cancellations & refunds", 15000],
+  accounts: ["Customer accounts & rewards", 12000],
+  tracking: ["Live order tracking", 8000],
+  pay: ["Card, PayPal & Airtel on top of M-Pesa", 6000],
+  customiser: ["Item customiser — sizes & extras", 5000],
+  catalogue: ["Product catalogue with filters", 10000],
+  bag: ["Bag & WhatsApp ordering", 6000],
   grading: ["Condition grade on every item", 2000],
-  instalments: ["Instalment plans (Lipa Mdogo Mdogo)", 5000],
-  zones: ["Delivery zones & cut-off times", 3000],
-  builder: ["Build-your-own configurator", 6000],
-  listings: ["Listings with search", 8000],
-  motion: ["Motion & cinematic design", 3000],
-  gallery: ["Photo gallery, kept light for mobile data", 2000],
-  deposits: ["M-Pesa booking deposits", 4000],
-  coverage: ["Address search across cities", 8000],
-  categories: ["Multi-category browsing", 5000],
-  profiles: ["Accounts & profiles", 8000],
-  matching: ["Mutual-interest matching", 8000],
-  gated: ["WhatsApp contact unlocked on a match", 4000],
+  instalments: ["Instalment plans (Lipa Mdogo Mdogo)", 8000],
+  zones: ["Delivery zones & cut-off times", 5000],
+  builder: ["Build-your-own configurator", 10000],
+  listings: ["Listings with search", 12000],
+  motion: ["Motion & cinematic design", 5000],
+  gallery: ["Photo gallery, kept light for mobile data", 3000],
+  deposits: ["M-Pesa booking deposits", 6000],
+  coverage: ["Address search across cities", 10000],
+  categories: ["Multi-category browsing", 6000],
+  profiles: ["Accounts & profiles", 12000],
+  matching: ["Mutual-interest matching", 15000],
+  gated: ["WhatsApp contact unlocked on a match", 5000],
 };
 export const ksh = (n) => `KSh ${n.toLocaleString("en-US")}`;
 export const priceOf = (b) => {
   const lines = [BASE_SITE, ...b.addons.map((k) => ADDONS[k])];
   const total = lines.reduce((sum, [, v]) => sum + v, 0);
-  const off = Math.max(5000, Math.round((total * 0.15) / 500) * 500);
+  const off = Math.round((total * 0.15) / 500) * 500;
   return { lines, total, off, now: total - off };
 };
 
@@ -602,15 +607,24 @@ export const AD_TIERS = [
   {
     key: "single",
     name: "Single Poster",
-    price: "2,000",
+    price: "2,500",
     unit: "per design",
     blurb: "One poster for one offer — a new item, a deal, an opening.",
     features: ["1 feed post or story", "Your logo and colours", "1 round of changes", "48-hour turnaround"],
   },
   {
+    key: "video",
+    name: "Video Ad",
+    price: "6,000",
+    unit: "per video",
+    blurb: "A voiced 15–20 second ad, full-screen for Reels, TikTok and Status.",
+    features: ["Script and voice-over", "Your photos or stock footage", "Captions burned in", "1 round of changes", "5-day turnaround"],
+  },
+  {
     key: "monthly",
     name: "Monthly Content",
-    price: "15,000",
+    was: "20,000",
+    price: "17,000",
     unit: "per month",
     blurb: "Your feed handled every month, so it never goes quiet.",
     features: ["12 feed posts + 4 stories a month", "One look across the whole month", "Planned with you at the start", "Cancel with a month's notice"],
@@ -618,7 +632,8 @@ export const AD_TIERS = [
   {
     key: "campaign",
     name: "Brand Campaign",
-    price: "20,000",
+    was: "25,000",
+    price: "21,000",
     unit: "one-off · up to 10 pieces",
     featured: true,
     blurb: "A full voice for the business — posts, stories and a billboard.",
@@ -628,7 +643,8 @@ export const AD_TIERS = [
   {
     key: "full",
     name: "Full Campaign",
-    price: "35,000",
+    was: "45,000",
+    price: "38,000",
     unit: "one-off · up to 18 pieces",
     blurb: "Everything for a launch — every format, stickers and a menu or price board.",
     features: ["Feed, story, square and billboard", "Logo and sticker sheet", "Menu, receipt or price-board post", "2 rounds of changes", "10-day turnaround"],
@@ -637,7 +653,7 @@ export const AD_TIERS = [
 ];
 
 export const AD_TERMS = "Ad spend on Instagram, Facebook or TikTok is paid by you, directly to the platform — it's never inside these prices.";
-export const AD_BUNDLE = "Book a campaign with any website and take KSh 3,000 off the campaign.";
+export const AD_BUNDLE = "Book a campaign with any website and take KSh 5,000 off the campaign.";
 
 /* ---------- the typographic site ----------
    Copy for the redesign, in Eden's own words from the pages above. Anything
