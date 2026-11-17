@@ -5,6 +5,7 @@ import { EMAIL, LINE, PACKAGES, SITE_NAV, waLink } from "./data";
 import { HashLink, Icon, Mark } from "./ui";
 import { useCart } from "./cart";
 import { Search } from "./Search";
+import { useSession } from "./supabase";
 
 /* The Services dropdown, set out like a hosting company's menu: grouped
    links with an icon, a name and one line each, and a coloured card on the
@@ -110,6 +111,7 @@ function Header() {
     leaveTimer.current = setTimeout(() => setMega(false), 180);
   };
   const cart = useCart();
+  const session = useSession();
 
   /* Search opens from the header button, Ctrl/⌘ K, or "/" when not typing. */
   const [searching, setSearching] = useState(false);
@@ -183,7 +185,7 @@ function Header() {
           <button type="button" className="cart-pill" onClick={() => setSearching(true)} aria-label="Search (Ctrl K)">
             <Icon name="search" size={17} />
           </button>
-          <Link to="/login" className="cart-pill" aria-label="Client login">
+          <Link to={session ? "/account" : "/login"} className={`cart-pill acct-pill ${session ? "is-in" : ""}`} aria-label={session ? "Your account" : "Log in or sign up"}>
             <Icon name="user" size={17} />
           </Link>
           <Link
@@ -227,6 +229,21 @@ function Header() {
               <span aria-hidden="true">→</span>
             </HashLink>
           ))}
+          {session ? (
+            <Link to="/account" onClick={close} className="sheet-acct" style={{ "--d": `${(SITE_NAV.length - 1) * 45}ms` }}>
+              Your account
+              <span aria-hidden="true">→</span>
+            </Link>
+          ) : (
+            <div className="sheet-auth" style={{ "--d": `${(SITE_NAV.length - 1) * 45}ms` }}>
+              <Link to="/login" onClick={close}>
+                Log in
+              </Link>
+              <Link to="/login?mode=signup" onClick={close}>
+                Sign up
+              </Link>
+            </div>
+          )}
           <Link
             to="/order"
             onClick={close}
