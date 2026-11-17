@@ -6,7 +6,6 @@ const ROWS = [
   ...CASE_STUDIES.map((s) => ({
     title: s.client,
     kind: CASE_META[s.client]?.sector ?? "",
-    stack: Object.fromEntries(s.spec).STACK,
     type: "Client",
     year: null,
     demo: s.demo,
@@ -14,7 +13,6 @@ const ROWS = [
   ...OTHER_BUILDS.filter((b) => b.demo?.startsWith("http")).map((b) => ({
     title: b.title,
     kind: b.kind,
-    stack: b.stack,
     type: "Self-initiated",
     year: b.year,
     demo: b.demo,
@@ -39,7 +37,6 @@ export default function Work() {
           <span>No.</span>
           <span>Project</span>
           <span>Type</span>
-          <span>Stack</span>
           <span>Year</span>
         </div>
         <ol className="index-list">
@@ -52,7 +49,6 @@ export default function Work() {
                   <small>{r.kind}</small>
                 </span>
                 <span className={`index-type ${r.type === "Client" ? "is-client" : ""}`}>{r.type}</span>
-                <span className="index-stack">{r.stack}</span>
                 <span className="index-year">{r.year ?? "—"}</span>
                 <span className="index-go" aria-hidden="true">
                   ↗
