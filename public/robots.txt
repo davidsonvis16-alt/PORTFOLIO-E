@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://tessy.co.ke/sitemap.xml
