@@ -6,7 +6,7 @@ export default function About() {
   return (
     <>
       <section className="wrap page-top" aria-labelledby="about-title">
-        <span className="idx rise">About Tess</span>
+        <span className="idx rise">About Tessy</span>
         <h1 id="about-title" className="page-title page-title-text rise">
           One team. Every poster and every line of code<span className="dot">.</span>
         </h1>

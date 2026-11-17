@@ -36,6 +36,7 @@ function Campaign({ c, i }) {
         <div>
           <h2 id={`${c.key}-title`} className="campaign-name">
             {c.name}
+            <span className="dot">.</span>
           </h2>
           <p className="campaign-sector">{c.sector}</p>
         </div>
@@ -47,7 +48,7 @@ function Campaign({ c, i }) {
         ))}
         <li>
           <a
-            href={waLink(`Hi Tess, I saw the ${c.name} ads. Could you do a campaign like that for my business?`)}
+            href={waLink(`Hi Tessy, I saw the ${c.name} ads. Could you do a campaign like that for my business?`)}
             target="_blank"
             rel="noopener noreferrer"
             className={`board-ask ${TONES[i % TONES.length]}`}
@@ -96,7 +97,7 @@ export default function Ads() {
           <span className="idx">00</span>
           <div>
             <h2 id="video-title" className="campaign-name">
-              Video ads
+              Video ads<span className="dot">.</span>
             </h2>
             <p className="campaign-sector">Voiced, 15–21 seconds</p>
           </div>

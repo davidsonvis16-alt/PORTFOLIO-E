@@ -3,30 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Tess — websites, apps and ad campaigns for businesses all over Kenya. Built to load on mobile data, fixed prices in shillings, M-Pesa built in." />
+    <meta name="description" content="Tessy — websites, apps and ad campaigns for businesses all over Kenya. Built to load on mobile data, fixed prices in shillings, M-Pesa built in." />
     <meta name="theme-color" content="#ffffff" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&family=Instrument+Serif:ital@1&display=swap" />
     <link rel="icon" type="image/svg+xml" href="/tess-mark.svg" />
-    <meta property="og:title" content="Tess — Websites, apps &amp; ads, Kenya" />
+    <meta property="og:title" content="Tessy — Websites, apps &amp; ads, Kenya" />
     <meta property="og:description" content="Websites, apps and ad campaigns for businesses all over Kenya." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://tess.co.ke/" />
-    <meta property="og:site_name" content="Tess" />
-    <link rel="canonical" href="https://tess.co.ke/" />
+    <meta property="og:site_name" content="Tessy" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Tess — Websites, apps &amp; ads, Kenya" />
+    <meta name="twitter:title" content="Tessy — Websites, apps &amp; ads, Kenya" />
     <meta name="twitter:description" content="Websites, apps and ad campaigns for businesses all over Kenya." />
-    <title>Tess — Websites, apps &amp; ads, Kenya</title>
+    <title>Tessy — Websites, apps &amp; ads, Kenya</title>
     <style>
-      /* Intro: the Tess mark on a white page for 1.3s, drawn before any JS loads. */
+      /* Intro: the Tessy mark on a white page for 1.3s, drawn before any JS loads. */
       #intro { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #ffffff; transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0.5s; }
       #intro.out { opacity: 0; visibility: hidden; }
       #intro span { font-family: "Inter", -apple-system, Arial, sans-serif; font-weight: 700; font-size: clamp(56px, 12vw, 120px); letter-spacing: -0.05em; line-height: 1; color: #111111; animation: intro-in 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
       #intro span { display: inline-flex; flex-direction: column; align-items: flex-start; }
+      #intro b i { font-style: italic; color: #e0479e; }
       #intro b { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; line-height: 0.72; font-size: 1.5em; }
-      #intro svg { width: 2.55em; height: auto; margin-top: 0.04em; transform-origin: left center; animation: intro-draw 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s both; }
+      #intro svg { width: 3.2em; height: auto; margin-top: 0.04em; transform-origin: left center; animation: intro-draw 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.45s both; }
       @keyframes intro-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
       @keyframes intro-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
       @keyframes intro-dot { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
@@ -35,7 +34,7 @@
     </style>
   </head>
   <body>
-    <div id="intro" aria-hidden="true"><span><b>Tess</b><svg viewBox="0 0 106 16"><path d="M3.2 9.6C17 7.1 33.4 8.6 49.6 8.9c15.8.3 31.4-1.6 44.9-2.9 1.6-.2 2.6 1.6 1.2 2.4-.6.3-1.5.4-2.6.6-14.6 2.3-29.6 4.6-45.1 4.4C33.1 13.2 18.6 12.1 4 12.7c-1.9.1-2.6-2.7-.8-3.1Z" fill="#111111"/><circle cx="101.6" cy="6.2" r="3.4" fill="#ff7ab6"/></svg></span></div>
+    <div id="intro" aria-hidden="true"><span><b><i>T</i>essy</b><svg viewBox="0 0 106 16"><path d="M3.2 9.6C17 7.1 33.4 8.6 49.6 8.9c15.8.3 31.4-1.6 44.9-2.9 1.6-.2 2.6 1.6 1.2 2.4-.6.3-1.5.4-2.6.6-14.6 2.3-29.6 4.6-45.1 4.4C33.1 13.2 18.6 12.1 4 12.7c-1.9.1-2.6-2.7-.8-3.1Z" fill="#111111"/><circle cx="101.6" cy="6.2" r="3.4" fill="#ff7ab6"/></svg></span></div>
     <script>
       /* Once per visit (browser tab session). The app calls __introDone
          when it has rendered; the intro holds until 1.3s have passed. */
@@ -68,7 +67,7 @@
         .ns ul { padding-left: 20px; }
       </style>
       <div class="ns">
-        <p>Tess — All over Kenya</p>
+        <p>Tessy — All over Kenya</p>
         <h1>Websites, apps and ads for businesses all over Kenya.</h1>
         <p>Websites that load on three bars of signal, and the posters and video ads that send customers to them. Fixed prices in shillings, M-Pesa built in, and we host it. The domain and database are yours.</p>
         <h2>Client work</h2>
@@ -85,7 +84,7 @@
           <li>Ad design — from KSh 2,500 a poster, KSh 6,000 a video ad. We host every site; the domain and database stay in your name.</li>
         </ul>
         <h2>Contact</h2>
-        <p>WhatsApp <a href="https://wa.me/254142614743">+254 142 614 743</a> · <a href="mailto:hello@tess.co.ke">hello@tess.co.ke</a> · <a href="https://tess.co.ke/">tess.co.ke</a></p>
+        <p>WhatsApp <a href="https://wa.me/254142614743">+254 142 614 743</a></p>
       </div>
     </noscript>
     <script type="module" src="/src/main.jsx"></script>

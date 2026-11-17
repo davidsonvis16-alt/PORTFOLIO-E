@@ -1,4 +1,5 @@
 import { AD_TIERS, EMAIL, LOCATION, PAY_STEPS, PRICING_TIERS, waLink } from "./data";
+import { Link } from "react-router-dom";
 import { SecHead } from "./ui";
 
 /* Sections shared by more than one page. */
@@ -59,24 +60,29 @@ export function Contact({ n = "05" }) {
         <SecHead n={n} title="Contact" />
         <div className="contact-main">
           <h2 id="contact-title" className="contact-title">
-            Tell us what you need built.
+            Tell us what you need built<span className="dot">.</span>
           </h2>
           <p className="contact-copy">WhatsApp is fastest, during working hours, East Africa time. Wherever you are in Kenya, you get a fixed price before any work starts.</p>
+          <Link to="/contact" className="act contact-write">
+            Or write to us <span aria-hidden="true">→</span>
+          </Link>
         </div>
         <div className="contact-side">
-          <a href={waLink("Hi Tess, I'd like to talk about a project.")} target="_blank" rel="noopener noreferrer" className="contact-big">
+          <a href={waLink("Hi Tessy, I'd like to talk about a project.")} target="_blank" rel="noopener noreferrer" className="contact-big">
             +254 142 614 743 <span aria-hidden="true">↗</span>
             <span className="sr">on WhatsApp (opens in a new tab)</span>
           </a>
           <dl className="contact-list">
-            <div>
-              <dt>Email</dt>
-              <dd>
-                <a href={`mailto:${EMAIL}`} className="ulink">
-                  {EMAIL}
-                </a>
-              </dd>
-            </div>
+            {EMAIL && (
+              <div>
+                <dt>Email</dt>
+                <dd>
+                  <a href={`mailto:${EMAIL}`} className="ulink">
+                    {EMAIL}
+                  </a>
+                </dd>
+              </div>
+            )}
             <div>
               <dt>Hours</dt>
               <dd>Working hours, East Africa time</dd>

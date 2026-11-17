@@ -1,6 +1,7 @@
 import { ADDONS, AD_BUNDLE, AD_TERMS, BASE_SITE, OFFER_ENDS, OTHER_BUILDS, ksh, priceOf, waLink } from "../data";
 import { AdRows, PriceRows, Steps } from "../blocks";
-import { SecHead } from "../ui";
+import { Link } from "react-router-dom";
+import { PayMethods, SecHead } from "../ui";
 
 export default function Rates() {
   const builds = [...OTHER_BUILDS].sort((a, b) => priceOf(b).total - priceOf(a).total);
@@ -13,11 +14,11 @@ export default function Rates() {
         </h1>
         <p className="page-sub rise">Fixed prices, agreed before any work starts. We host every website; the domain and database are yours. M-Pesa or bank transfer.</p>
         <nav className="jump rise" aria-label="Jump to">
-          <a href="#sites" className="ulink">Websites</a>
-          <a href="#addons" className="ulink">What adds to the price</a>
-          <a href="#builds" className="ulink">What the builds cost</a>
-          <a href="#ads" className="ulink">Ad design</a>
-          <a href="#paying" className="ulink">Paying</a>
+          <a href="#sites" className="pill-link">Websites</a>
+          <a href="#addons" className="pill-link">What adds to the price</a>
+          <a href="#builds" className="pill-link">What the builds cost</a>
+          <a href="#ads" className="pill-link">Ad design</a>
+          <a href="#paying" className="pill-link">Paying</a>
         </nav>
       </section>
 
@@ -26,7 +27,7 @@ export default function Rates() {
         <PriceRows />
         <div className="sec-end">
           <p>Something more complex? Marketplaces, customer accounts, multi-branch systems — scoped together and priced to the job.</p>
-          <a href={waLink("Hi Tess, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
+          <a href={waLink("Hi Tessy, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
             Talk it through <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -99,6 +100,12 @@ export default function Rates() {
       <section id="paying" className="wrap sec" aria-labelledby="paying-title">
         <SecHead n="05" title="How paying works" id="paying-title" note="Two payments, no surprises. We host the site; the domain, database and any paid services are in your name and yours to pay for." />
         <Steps />
+        <div className="pay-strip">
+          <PayMethods />
+          <Link to="/pay" className="act act-solid">
+            Pay an invoice <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </section>
     </>
   );

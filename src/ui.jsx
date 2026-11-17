@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { STACK_ICONS } from "./stackIcons";
-import { PLACEHOLDER } from "./data";
+import { PAY_METHODS, PLACEHOLDER } from "./data";
 
 /* Generic glyphs for entries with no public brand mark — never an imitation logo. */
 const GLYPHS = {
@@ -59,14 +59,14 @@ export function Icon({ name, size = 16, className = "" }) {
   );
 }
 
-/* The Tess mark: the name in an italic serif, like a signature, with an
-   ink-brush underline — thick in the middle, thin at the ends — that
-   finishes in a pink dot. Drawn, not built from shapes. */
+/* The Tessy mark: the name in an italic serif, like a signature, the T in
+   pink, with an ink-brush underline — thick in the middle, thin at the
+   ends — that finishes in a pink dot. Drawn, not built from shapes. */
 export function Mark({ className = "" }) {
   return (
-    <span className={`mark ${className}`} role="img" aria-label="Tess">
+    <span className={`mark ${className}`} role="img" aria-label="Tessy">
       <span className="mark-word" aria-hidden="true">
-        Tess
+        <span className="mark-t">T</span>essy
       </span>
       <svg className="mark-swash" viewBox="0 0 106 16" aria-hidden="true">
         <path d="M3.2 9.6C17 7.1 33.4 8.6 49.6 8.9c15.8.3 31.4-1.6 44.9-2.9 1.6-.2 2.6 1.6 1.2 2.4-.6.3-1.5.4-2.6.6-14.6 2.3-29.6 4.6-45.1 4.4C33.1 13.2 18.6 12.1 4 12.7c-1.9.1-2.6-2.7-.8-3.1Z" fill="#111111" />
@@ -354,8 +354,27 @@ export function BandHead({ n, title, id, note }) {
       <span className="idx">{n}</span>
       <h2 id={id} className="band-title">
         {title}
+        <span className="dot">.</span>
       </h2>
       {note && <p className="band-note">{note}</p>}
     </div>
+  );
+}
+
+/* How you can pay: the real marks in small white tiles, then Paystack. */
+export function PayMethods({ className = "" }) {
+  return (
+    <ul className={`paym ${className}`} aria-label="Payment methods">
+      {PAY_METHODS.map((m) => (
+        <li key={m.name} className="paym-tile">
+          <img src={m.logo} alt={m.name} loading="lazy" decoding="async" />
+          {m.label && <span aria-hidden="true">{m.label.replace(/^Airtel /, "")}</span>}
+        </li>
+      ))}
+      <li className="paym-via">
+        <span>secured by</span>
+        <img src="/pay/paystack.svg" alt="Paystack" loading="lazy" decoding="async" />
+      </li>
+    </ul>
   );
 }
