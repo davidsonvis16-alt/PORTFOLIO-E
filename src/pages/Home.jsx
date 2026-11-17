@@ -21,10 +21,10 @@ const WHO = [
   ["trainers", "w-pink"],
 ];
 
-/* The headline types itself out like a typewriter: black up to "for",
-   then the coloured word in its own colour, then "all over Kenya." Once it
-   reaches the full stop it keeps going — it backs up to the coloured word
-   and types the next one. */
+/* The headline types itself out once like a typewriter: black up to "for",
+   the coloured word in its own colour, then "all over Kenya." After the full
+   stop the sentence stays, and only the coloured word changes — turning
+   over to the next one every couple of seconds. */
 const PRE = "Websites, apps and ads for ";
 const SUF = "all over Kenya.";
 const LONGEST = WHO.reduce((a, [w]) => (w.length > a.length ? w : a), "");
@@ -34,6 +34,7 @@ function Typewriter() {
   const [i, setI] = useState(0);
   const [n, setN] = useState(calm ? Infinity : 0);
   const [phase, setPhase] = useState("type");
+  const [flipped, setFlipped] = useState(false);
   // Wait for the intro screen to lift, so the first line is typed in view.
   const [ready, setReady] = useState(() => typeof document === "undefined" || !document.documentElement.classList.contains("intro"));
   useEffect(() => {
@@ -48,18 +49,34 @@ function Typewriter() {
     if (calm || !ready) return;
     let t;
     if (phase === "type") {
-      if (n < end) t = setTimeout(() => setN(n + 1), n < PRE.length && i > 0 ? 0 : 55);
-      else t = setTimeout(() => setPhase("delete"), 1800);
-    } else if (n > PRE.length) {
-      t = setTimeout(() => setN(n - 1), 28);
+      if (n < end) t = setTimeout(() => setN(n + 1), 55);
+      else t = setTimeout(() => setPhase("done"), 600);
     } else {
+      // Typed once. From here only the coloured word changes, turning over.
       t = setTimeout(() => {
         setI((k) => (k + 1) % WHO.length);
-        setPhase("type");
-      }, 250);
+        setFlipped(true);
+      }, 2200);
     }
     return () => clearTimeout(t);
   }, [n, phase, end, i, calm, ready]);
+
+  if (calm || phase === "done") {
+    return (
+      <>
+        <span className="sr">Websites, apps and ads for businesses, schools, restaurants, churches, clinics, NGOs, shops and trainers, all over Kenya.</span>
+        <span aria-hidden="true">
+          {PRE}
+          <span className="turn">
+            <span key={word} className={`turn-word ${flipped ? "is-turning" : ""} ${tone}`}>
+              {word}
+            </span>
+          </span>
+          <span className="hero-line2">{SUF}</span>
+        </span>
+      </>
+    );
+  }
 
   const a = Math.min(n, PRE.length);
   const b = Math.max(0, Math.min(n - PRE.length, word.length));

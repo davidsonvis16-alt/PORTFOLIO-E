@@ -139,7 +139,7 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
 .mega-card-k { font-size: 13px; color: var(--card-sub); }
 .mega-card b { margin-top: auto; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
 .mega-card > span:nth-of-type(2) { font-size: 14px; color: var(--card-sub); }
-.mega-card-go { align-self: flex-end; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--blue); font-size: 18px; transition: transform 0.25s var(--ease); }
+.mega-card-go { align-self: flex-end; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); font-size: 18px; transition: transform 0.25s var(--ease); }
 .mega-card:hover .mega-card-go { transform: translateX(4px); }
 .hdr-end { grid-column: 9 / 13; grid-row: 1; justify-self: end; display: flex; align-items: center; gap: 8px; }
 .cart-pill { position: relative; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--paper-2); transition: background-color 0.2s var(--ease); }
@@ -196,6 +196,10 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
 .tw-ghost { visibility: hidden; }
 .tw-caret { display: inline-block; width: 0.07em; height: 0.82em; margin-left: 0.04em; vertical-align: -0.04em; background: var(--dot); animation: caret 1s steps(1) infinite; }
 @keyframes caret { 50% { opacity: 0; } }
+.turn { display: inline-block; perspective: 600px; vertical-align: bottom; }
+.turn-word { display: inline-block; transform-origin: 50% 60%; }
+.turn-word.is-turning { animation: turn-in 0.7s var(--ease) both; }
+@keyframes turn-in { from { opacity: 0; transform: rotateX(-90deg) translateY(0.15em); } to { opacity: 1; transform: none; } }
 .w-pink { color: #e0479e; }
 .hero-foot { display: flex; flex-direction: column; align-items: center; gap: 28px; }
 .hero-copy { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.45; letter-spacing: -0.02em; max-width: 50ch; color: var(--sub); }
