@@ -30,7 +30,7 @@ export default function Work() {
           Work<span className="dot">.</span>
         </h1>
         <p className="page-sub rise">
-          Every site here is live — open any one on your phone. The first three are client sites; the rest I built on my own, to try ideas a client could ask for tomorrow.
+          Every site here is live — open any one on your phone. The first three are client sites; the rest we built on our own, to try ideas a client could ask for tomorrow.
         </p>
       </section>
 
@@ -66,7 +66,7 @@ export default function Work() {
 
       <section className="wrap page-end">
         <p>Want one like these?</p>
-        <a href={waLink("Hi Eden, I saw your work. I'd like a site like one of these.")} target="_blank" rel="noopener noreferrer" className="act">
+        <a href={waLink("Hi Tess, I saw your work. I'd like a site like one of these.")} target="_blank" rel="noopener noreferrer" className="act">
           Ask on WhatsApp <span aria-hidden="true">↗</span>
         </a>
       </section>

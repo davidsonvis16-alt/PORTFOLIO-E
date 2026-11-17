@@ -11,7 +11,7 @@ export default function Rates() {
         <h1 id="rates-title" className="page-title rise">
           Prices<span className="dot">.</span>
         </h1>
-        <p className="page-sub rise">Fixed prices, agreed before any work starts. Free hosting on every website. M-Pesa or bank transfer.</p>
+        <p className="page-sub rise">Fixed prices, agreed before any work starts. We host every website; the domain and database are yours. M-Pesa or bank transfer.</p>
         <nav className="jump rise" aria-label="Jump to">
           <a href="#sites" className="ulink">Websites</a>
           <a href="#addons" className="ulink">What adds to the price</a>
@@ -26,7 +26,7 @@ export default function Rates() {
         <PriceRows />
         <div className="sec-end">
           <p>Something more complex? Marketplaces, customer accounts, multi-branch systems — scoped together and priced to the job.</p>
-          <a href={waLink("Hi Eden, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
+          <a href={waLink("Hi Tess, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
             Talk it through <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -52,7 +52,7 @@ export default function Rates() {
       </section>
 
       <section id="builds" className="wrap sec" aria-labelledby="builds-title">
-        <SecHead n="03" title="What the builds would cost" id="builds-title" note="My own builds, priced as if you asked for one like it today. Client prices stay between me and them." />
+        <SecHead n="03" title="What the builds would cost" id="builds-title" note="Our own builds, priced as if you asked for one like it today. Client prices stay between us and them." />
         <div className="table-wrap">
           <table className="cost">
             <thead>
@@ -97,7 +97,7 @@ export default function Rates() {
       </section>
 
       <section id="paying" className="wrap sec" aria-labelledby="paying-title">
-        <SecHead n="05" title="How paying works" id="paying-title" note="Two payments, no surprises. The Custom Build comes with a free domain." />
+        <SecHead n="05" title="How paying works" id="paying-title" note="Two payments, no surprises. We host the site; the domain, database and any paid services are in your name and yours to pay for." />
         <Steps />
       </section>
     </>

@@ -59,11 +59,19 @@ export function Icon({ name, size = 16, className = "" }) {
   );
 }
 
-/* The eden. signature: lowercase, heavy, black dot. */
+/* The Tess mark: the name in an italic serif, like a signature, with an
+   ink-brush underline — thick in the middle, thin at the ends — that
+   finishes in a pink dot. Drawn, not built from shapes. */
 export function Mark({ className = "" }) {
   return (
-    <span className={`mark ${className}`} aria-label="eden">
-      eden<i>.</i>
+    <span className={`mark ${className}`} role="img" aria-label="Tess">
+      <span className="mark-word" aria-hidden="true">
+        Tess
+      </span>
+      <svg className="mark-swash" viewBox="0 0 106 16" aria-hidden="true">
+        <path d="M3.2 9.6C17 7.1 33.4 8.6 49.6 8.9c15.8.3 31.4-1.6 44.9-2.9 1.6-.2 2.6 1.6 1.2 2.4-.6.3-1.5.4-2.6.6-14.6 2.3-29.6 4.6-45.1 4.4C33.1 13.2 18.6 12.1 4 12.7c-1.9.1-2.6-2.7-.8-3.1Z" fill="#111111" />
+        <circle cx="101.6" cy="6.2" r="3.4" fill="#ff7ab6" />
+      </svg>
     </span>
   );
 }
@@ -334,6 +342,20 @@ export function SecHead({ n, title, id, note }) {
         {title}
       </h2>
       {note && <p className="sec-note">{note}</p>}
+    </div>
+  );
+}
+
+/* Home-page section heading: number, a large title and a note, across the
+   full width so the cards underneath can use all twelve columns. */
+export function BandHead({ n, title, id, note }) {
+  return (
+    <div className="band-head">
+      <span className="idx">{n}</span>
+      <h2 id={id} className="band-title">
+        {title}
+      </h2>
+      {note && <p className="band-note">{note}</p>}
     </div>
   );
 }

@@ -6,18 +6,18 @@ export default function About() {
   return (
     <>
       <section className="wrap page-top" aria-labelledby="about-title">
-        <span className="idx rise">About eden.</span>
+        <span className="idx rise">About Tess</span>
         <h1 id="about-title" className="page-title page-title-text rise">
-          One person. Every poster and every line of code<span className="dot">.</span>
+          One team. Every poster and every line of code<span className="dot">.</span>
         </h1>
       </section>
 
       <section className="wrap sec" aria-label="Who builds it">
         <SecHead n="01" title="Who builds it" />
         <div className="prose" data-reveal>
-          <p className="prose-lead">I build websites and design ads for small businesses — restaurants, cafés, florists, shops — around Nairobi and Nakuru.</p>
+          <p className="prose-lead">We build websites and apps and design ads for businesses all over Kenya — shops, restaurants, schools, trainers, churches, NGOs and anyone with something to tell people.</p>
           <p>
-            Every one is held to the same standard: it has to look like it cost more than it did, and it has to load when the signal drops to three bars. No agency, no team. You deal with the person who designs the posters and writes the code, from the first message to the day it goes live.
+            Every one is held to the same standard: it has to look like it cost more than it did, and it has to load when the signal drops to three bars. You deal directly with the people who design the posters and write the code, from the first message to the day it goes live. We host what we build; the domain, database and accounts stay in your name.
           </p>
         </div>
       </section>

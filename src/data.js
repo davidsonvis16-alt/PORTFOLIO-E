@@ -61,6 +61,24 @@ export const CASE_STUDIES = [
     demo: "https://fidelc.vercel.app/",
     domain: "fidelc.vercel.app",
   },
+  {
+    n: "04",
+    client: "Aspire Safety Academy",
+    icon: "cap",
+    place: "Food safety training · Kenya",
+    need: "A CPD-approved food safety and hygiene trainer needed its courses online — food handlers, kitchen teams and managers learning on their phones, passing an assessment and getting a certificate anyone can check.",
+    constraint:
+      "A full learning platform — courses, lessons, assessments, certificates and payments — that still works for kitchen staff on mobile data between shifts.",
+    spec: [
+      ["STACK", "React Router · Supabase · Cloudflare"],
+      ["SCOPE", "Courses · Assessments · Certificates · Payments"],
+      ["TARGET", "Usable on a 3-bar connection"],
+      ["STATUS", "Live"],
+    ],
+    img: "/work/aspire.jpg",
+    demo: "https://aspiresafetyhygienesolutions.co.ke/",
+    domain: "aspiresafetyhygienesolutions.co.ke",
+  },
 ];
 
 /* Everything else — self-directed builds, not client engagements. Newest first. */
@@ -254,7 +272,7 @@ export const SKILLS = ["HTML", "CSS", "JavaScript", "React", "Next.js", "TypeScr
 /* Prices set 2026-11-08 against what Nairobi freelancers charge: a landing
    page for 15–25k, a business site for 35–60k, a site with ordering and
    M-Pesa checkout for 70k and up. End-of-year offer: about 15% off every
-   plan. Every plan: free hosting, 60% to start and 40% at launch. The
+   plan. Every plan: we host, 60% to start and 40% at launch. The
    monthly fee covers updates, fixes and keeping the site online. */
 export const OFFER_ENDS = "31 December";
 export const PRICING_TIERS = [
@@ -267,7 +285,7 @@ export const PRICING_TIERS = [
     split: ["9,000", "6,000"],
     methods: "M-Pesa",
     tag: "Save KSh 3,000",
-    perks: ["Free hosting"],
+    perks: ["Hosting included"],
     blurb: "One sharp page that gets you found and gets you messaged.",
     plus: "WHAT YOU GET",
     features: ["1 page, single layout", "WhatsApp button", "Mobile-first, built for 3 bars", "3-day turnaround"],
@@ -284,7 +302,7 @@ export const PRICING_TIERS = [
     methods: "M-Pesa or bank transfer",
     tag: "Save KSh 6,000",
     featured: true,
-    perks: ["Free hosting"],
+    perks: ["Hosting included"],
     blurb: "The full shopfront — menu, story, location and payments.",
     plus: "EVERYTHING IN LANDING, PLUS",
     features: ["Up to 5 pages", "Custom design, not a stock layout", "M-Pesa payments", "1 round of revisions", "7-day turnaround"],
@@ -300,7 +318,7 @@ export const PRICING_TIERS = [
     split: ["38,400", "25,600"],
     methods: "M-Pesa or bank transfer",
     tag: "Save KSh 11,000",
-    perks: ["Free hosting", "Free domain"],
+    perks: ["Hosting included"],
     blurb: "When the site has to run part of the business, not just describe it.",
     plus: "EVERYTHING IN BUSINESS, PLUS",
     features: ["Cart and M-Pesa checkout", "Bookings, search or listings", "Database behind the site", "Revisions scoped to the job", "Ongoing support"],
@@ -309,10 +327,10 @@ export const PRICING_TIERS = [
 ];
 
 export const PAY_STEPS = [
-  { n: "01", title: "Agree the scope", body: "Tell me what the business needs on WhatsApp. You get a fixed price before any work starts." },
+  { n: "01", title: "Agree the scope", body: "Tell us what the business needs on WhatsApp. You get a fixed price before any work starts." },
   { n: "02", title: "Pay 60% to start", body: "The deposit books your slot and work begins the same week." },
   { n: "03", title: "Review and approve", body: "You see the design first, then the built site, and sign it off." },
-  { n: "04", title: "Pay 40% at launch", body: "The balance is due when the site goes live — hosting included, free." },
+  { n: "04", title: "Pay 40% at launch", body: "The balance is due when the site goes live. We host it; the domain is registered in your name." },
 ];
 
 /* What a site costs, built up from what it does. Every build starts as a
@@ -595,7 +613,7 @@ export const SERVICES = [
   { n: "01", title: "Websites", body: "Landing pages to full shopfronts, built to load on mobile data." },
   { n: "02", title: "Ad campaigns", body: "Feed posts, stories and billboards with one idea running through them." },
   { n: "03", title: "Ordering & M-Pesa", body: "Menus, carts, bookings and checkout wired to how Kenya pays." },
-  { n: "04", title: "Hosting & upkeep", body: "Free hosting on every plan, and a monthly fee that keeps it running." },
+  { n: "04", title: "Hosting & upkeep", body: "We host it and keep it running for a monthly fee. The domain and database are yours." },
 ];
 
 /* Ad design packages, priced the way design work is sold in Nairobi:
@@ -656,11 +674,11 @@ export const AD_TERMS = "Ad spend on Instagram, Facebook or TikTok is paid by yo
 export const AD_BUNDLE = "Book a campaign with any website and take KSh 5,000 off the campaign.";
 
 /* ---------- the typographic site ----------
-   Copy for the redesign, in Eden's own words from the pages above. Anything
+   Copy for the redesign, in the studio's own words from the pages above. Anything
    not yet known is shown as a PLACEHOLDER rather than guessed. */
 export const PLACEHOLDER = "Placeholder";
-export const LOCATION = "Nairobi / Nakuru";
-export const LINE = "Websites and ad campaigns for businesses in Nairobi.";
+export const LOCATION = "All over Kenya";
+export const LINE = "Websites, apps and ad campaigns for businesses all over Kenya.";
 
 export const SITE_NAV = [
   { to: "/work", label: "Work" },
@@ -675,6 +693,7 @@ export const CASE_META = {
   "BakeMart Coffee House": { sector: "Coffee house", location: "Nakuru" },
   "Global Mogul": { sector: "Founder & author", location: PLACEHOLDER },
   "Fidel Castrol": { sector: "Student coaching", location: "Homa Bay" },
+  "Aspire Safety Academy": { sector: "Learning platform (LMS)", location: "Kenya" },
 };
 
 /* Counts taken from the data above, so they stay true as work is added. */
@@ -683,3 +702,29 @@ export const FACTS = [
   { value: OTHER_BUILDS.filter((b) => b.demo?.startsWith("http")).length, label: "self-initiated builds, all live" },
   { value: AD_COUNT, label: "ad pieces across six concept brands" },
 ];
+
+/* Every kind of site and app we take on. Shown as cards on the home page. */
+export const SITE_TYPES = [
+  { name: "Business sites", body: "Who you are, what you sell, where to find you — the shopfront every business needs.", size: "is-big" },
+  { name: "Online shops", body: "Cart, M-Pesa and card checkout, stock and orders in one place." },
+  { name: "Learning platforms (LMS)", body: "Courses, lessons, quizzes and student progress, for schools, trainers and coaches.", size: "is-tall" },
+  { name: "Information sites", body: "Get the word out — campaigns, NGOs, churches, county and community projects." },
+  { name: "School sites", body: "Admissions, fees, notices and a page for every department." },
+  { name: "Restaurants & ordering", body: "Menus customers read before they walk in, and orders without a phone call.", size: "is-wide" },
+  { name: "Bookings & appointments", body: "Salons, clinics, hotels and tours — pick a slot, pay the deposit." },
+  { name: "Listings & marketplaces", body: "Property, cars, jobs or anything else people search and filter." },
+  { name: "Web & mobile apps", body: "Accounts, dashboards and tools that run part of the business, on the phone or the web.", size: "is-wide" },
+  { name: "Landing pages", body: "One sharp page for one offer, launch or event." },
+  {
+    name: "Tools & automation",
+    body: "The jobs nobody should do by hand. WhatsApp that answers for you — order confirmations, booking reminders, replies after hours, a catalogue customers can browse in the chat — plus M-Pesa payment reminders, a daily sales report and stock alerts.",
+    size: "is-full",
+  },
+];
+
+/* Who owns what. We build and host; everything with the business's name
+   on it stays in the business's name. */
+export const OWNERSHIP = {
+  ours: "We host the site and keep it running.",
+  theirs: "The domain, database and any paid services are yours — registered in your name, on your account.",
+};
