@@ -24,41 +24,56 @@ function Header() {
   return (
     <header className="hdr">
       <div className="wrap hdr-row">
-        <Link to="/" className="hdr-logo" aria-label="eden. — home" onClick={close}>
-          <Mark />
-        </Link>
-        <nav className="hdr-nav" aria-label="Main">
-          {SITE_NAV.map((n) => (
-            <HashLink key={n.to} to={n.to} className="ulink" aria-current={isOn(n.to) ? "page" : undefined}>
-              {n.label}
-            </HashLink>
-          ))}
-        </nav>
-        <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="talk">
-          Start a project <span aria-hidden="true">↗</span>
-          <span className="sr">on WhatsApp (opens in a new tab)</span>
-        </a>
         <button
-          className="hdr-menu"
+          className={`hdr-menu ${open ? "is-open" : ""}`}
           onClick={() => setOpenAt(open ? null : here)}
           aria-expanded={open}
           aria-controls="menu"
         >
+          <span className="burger" aria-hidden="true">
+            <i />
+            <i />
+          </span>
           {open ? "Close" : "Menu"}
         </button>
+        <nav className="hdr-nav" aria-label="Main">
+          {SITE_NAV.map((n) => (
+            <HashLink key={n.to} to={n.to} className="pill-link" aria-current={isOn(n.to) ? "page" : undefined}>
+              {n.label}
+            </HashLink>
+          ))}
+        </nav>
+        <Link to="/" className="hdr-logo" aria-label="Tess — home" onClick={close}>
+          <Mark />
+        </Link>
+        <a href={waLink("Hi Tess, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="talk">
+          <span className="talk-long">Start a project</span>
+          <span className="talk-short" aria-hidden="true">
+            Chat
+          </span>
+          <span aria-hidden="true">↗</span>
+          <span className="sr">on WhatsApp (opens in a new tab)</span>
+        </a>
       </div>
 
       <div id="menu" className={`sheet ${open ? "is-open" : ""}`} hidden={!open}>
         <nav className="wrap sheet-nav" aria-label="Main">
           {SITE_NAV.map((n, i) => (
-            <HashLink key={n.to} to={n.to} onClick={close}>
-              <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+            <HashLink key={n.to} to={n.to} onClick={close} style={{ "--d": `${i * 45}ms` }}>
               {n.label}
+              <span aria-hidden="true">→</span>
             </HashLink>
           ))}
-          <a href={waLink("Hi Eden, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" onClick={close} className="sheet-talk">
-            <span className="idx">↗</span>
-            Start a project
+          <a
+            href={waLink("Hi Tess, I'd like to start a project.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={close}
+            className="sheet-talk"
+            style={{ "--d": `${SITE_NAV.length * 45}ms` }}
+          >
+            Start a project on WhatsApp
+            <span aria-hidden="true">↗</span>
           </a>
         </nav>
       </div>
@@ -70,7 +85,7 @@ function Footer() {
   return (
     <footer className="foot">
       <div className="wrap foot-row">
-        <Link to="/" aria-label="eden. — home">
+        <Link to="/" aria-label="Tess — home">
           <Mark />
         </Link>
         <p className="foot-tag">{LINE}</p>
@@ -85,14 +100,28 @@ function Footer() {
             Instagram
           </a>
         </nav>
-        <p className="foot-note">© {new Date().getFullYear()} eden. Ad campaigns shown are concepts, not client work.</p>
+        <p className="foot-note">© {new Date().getFullYear()} Tess. Ad campaigns shown are concepts, not client work.</p>
       </div>
     </footer>
   );
 }
 
+/* The floating chat pill (phones) waits until the top of the page — which
+   has its own WhatsApp buttons — has scrolled away. */
+function useScrolledPast(px) {
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const check = () => setPast(window.scrollY > px);
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    return () => window.removeEventListener("scroll", check);
+  }, [px]);
+  return past;
+}
+
 export default function Layout() {
   const { pathname, hash } = useLocation();
+  const showFab = useScrolledPast(700);
   useRevealAll();
 
   /* New page starts at the top; a #hash lands on its section, gliding
@@ -119,6 +148,10 @@ export default function Layout() {
         </Suspense>
       </main>
       <Footer />
+      <a href={waLink("Hi Tess, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className={`fab ${showFab ? "is-on" : ""}`} tabIndex={showFab ? undefined : -1}>
+        Start a project on WhatsApp <span aria-hidden="true">↗</span>
+        <span className="sr">(opens in a new tab)</span>
+      </a>
     </div>
   );
 }
