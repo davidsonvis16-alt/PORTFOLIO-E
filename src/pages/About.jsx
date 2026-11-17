@@ -1,4 +1,4 @@
-import { PROCESS_STEPS, SKILLS } from "../data";
+import { PROCESS_STEPS } from "../data";
 import { Contact } from "../blocks";
 import { SecHead } from "../ui";
 
@@ -35,16 +35,7 @@ export default function About() {
         </ol>
       </section>
 
-      <section className="wrap sec" aria-labelledby="tools-title">
-        <SecHead n="03" title="Built with" id="tools-title" />
-        <ul className="tools" data-reveal>
-          {SKILLS.map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
-      </section>
-
-      <Contact n="04" />
+      <Contact n="03" />
     </>
   );
 }

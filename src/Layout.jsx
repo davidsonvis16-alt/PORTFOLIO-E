@@ -4,6 +4,7 @@ import { useRevealAll } from "./tokens";
 import { EMAIL, LINE, PACKAGES, SITE_NAV, waLink } from "./data";
 import { HashLink, Icon, Mark } from "./ui";
 import { useCart } from "./cart";
+import { Search } from "./Search";
 
 /* The Services dropdown, set out like a hosting company's menu: grouped
    links with an icon, a name and one line each, and a coloured card on the
@@ -110,6 +111,20 @@ function Header() {
   };
   const cart = useCart();
 
+  /* Search opens from the header button, Ctrl/⌘ K, or "/" when not typing. */
+  const [searching, setSearching] = useState(false);
+  useEffect(() => {
+    const onKey = (e) => {
+      const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) || e.target.isContentEditable;
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || (e.key === "/" && !typing)) {
+        e.preventDefault();
+        setSearching(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
     <header className="hdr">
       <div className="wrap hdr-row">
@@ -165,6 +180,12 @@ function Header() {
           <Mark />
         </Link>
         <div className="hdr-end">
+          <button type="button" className="cart-pill" onClick={() => setSearching(true)} aria-label="Search (Ctrl K)">
+            <Icon name="search" size={17} />
+          </button>
+          <Link to="/login" className="cart-pill" aria-label="Client login">
+            <Icon name="user" size={17} />
+          </Link>
           <Link
             to="/order"
             className="cart-pill"
@@ -230,6 +251,7 @@ function Header() {
           </a>
         </nav>
       </div>
+      <Search open={searching} onClose={() => setSearching(false)} />
     </header>
   );
 }
