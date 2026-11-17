@@ -66,7 +66,7 @@ export default function Work() {
 
       <section className="wrap page-end">
         <p>Want one like these?</p>
-        <a href={waLink("Hi Tess, I saw your work. I'd like a site like one of these.")} target="_blank" rel="noopener noreferrer" className="act">
+        <a href={waLink("Hi Tessy, I saw your work. I'd like a site like one of these.")} target="_blank" rel="noopener noreferrer" className="act">
           Ask on WhatsApp <span aria-hidden="true">↗</span>
         </a>
       </section>

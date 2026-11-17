@@ -8,10 +8,13 @@ const Work = lazy(() => import("./pages/Work"));
 const Ads = lazy(() => import("./pages/Ads"));
 const Rates = lazy(() => import("./pages/Rates"));
 const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Order = lazy(() => import("./pages/Order"));
+const Pay = lazy(() => import("./pages/Pay"));
 import "./site.css";
 
 /* Older links land on the page or section that now holds them. */
-const OLD = { contact: "/#contact", projects: "/work", pricing: "/rates", skills: "/about", why: "/about", process: "/about" };
+const OLD = { projects: "/work", pricing: "/rates", skills: "/about", why: "/about", process: "/about" };
 
 export default function App() {
   return (
@@ -22,6 +25,9 @@ export default function App() {
         <Route path="ads" element={<Ads />} />
         <Route path="rates" element={<Rates />} />
         <Route path="about" element={<About />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="order" element={<Order />} />
+        <Route path="pay" element={<Pay />} />
         {Object.entries(OLD).map(([from, to]) => (
           <Route key={from} path={from} element={<Navigate to={to} replace />} />
         ))}

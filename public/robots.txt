@@ -1,4 +1,2 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://tess.co.ke/sitemap.xml

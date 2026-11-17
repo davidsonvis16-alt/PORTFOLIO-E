@@ -1,7 +1,9 @@
 /* All site content in one place. */
 
 export const WHATSAPP_NUMBER = "254142614743";
-export const EMAIL = "hello@tess.co.ke";
+/* The studio email. Empty until the real address is confirmed; every place
+   that shows an email hides itself while this is empty. */
+export const EMAIL = "";
 
 /* Real client work — live sites in use by the people they were built for. Numbers stay hedged
    until they are actually measured; no invented precision. */
@@ -684,7 +686,7 @@ export const SITE_NAV = [
   { to: "/ads", label: "Ads" },
   { to: "/rates", label: "Prices" },
   { to: "/about", label: "About" },
-  { to: "/#contact", label: "Contact" },
+  { to: "/contact", label: "Contact" },
 ];
 
 /* Where each client is and what kind of business it is. */
@@ -727,3 +729,44 @@ export const OWNERSHIP = {
   ours: "We host the site and keep it running.",
   theirs: "The domain, database and any paid services are yours — registered in your name, on your account.",
 };
+
+/* What can be ordered. "from" is the starting price in shillings, taken from
+   the plans above (Landing Page, Business Site, Custom Build) and the ad
+   price list; null means it is quoted once we know the job. */
+export const PACKAGES = [
+  { key: "business", group: "Websites", name: "Business site", icon: "home", from: 34000, blurb: "Who you are, what you sell, where to find you." },
+  { key: "restaurant", group: "Websites", name: "Restaurant site", icon: "utensils", from: 34000, blurb: "Menu, photos, location and WhatsApp orders." },
+  { key: "school", group: "Websites", name: "School site", icon: "cap", from: 34000, blurb: "Admissions, fees, notices and departments." },
+  { key: "info", group: "Websites", name: "Information site", icon: "book", from: 34000, blurb: "Campaigns, NGOs, churches, community projects." },
+  { key: "landing", group: "Websites", name: "Landing page", icon: "star", from: 15000, blurb: "One sharp page for one offer, launch or event." },
+  { key: "shop", group: "Platforms & apps", name: "Online shop", icon: "bag", from: 64000, blurb: "Cart, M-Pesa and card checkout, stock and orders." },
+  { key: "lms", group: "Platforms & apps", name: "Learning platform (LMS)", icon: "cap", from: 64000, blurb: "Courses, quizzes, certificates and payments." },
+  { key: "bookings", group: "Platforms & apps", name: "Bookings site", icon: "clock", from: 64000, blurb: "Pick a slot, pay the deposit, get reminders." },
+  { key: "listings", group: "Platforms & apps", name: "Listings & marketplace", icon: "search", from: 64000, blurb: "Property, cars, jobs — search and filter." },
+  { key: "app", group: "Platforms & apps", name: "Web or mobile app", icon: "device", from: 64000, blurb: "Accounts and dashboards that run the business." },
+  { key: "automation", group: "Platforms & apps", name: "Tools & WhatsApp automation", icon: "key", from: null, blurb: "Order confirmations, reminders, reports, alerts." },
+  { key: "poster", group: "Ads", name: "Poster", icon: "image", from: 2500, unit: "each", blurb: "One feed post or story for one offer." },
+  { key: "video", group: "Ads", name: "Video ad", icon: "play", from: 6000, unit: "each", blurb: "A voiced 15–20 second ad for Reels and TikTok." },
+  { key: "monthly", group: "Ads", name: "Monthly content", icon: "image", from: 17000, unit: "a month", blurb: "12 posts and 4 stories every month." },
+  { key: "campaign", group: "Ads", name: "Brand campaign", icon: "flame", from: 21000, blurb: "Posts, stories and a billboard in one voice." },
+];
+
+/* Looks to start from on the order form. The swatches only illustrate the
+   feel; the real colours come from the business. */
+export const STYLES = [
+  { key: "clean", name: "Clean & light", swatch: ["#ffffff", "#111111", "#2433ff"] },
+  { key: "bold", name: "Bold & colourful", swatch: ["#ff6a3d", "#ffd23f", "#111111"] },
+  { key: "dark", name: "Dark & premium", swatch: ["#111111", "#c9a227", "#f2f2f2"] },
+  { key: "warm", name: "Warm & natural", swatch: ["#f3e9dc", "#0b6e45", "#8a4b2a"] },
+];
+
+/* How clients can pay, all through Paystack. Keep in step with the channels
+   switched on in the Paystack dashboard. Logos: Visa and Airtel from Simple
+   Icons (CC0), M-Pesa and Paystack from Wikimedia Commons (public domain),
+   Mastercard's two-circle mark drawn to its brand colours. */
+export const PAY_METHODS = [
+  { name: "M-Pesa", logo: "/pay/mpesa.svg" },
+  { name: "Airtel Money", logo: "/pay/airtel.svg", label: "Airtel Money" },
+  { name: "Visa", logo: "/pay/visa.svg" },
+  { name: "Mastercard", logo: "/pay/mastercard.svg" },
+];

@@ -21,20 +21,71 @@ const WHO = [
   ["trainers", "w-pink"],
 ];
 
-function Turning() {
+/* The headline types itself out like a typewriter: black up to "for",
+   then the coloured word in its own colour, then "all over Kenya." Once it
+   reaches the full stop it keeps going — it backs up to the coloured word
+   and types the next one. */
+const PRE = "Websites, apps and ads for ";
+const SUF = "all over Kenya.";
+const LONGEST = WHO.reduce((a, [w]) => (w.length > a.length ? w : a), "");
+
+function Typewriter() {
+  const calm = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const [i, setI] = useState(0);
+  const [n, setN] = useState(calm ? Infinity : 0);
+  const [phase, setPhase] = useState("type");
+  // Wait for the intro screen to lift, so the first line is typed in view.
+  const [ready, setReady] = useState(() => typeof document === "undefined" || !document.documentElement.classList.contains("intro"));
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = setInterval(() => setI((n) => (n + 1) % WHO.length), 2200);
+    if (ready) return;
+    const t = setInterval(() => !document.documentElement.classList.contains("intro") && setReady(true), 100);
     return () => clearInterval(t);
-  }, []);
+  }, [ready]);
   const [word, tone] = WHO[i];
+  const end = PRE.length + word.length + SUF.length;
+
+  useEffect(() => {
+    if (calm || !ready) return;
+    let t;
+    if (phase === "type") {
+      if (n < end) t = setTimeout(() => setN(n + 1), n < PRE.length && i > 0 ? 0 : 55);
+      else t = setTimeout(() => setPhase("delete"), 1800);
+    } else if (n > PRE.length) {
+      t = setTimeout(() => setN(n - 1), 28);
+    } else {
+      t = setTimeout(() => {
+        setI((k) => (k + 1) % WHO.length);
+        setPhase("type");
+      }, 250);
+    }
+    return () => clearTimeout(t);
+  }, [n, phase, end, i, calm, ready]);
+
+  const a = Math.min(n, PRE.length);
+  const b = Math.max(0, Math.min(n - PRE.length, word.length));
+  const c = Math.max(0, n - PRE.length - word.length);
+  const caret = !calm && <span className="tw-caret" />;
+
   return (
     <>
-      <span className="sr">businesses, schools, restaurants, churches, clinics, NGOs, shops and trainers</span>
-      <span className="turn" aria-hidden="true">
-        <span key={word} className={`turn-word ${tone}`}>
-          {word}
+      <span className="sr">Websites, apps and ads for businesses, schools, restaurants, churches, clinics, NGOs, shops and trainers, all over Kenya.</span>
+      <span className="tw" aria-hidden="true">
+        <span className="tw-ghost">
+          {PRE}
+          {LONGEST}
+          <span className="hero-line2">{SUF}</span>
+        </span>
+        <span className="tw-live">
+          {PRE.slice(0, a)}
+          {n <= PRE.length && caret}
+          {b > 0 && <span className={tone}>{word.slice(0, b)}</span>}
+          {n > PRE.length && c === 0 && caret}
+          {c > 0 && (
+            <span className="hero-line2">
+              {SUF.slice(0, c)}
+              {caret}
+            </span>
+          )}
         </span>
       </span>
     </>
@@ -50,7 +101,7 @@ function Hero() {
         <span>End-of-year prices until {OFFER_ENDS}</span>
       </p>
       <h1 id="hero-title" className="hero-title rise">
-        Websites, apps and ads for <Turning /> <span className="hero-line2">all over Kenya.</span>
+        <Typewriter />
       </h1>
       <div className="hero-foot rise">
         <p className="hero-copy">
@@ -60,7 +111,7 @@ function Hero() {
           <Link to="/work" className="act act-solid">
             See the work <span aria-hidden="true">→</span>
           </Link>
-          <a href={waLink("Hi Tess, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="act act-quiet">
+          <a href={waLink("Hi Tessy, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="act act-quiet">
             Start on WhatsApp <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -288,7 +339,7 @@ function WhatWeBuild() {
       </ul>
       <div className="band-end">
         <p>Something not on the list? Tell us what it has to do — we'll scope it and price it.</p>
-        <a href={waLink("Hi Tess, we need a website or app built. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
+        <a href={waLink("Hi Tessy, we need a website or app built. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
           Ask on WhatsApp <span aria-hidden="true">↗</span>
         </a>
       </div>
