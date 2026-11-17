@@ -46,7 +46,7 @@ function ServicesMenu({ open, onClose }) {
             </ul>
           </div>
         ))}
-        <Link to="/order" className="mega-card t-blue" onClick={onClose}>
+        <Link to="/order" className="mega-card t-ink" onClick={onClose}>
           <span className="mega-card-k">Build your order</span>
           <b>Pick a package, show us the look you like, send it.</b>
           <span>
