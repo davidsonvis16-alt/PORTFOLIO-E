@@ -3,7 +3,7 @@
 export const WHATSAPP_NUMBER = "254142614743";
 /* The studio email. Empty until the real address is confirmed; every place
    that shows an email hides itself while this is empty. */
-export const EMAIL = "";
+export const EMAIL = "hello@tessy.co.ke";
 
 /* Real client work — live sites in use by the people they were built for. Numbers stay hedged
    until they are actually measured; no invented precision. */
