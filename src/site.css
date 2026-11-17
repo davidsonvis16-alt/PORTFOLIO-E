@@ -560,6 +560,30 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
 .login-soon { padding: 14px 16px; border-radius: 14px; background: var(--paper-2); font-size: 14px; color: var(--sub); }
 .form input:disabled { opacity: 0.6; cursor: not-allowed; }
 
+/* ---------- client area ---------- */
+.acct-pill.is-in { background: var(--ink); color: #fff; }
+.sheet-auth { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; animation: rise 0.45s var(--ease) var(--d, 0ms) both; }
+.sheet-nav .sheet-auth a { justify-content: center; font-size: 18px; animation: none; }
+.sheet-nav .sheet-auth a:last-child { background: var(--ink); color: #fff; }
+.sheet-nav .sheet-acct { margin-top: 12px; background: var(--ink); color: #fff; font-size: 18px; }
+.login-forgot { font-size: 14px; font-weight: 600; color: var(--sub); }
+.acct { display: flex; flex-direction: column; gap: 20px; padding-bottom: clamp(72px, 9vw, 120px); }
+.acct .pick-title { margin: 24px 0 0; }
+.acct-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.acct-card { display: flex; flex-direction: column; gap: 8px; padding: 20px; border-radius: var(--r); background: var(--paper-2); }
+.acct-card b { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.acct-card dl { display: flex; flex-direction: column; margin-top: 6px; }
+.acct-card dl div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.acct-card dt { color: var(--sub); }
+.acct-card .act { align-self: start; margin-top: 6px; }
+.acct-amount { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+.due { display: flex; flex-direction: column; align-items: flex-end; font-weight: 700; }
+.due small { font-size: 12px; font-weight: 600; color: var(--sub); }
+.due.is-soon small { color: #b35c00; }
+.due.is-late small { color: #c0362c; }
+.acct-end { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.acct-reset { padding: 20px; border-radius: var(--r); background: var(--paper-2); }
+
 /* Headings stay in heavy Inter and end in the logo's pink dot. Only the big
    page titles on the inner pages (Prices., Work., Ads., Contact.) are set
    in the logo's italic serif. */
@@ -601,6 +625,7 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
 @media (max-width: 860px) {
   /* Header: menu pill left, logo centre, chat pill right. */
   .hdr-navwrap, .cart-pill { display: none; }
+  .cart-pill.acct-pill { display: grid; width: 40px; height: 40px; }
   .search-hit { grid-template-columns: minmax(0, 1fr) auto; }
   .search-kind { grid-column: 1 / -1; }
   .hdr-menu { display: inline-flex; grid-column: 1 / 5; grid-row: 1; justify-self: start; }
