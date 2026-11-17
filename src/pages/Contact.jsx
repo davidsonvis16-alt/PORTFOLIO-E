@@ -1,10 +1,9 @@
-import { EMAIL, INSTAGRAM, waLink } from "../data";
+import { EMAIL, waLink } from "../data";
 import { Icon, PageTop } from "../ui";
 
 const WAYS = [
   { k: "Fastest — usually a reply within a couple of hours", name: "WhatsApp", value: "+254 142 614 743", href: waLink("Hi Tess, I'd like to talk about a project.") },
-  { k: "Write it out", name: "Email", value: EMAIL, href: `mailto:${EMAIL}` },
-  { k: "See the latest posts", name: "Instagram", value: "@vinn_y.codr", href: INSTAGRAM },
+  { k: "For quotes, documents and anything long", name: "Email", value: EMAIL, href: `mailto:${EMAIL}` },
 ];
 
 export default function Contact() {
