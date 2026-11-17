@@ -1,8 +1,7 @@
 /* All site content in one place. */
 
 export const WHATSAPP_NUMBER = "254142614743";
-export const INSTAGRAM = "https://www.instagram.com/vinn_y.codr/";
-export const EMAIL = "davidson.vis.16@gmail.com";
+export const EMAIL = "hello@tess.co.ke";
 
 /* Real client work — live sites in use by the people they were built for. Numbers stay hedged
    until they are actually measured; no invented precision. */

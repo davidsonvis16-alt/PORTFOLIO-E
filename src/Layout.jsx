@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useRevealAll } from "./tokens";
-import { EMAIL, INSTAGRAM, LINE, SITE_NAV, waLink } from "./data";
+import { EMAIL, LINE, SITE_NAV, waLink } from "./data";
 import { HashLink, Mark } from "./ui";
 
 function Header() {
@@ -91,13 +91,10 @@ function Footer() {
         <p className="foot-tag">{LINE}</p>
         <nav className="foot-links" aria-label="Contact">
           <a href={waLink()} target="_blank" rel="noopener noreferrer" className="ulink">
-            WhatsApp
+            WhatsApp +254 142 614 743
           </a>
           <a href={`mailto:${EMAIL}`} className="ulink">
-            Email
-          </a>
-          <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="ulink">
-            Instagram
+            {EMAIL}
           </a>
         </nav>
         <p className="foot-note">© {new Date().getFullYear()} Tess. Ad campaigns shown are concepts, not client work.</p>

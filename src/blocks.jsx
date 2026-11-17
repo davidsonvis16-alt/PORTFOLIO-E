@@ -1,4 +1,4 @@
-import { AD_TIERS, EMAIL, INSTAGRAM, LOCATION, PAY_STEPS, PRICING_TIERS, waLink } from "./data";
+import { AD_TIERS, EMAIL, LOCATION, PAY_STEPS, PRICING_TIERS, waLink } from "./data";
 import { SecHead } from "./ui";
 
 /* Sections shared by more than one page. */
@@ -78,12 +78,8 @@ export function Contact({ n = "05" }) {
               </dd>
             </div>
             <div>
-              <dt>Instagram</dt>
-              <dd>
-                <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="ulink">
-                  @vinn_y.codr <span aria-hidden="true">↗</span>
-                </a>
-              </dd>
+              <dt>Hours</dt>
+              <dd>Working hours, East Africa time</dd>
             </div>
             <div>
               <dt>Based in</dt>
