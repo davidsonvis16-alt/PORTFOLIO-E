@@ -42,7 +42,11 @@ export function useCart() {
 
   const add = useCallback((key) => update((list) => (list.some((it) => it.key === key) ? list : [...list, { key, qty: 1 }])), [update]);
   const remove = useCallback((key) => update((list) => list.filter((it) => it.key !== key)), [update]);
-  const setQty = useCallback((key, qty) => update((list) => list.map((it) => (it.key === key ? { ...it, qty: Math.max(1, Math.min(20, qty)) } : it))), [update]);
+  // Going below 1 takes the item out of the cart.
+  const setQty = useCallback(
+    (key, qty) => update((list) => (qty < 1 ? list.filter((it) => it.key !== key) : list.map((it) => (it.key === key ? { ...it, qty: Math.min(20, qty) } : it)))),
+    [update]
+  );
   const clear = useCallback(() => update(() => []), [update]);
 
   const lines = items.map((it) => ({ ...it, pkg: PACKAGES.find((p) => p.key === it.key) }));
