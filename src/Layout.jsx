@@ -328,7 +328,10 @@ function CookieNote() {
   };
   return (
     <div className="cookie" role="region" aria-label="Cookies">
-      <p>We use essential cookies only — to keep your cart and log-in working. No tracking, no ads.</p>
+      <p>
+        <span className="cookie-dot" aria-hidden="true" />
+        We use essential cookies only — to keep your cart and log-in working. No tracking, no ads<span className="dot">.</span>
+      </p>
       <button type="button" className="cookie-ok" onClick={ok}>
         OK
       </button>
