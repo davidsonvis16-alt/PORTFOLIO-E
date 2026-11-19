@@ -208,10 +208,10 @@ const T = {
     const longest = Math.max(...lines.map((l) => strip(l).length));
     const size = Math.round(Math.min(230, 960 / (longest * 0.47)));
     const big = `<div style="font:400 ${size}px/.84 Anton;text-transform:uppercase;letter-spacing:-1px;color:#fff">${lines.map((l, i) => (i === lines.length - 1 && lines.length > 1 ? `<span style="color:${A}">${strip(l)}</span>` : strip(l))).join("<br>")}</div>`;
-    const bar = `<div class="abs" style="left:56px;right:56px;top:46px;display:flex;justify-content:space-between;align-items:center;color:#fff">${b.logo("light", 0.6)}<span style="${mono};font-size:20px">${strip(p.kicker || p.badgeTop || "Ruaka")} / 05:00–22:00</span></div>`;
+    const bar = `<div class="abs" style="left:56px;right:56px;top:46px;display:flex;justify-content:space-between;align-items:center;color:#fff">${b.logo("light", 0.6)}<span style="${mono};font-size:20px">${strip(p.kicker || p.badgeTop || b.where)} / ${b.hours || ""}</span></div>`;
     const price = p.price ? `<div style="${mono};font-size:22px;color:#fff;margin-top:26px">${p.priceTop ? strip(p.priceTop) + " " : ""}<b style="font:400 92px/1 Anton;color:${A};letter-spacing:0">${p.price}</b> ${p.priceNote && p.priceNote !== "ONLY!" ? strip(p.priceNote) : ""}</div>` : "";
-    const foot = `<div class="abs" style="left:56px;right:56px;bottom:44px;border-top:2px solid #fff;padding-top:18px;display:flex;justify-content:space-between;color:#fff;${mono};font-size:22px"><span>${b.cta} — ${b.phone}</span><span>${strip(p.foot || p.sub && "" || "Ruaka, Nairobi")}</span></div>`;
-    const gray = "filter:grayscale(1) contrast(1.35) brightness(.85)";
+    const foot = `<div class="abs" style="left:56px;right:56px;bottom:44px;border-top:2px solid #fff;padding-top:18px;display:flex;justify-content:space-between;color:#fff;${mono};font-size:22px"><span>${b.cta} — ${b.phone}</span><span>${strip(p.foot || b.where)}</span></div>`;
+    const gray = p.colour ? "filter:saturate(1.15) contrast(1.05)" : "filter:grayscale(1) contrast(1.35) brightness(.85)";
     if (p.t === "menu") {
       const rows = p.items.map(([, name, note, price]) => `<div style="display:flex;align-items:baseline;justify-content:space-between;border-top:2px solid #333;padding:22px 0"><span><span style="font:400 76px/1 Anton;text-transform:uppercase;color:#fff">${name}</span><br><span style="${mono};font-size:20px;color:#999">${note}</span></span><span style="font:400 76px/1 Anton;color:${A}">${price}</span></div>`).join("");
       return `<div class="abs" style="inset:0;background:#000"></div>
@@ -293,5 +293,5 @@ export function page(b, p, dir) {
   return `<!doctype html><html><head><meta charset="utf-8">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?${FONTS}${b.fonts ? "&" + b.fonts : ""}&display=block">
   <style>${base(b)}</style></head>
-  <body>${T[b.raw ? "raw" : p.t === "menu" && b.menu ? b.menu : MAP[p.t]](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
+  <body>${T[b.raw || p.raw ? "raw" : p.t === "menu" && b.menu ? b.menu : MAP[p.t]](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
 }
