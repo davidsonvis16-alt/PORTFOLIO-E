@@ -35,10 +35,10 @@ export const BRANDS = {
     logo: (m, s) => `<span style="zoom:${s};display:inline-flex;align-items:flex-start;gap:4px;color:${ink(m, "#3B1430")}"><span style="font:italic 400 118px/.8 'Instrument Serif';letter-spacing:-.02em">Bella</span><svg width="34" height="34" viewBox="0 0 24 24" fill="${m === "light" ? "#fff" : "#B03A73"}"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg></span>`,
   },
   iron: {
-    name: "gymm", cta: "Join", paper: "#0E0E0E", dark: "#F2F2EE", pop: "#D4FF3A", onPop: "#0E0E0E", accentInk: "#D4FF3A", logoOn: "light", head: "caps", skew: 8, notes: false, captions: false,
+    name: "gymm", raw: true, cta: "Join", paper: "#000000", dark: "#FFFFFF", pop: "#FF3B1F",
+    fonts: "family=Anton&family=Space+Mono:wght@400;700",
     phone: "0700 000 900", where: "Ruaka · Nairobi",
-    caption: "6am crew", tape: "Open 5am – 10pm", chip: "Otieno just checked in", menuNote: "no joining fee",
-    logo: (m, s) => `<span style="zoom:${s};font:800 92px/1 'Bricolage Grotesque';letter-spacing:-.05em;color:${ink(m, "#0E0E0E")}">gym<span style="color:transparent;-webkit-text-stroke:3px ${ink(m, "#0E0E0E")}">m</span></span>`,
+    logo: (m, s) => `<span style="zoom:${s};display:inline-flex;align-items:center;gap:12px;color:#fff"><span style="width:18px;height:58px;background:#FF3B1F"></span><span style="font:400 80px/1 Anton;letter-spacing:2px">GYMM</span></span>`,
   },
   latch: {
     name: "haven", head: "serif", serifItalic: false, tapeKind: "none", notes: false, captions: false, cta: "View", paper: "#F3EEE5", dark: "#1C3A2E", pop: "#E7C07A", accentInk: "#B5552F",

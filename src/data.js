@@ -476,8 +476,8 @@ export const AD_CAMPAIGNS = [
     icon: "dumbbell",
     sector: "Gym · Nairobi",
     brief: "What it costs and when it's open, loud and clear.",
-    voice: "Black, off-white and lime.",
-    palette: ["#F2F2EE", "#0E0E0E", "#D4FF3A", "#FFFFFF"],
+    voice: "Black-and-white photos, condensed capitals, one red-orange.",
+    palette: ["#000000", "#FFFFFF", "#FF3B1F", "#999999"],
     cover: "01-no-joining-fee",
     pieces: [
       ["01-no-joining-fee", "No joining fee in November", "Feed 4:5"],
