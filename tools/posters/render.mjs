@@ -12,7 +12,7 @@ import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { BRANDS, POSTERS } from "./posters.mjs";
-import { page } from "./templates.mjs";
+import { page } from "./canva.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "../..");
@@ -46,6 +46,12 @@ const build = join(here, "out");
 mkdirSync(build, { recursive: true });
 for (const [key, p] of todo) {
   const html = join(build, `${key}-${p.file}.html`);
+  // Other photos from the same brand, for the print mounted on the main one.
+  const used = (q) => [q.img, q.hero, q.side, ...(q.items || []).map((i) => i[0]), ...(q.imgs || []).map((i) => i[0])].filter(Boolean);
+  const mine = new Set(used(p));
+  const pool = [...new Set(POSTERS[key].flatMap(used))].filter((f) => !mine.has(f) && !f.endsWith(".png"));
+  const k = POSTERS[key].indexOf(p);
+  p._alt = pool.slice(k % pool.length).concat(pool.slice(0, k % pool.length));
   writeFileSync(html, page(BRANDS[key], p, here));
   await send("Page.navigate", { url: `file://${html}` });
   await sleep(400);

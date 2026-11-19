@@ -384,13 +384,12 @@ export const AD_CAMPAIGNS = [
   {
     key: "stage46",
     n: "01",
-    name: "Stage 46",
+    name: "Chew",
     icon: "burger",
     sector: "Chicken & burgers · Nairobi",
-    brief:
-      "A chicken-and-burger joint that sells the deal first: big prices, cut-out food, a cold Coke in every combo and a number to call.",
-    voice: "Loud, yellow, condensed. Price bursts and call-to-order feet.",
-    palette: ["#FFD23F", "#111111", "#E8322B", "#FFFFFF"],
+    brief: "Chicken and burgers. Big prices, hot food, order by phone.",
+    voice: "Cream, brown and mustard. Heavy type, one italic word.",
+    palette: ["#FFF6E8", "#2B1206", "#FFB81C", "#C8321E"],
     cover: "01-crispy-chicken-burger",
     videoLength: "17s",
     pieces: [
@@ -399,22 +398,21 @@ export const AD_CAMPAIGNS = [
       ["02-two-burgers-one-price", "2 burgers, 1 price", "Feed 4:5"],
       ["03-family-feast", "8 pieces + chips & 2 Cokes", "Feed 4:5"],
       ["04-wings-on-fire", "Wings on fire", "Feed 4:5"],
-      ["05-the-fare", "The fare — menu", "Feed 4:5"],
+      ["05-the-fare", "The menu", "Feed 4:5"],
       ["06-free-coke", "Free Coke with any combo", "Feed 4:5"],
       ["07-lunch-sorted", "Lunch, sorted — 400/=", "Feed 4:5"],
-      ["08-every-stop", "Free delivery, every stop", "Feed 4:5"],
+      ["08-every-stop", "Free delivery to your door", "Feed 4:5"],
     ],
   },
   {
     key: "slice",
     n: "02",
-    name: "Slice 254",
+    name: "peeza",
     icon: "pizza",
     sector: "Pizza & delivery · Nairobi",
-    brief:
-      "A delivery pizza place with a weekly rhythm — Tuesday two-for-one, lunch slices, Friday party packs — and the price on every post.",
-    voice: "Tomato red and cheese yellow. Chunky rounded type.",
-    palette: ["#D62828", "#FFC93C", "#2B1A12", "#FFF3D6"],
+    brief: "Pizza with a weekly rhythm: Tuesday deals, lunch slices, party packs.",
+    voice: "Cream, tomato and dark brown.",
+    palette: ["#FFF3E9", "#2A120C", "#FF6A3D", "#D93A1E"],
     cover: "01-large-pepperoni",
     pieces: [
       ["01-large-pepperoni", "Large pepperoni + free Coke", "Feed 4:5"],
@@ -430,13 +428,12 @@ export const AD_CAMPAIGNS = [
   {
     key: "lineup",
     n: "03",
-    name: "The Lineup",
+    name: "kinyozi",
     icon: "scissors",
-    sector: "Barber club · Nairobi",
-    brief:
-      "A barbershop that sells precision and fills chairs: Friday fades, bring-a-friend, kids on Saturdays and a price menu.",
-    voice: "Barber-pole blue, tall condensed type, one red line.",
-    palette: ["#2B55FF", "#111111", "#E8322B", "#F3EEE4"],
+    sector: "Barbershop · Nairobi",
+    brief: "Fades, beards and kids' cuts, with the price on every post.",
+    voice: "Cool grey, navy and barber red.",
+    palette: ["#F1F2F4", "#0F1A2E", "#FF5446", "#1D4ED8"],
     cover: "01-fresh-fade-friday",
     videoLength: "16s",
     pieces: [
@@ -454,13 +451,12 @@ export const AD_CAMPAIGNS = [
   {
     key: "glow",
     n: "04",
-    name: "Glow Studio",
+    name: "Bella",
     icon: "star",
     sector: "Nails, lashes & braids · Nairobi",
-    brief:
-      "A beauty studio in Kilimani — gel nails, lashes and knotless braids — with soft pink, plum and italic serif headlines.",
-    voice: "Soft and confident. Italic serif, pink and plum.",
-    palette: ["#F4C5D2", "#3D1533", "#FFF7F9", "#C9A14A"],
+    brief: "Nails, lashes and braids in Kilimani.",
+    voice: "Blush, plum and an italic serif.",
+    palette: ["#FDF1F3", "#3B1430", "#F5A9C0", "#B03A73"],
     cover: "01-gel-nails",
     pieces: [
       ["01-gel-nails", "Gel nails from 800/=", "Feed 4:5"],
@@ -476,13 +472,12 @@ export const AD_CAMPAIGNS = [
   {
     key: "iron",
     n: "05",
-    name: "Iron Yard",
+    name: "gymm",
     icon: "dumbbell",
     sector: "Gym · Nairobi",
-    brief:
-      "A neighbourhood gym that answers the two questions people ask — what does it cost, and when are you open — in loud orange.",
-    voice: "Blunt. Orange and black, heavy condensed type.",
-    palette: ["#FF5A1F", "#0E0E0E", "#F2F2F0", "#FFFFFF"],
+    brief: "What it costs and when it's open, loud and clear.",
+    voice: "Black, off-white and lime.",
+    palette: ["#F2F2EE", "#0E0E0E", "#D4FF3A", "#FFFFFF"],
     cover: "01-no-joining-fee",
     pieces: [
       ["01-no-joining-fee", "No joining fee in November", "Feed 4:5"],
@@ -498,13 +493,12 @@ export const AD_CAMPAIGNS = [
   {
     key: "latch",
     n: "06",
-    name: "Latch Homes",
+    name: "haven",
     icon: "key",
     sector: "Rentals · Nairobi",
-    brief:
-      "A rental agency that answers what tenants actually worry about — viewing fees, deposits, real photos — with this week's listings and prices.",
-    voice: "Calm and warm. Forest green, terracotta and ochre.",
-    palette: ["#1F4A36", "#C8603A", "#C9A458", "#F3EEE4"],
+    brief: "Rentals with real photos, prices and no viewing fee.",
+    voice: "Forest green, cream and sand.",
+    palette: ["#F3EEE5", "#1C3A2E", "#E7C07A", "#B5552F"],
     cover: "01-viewing-fee-zero",
     videoLength: "21s",
     pieces: [
@@ -567,7 +561,7 @@ export const AD_TIERS = [
     featured: true,
     blurb: "Posts, stories and a billboard for one launch.",
     features: ["Posts and stories", "Billboard or banner", "Logo cleaned up", "Ready in 7 days"],
-    eg: ["The Lineup", "Latch Homes"],
+    eg: ["kinyozi", "haven"],
   },
   {
     key: "full",
@@ -577,7 +571,7 @@ export const AD_TIERS = [
     unit: "one-off · up to 18 pieces",
     blurb: "Everything for a launch.",
     features: ["Posts, stories and billboard", "Logo and stickers", "Menu or price board", "Ready in 10 days"],
-    eg: ["Stage 46"],
+    eg: ["Chew"],
   },
 ];
 

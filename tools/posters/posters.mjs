@@ -2,65 +2,49 @@
    saved as photos/<pexels id>.jpg; cut-outs are cut/<id>.png made by cutout.py.
    Phone numbers are placeholders (0700 000 …) — these are demos. */
 
-const F = (...fams) => fams.map((f) => `family=${f}`).join("&");
-const sparkle = (c) => `<svg width="38" height="38" viewBox="0 0 24 24" fill="${c}"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>`;
+/* Each brand: paper, dark ink, one pop colour, a logo, and the small bits of
+   copy the layouts reuse (photo caption, tape line, live-order chip). Fonts
+   are shared (Bricolage Grotesque, Instrument Serif, Caveat) — see canva.mjs.
+   Logos take a mode ("dark" on paper, "light" on a photo) and a scale. */
+const ink = (m, b) => (m === "light" ? "#fff" : b);
+const squiggle = (c, w = 250) => `<svg width="${w}" height="24" viewBox="0 0 250 24" style="display:block;margin:6px auto 0"><path d="M4 12 q 15 -11 30 0 t 30 0 t 30 0 t 30 0 t 30 0 t 30 0 t 30 0 t 30 0" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/></svg>`;
 
 export const BRANDS = {
   stage46: {
-    main: "#FFD23F", main2: "#FFC21A", ink: "#111111", onMain: "#111111", accent: "#E8322B", onAccent: "#ffffff", paper: "#ffffff",
-    display: "'Anton'", body: "'Archivo'", script: "'Yellowtail'",
-    fonts: F("Anton", "Yellowtail", "Archivo:wght@400;600;700;800"),
-    phone: "0700 000 046", where: "NGARA · WESTLANDS · CBD",
-    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:14px;background:#FFD23F;border:6px solid #111;border-radius:16px;padding:6px 20px 6px 16px;box-shadow:6px 6px 0 #111;color:#111">
-      <span style="font:400 92px/1 Anton">46</span><span style="line-height:1"><b style="font:400 46px/1 Anton;letter-spacing:2px">STAGE →</b><br><span style="font:800 15px Archivo;letter-spacing:3px">CHICKEN · BURGERS</span></span></div>`,
-  },
-  lineup: {
-    main: "#2B55FF", main2: "#1F45E6", ink: "#111111", ink2: "#111111", onMain: "#ffffff", accent: "#E8322B", onAccent: "#ffffff", paper: "#F3EEE4",
-    display: "'Bebas Neue'", body: "'Inter'", script: "'Permanent Marker'", track: "1px",
-    fonts: F("Bebas+Neue", "Permanent+Marker", "Inter:wght@400;600;700;800"),
-    phone: "0700 000 101", where: "NGONG ROAD · NAIROBI",
-    logo: (m, s) => `<div style="zoom:${s};color:${m === "chip" ? "#111" : "#fff"};line-height:1">
-      <div style="font:400 92px/.9 'Bebas Neue';letter-spacing:5px;position:relative;display:inline-block">THE LINEUP<i style="position:absolute;left:-6px;right:-6px;bottom:-4px;height:6px;background:#E8322B"></i></div>
-      <div style="font:700 16px Inter;letter-spacing:7px;margin-top:14px">BARBER CLUB · NAIROBI</div></div>`,
-  },
-  latch: {
-    main: "#1F4A36", main2: "#24573F", ink: "#1F2A24", ink2: "#1F4A36", onMain: "#F3EEE4", accent: "#C8603A", onAccent: "#ffffff", accent2: "#C8603A", paper: "#F3EEE4",
-    display: "'Fraunces'", body: "'DM Sans'", script: "'Caveat'", caps: false, track: "-2px", pop: "#C9A458", phoneFont: "'DM Sans'",
-    css: ".d{font-weight:600}",
-    fonts: F("Fraunces:opsz,wght@9..144,600", "Caveat:wght@600", "DM+Sans:wght@400;600;700;800"),
-    phone: "0700 000 707", where: "WESTLANDS · KILIMANI · KILELESHWA",
-    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:16px;color:${m === "chip" ? "#1F4A36" : "#F3EEE4"}">
-      <span style="width:70px;height:86px;border-radius:14px;background:${m === "chip" ? "#1F4A36" : "#F3EEE4"};color:${m === "chip" ? "#F3EEE4" : "#1F4A36"};display:grid;place-items:center;font:600 50px Fraunces;position:relative">L<i style="position:absolute;top:-14px;width:30px;height:22px;border:5px solid currentColor;border-bottom:0;border-radius:16px 16px 0 0;color:${m === "chip" ? "#1F4A36" : "#F3EEE4"}"></i></span>
-      <span style="line-height:1"><span style="font:600 84px/.9 Fraunces;letter-spacing:-2px">latch</span><br><span style="font:700 15px 'DM Sans';letter-spacing:6px">HOMES · NAIROBI</span></span></div>`,
+    name: "Chew", cta: "Order", paper: "#FFF6E8", dark: "#2B1206", pop: "#FFB81C", accentInk: "#C8321E",
+    phone: "0700 000 046", where: "Ngara · Westlands · CBD",
+    caption: "hot & crispy", tape: "Crispy · Saucy · Hot", chip: "Achieng just ordered 2 burgers", menuNote: "all hot, all day",
+    logo: (m, s) => `<div style="zoom:${s};color:${ink(m, "#2B1206")};display:inline-block;line-height:1;text-align:center"><div style="font:600 72px 'Bricolage Grotesque';letter-spacing:.42em;margin-right:-.42em">CHEW</div>${squiggle("#FFB81C")}</div>`,
   },
   slice: {
-    main: "#D62828", main2: "#B71F1F", ink: "#2B1A12", ink2: "#2B1A12", onMain: "#FFF3D6", accent: "#FFC93C", onAccent: "#2B1A12", accent2: "#D62828", paper: "#FFF3D6",
-    display: "'Lilita One'", body: "'Poppins'", script: "'Pacifico'",
-    fonts: F("Lilita+One", "Pacifico", "Poppins:wght@400;600;700;800"),
-    phone: "0700 000 254", where: "KILIMANI · YAYA · KILELESHWA",
-    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:14px">
-      <span style="width:96px;height:96px;border-radius:50%;background:#FFC93C;display:grid;place-items:center;border:5px solid ${m === "chip" ? "#D62828" : "#FFF3D6"}"><svg width="58" height="58" viewBox="0 0 24 24"><path d="M2 5c6-3 14-3 20 0L12 23z" fill="#D62828"/><path d="M4.4 7.6c5-2 10.2-2 15.2 0" stroke="#FFF3D6" stroke-width="1.6" fill="none"/><circle cx="10" cy="11" r="1.6" fill="#FFF3D6"/><circle cx="14" cy="14" r="1.4" fill="#FFF3D6"/></svg></span>
-      <span style="font:400 66px/.86 'Lilita One';color:${m === "chip" ? "#D62828" : "#FFF3D6"}">SLICE<br><span style="color:${m === "chip" ? "#2B1A12" : "#FFC93C"}">254</span></span></div>`,
+    name: "peeza", cta: "Order", paper: "#FFF3E9", dark: "#2A120C", pop: "#FF6A3D", accentInk: "#D93A1E",
+    phone: "0700 000 254", where: "Kilimani · Yaya · Kileleshwa",
+    caption: "fresh out the oven", tape: "Wood-fired in Yaya", chip: "Kevo just ordered a large pepperoni", menuNote: "large · 12 inch",
+    logo: (m, s) => `<span style="zoom:${s};font:800 92px/1 'Bricolage Grotesque';letter-spacing:-.06em;color:${ink(m, "#2A120C")}">peeza<span style="color:#FF6A3D">.</span></span>`,
+  },
+  lineup: {
+    name: "kinyozi", cta: "Book", paper: "#F1F2F4", dark: "#0F1A2E", pop: "#FF5446", accentInk: "#E0352B",
+    phone: "0700 000 101", where: "Ngong Road · Nairobi",
+    caption: "fresh fade", tape: "Walk-ins till 9pm", chip: "Brian just booked a 6pm fade", menuNote: "walk-ins welcome",
+    logo: (m, s) => `<div style="zoom:${s};display:inline-block;color:${ink(m, "#0F1A2E")}"><div style="font:800 88px/1 'Bricolage Grotesque';letter-spacing:-.05em">kinyozi</div><div style="height:12px;margin-top:8px;background:repeating-linear-gradient(-45deg,#E63B2E 0 12px,#fff 12px 24px,#1D4ED8 24px 36px,#fff 36px 48px)"></div></div>`,
   },
   glow: {
-    main: "#F4C5D2", main2: "#EDB0C2", ink: "#3D1533", ink2: "#3D1533", onMain: "#3D1533", accent: "#3D1533", onAccent: "#F4C5D2", paper: "#FFF7F9",
-    display: "'Playfair Display'", body: "'Poppins'", script: "'Great Vibes'", caps: false, track: "-1px", phoneFont: "'Poppins'",
-    css: ".d{font-weight:700;font-style:italic}",
-    fonts: F("Playfair+Display:ital,wght@1,700", "Great+Vibes", "Poppins:wght@400;600;700;800"),
-    phone: "0700 000 333", where: "GLOW STUDIO · KILIMANI",
-    logo: (m, s) => `<div style="zoom:${s};color:${m === "light" ? "#fff" : "#3D1533"};line-height:1">
-      <span style="display:inline-flex;align-items:flex-start;gap:4px"><span style="font:italic 700 96px/.9 'Playfair Display'">glow</span>${sparkle(m === "light" ? "#F4C5D2" : "#3D1533")}</span>
-      <div style="font:700 15px Poppins;letter-spacing:8px;margin-top:6px">STUDIO · KILIMANI</div></div>`,
+    name: "Bella", cta: "Book", paper: "#FDF1F3", dark: "#3B1430", pop: "#F5A9C0", accentInk: "#B03A73",
+    phone: "0700 000 333", where: "Kilimani · Nairobi",
+    caption: "fresh set", tape: "Nails · Lashes · Braids", chip: "Wanjiru just booked gel nails", menuNote: "open till 8pm",
+    logo: (m, s) => `<span style="zoom:${s};display:inline-flex;align-items:flex-start;gap:4px;color:${ink(m, "#3B1430")}"><span style="font:italic 400 118px/.8 'Instrument Serif';letter-spacing:-.02em">Bella</span><svg width="34" height="34" viewBox="0 0 24 24" fill="${m === "light" ? "#fff" : "#B03A73"}"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg></span>`,
   },
   iron: {
-    main: "#FF5A1F", main2: "#F04A10", ink: "#0E0E0E", ink2: "#0E0E0E", onMain: "#0E0E0E", accent: "#0E0E0E", onAccent: "#FF5A1F", paper: "#F2F2F0",
-    display: "'Oswald'", body: "'Barlow'", script: "'Permanent Marker'",
-    css: ".d{font-weight:700}",
-    fonts: F("Oswald:wght@700", "Permanent+Marker", "Barlow:wght@400;600;700;800"),
-    phone: "0700 000 900", where: "IRON YARD · RUAKA",
-    logo: (m, s) => `<div style="zoom:${s};display:inline-flex;align-items:center;gap:14px;color:${m === "light" ? "#fff" : "#0E0E0E"}">
-      <span style="background:${m === "on" ? "#0E0E0E" : "#FF5A1F"};color:${m === "on" ? "#FF5A1F" : "#0E0E0E"};font:700 64px/1 Oswald;padding:6px 16px;transform:skew(-10deg)">IY</span>
-      <span style="font:700 50px/.92 Oswald;letter-spacing:3px">IRON<br>YARD</span></div>`,
+    name: "gymm", cta: "Join", paper: "#F2F2EE", dark: "#0E0E0E", pop: "#D4FF3A",
+    phone: "0700 000 900", where: "Ruaka · Nairobi",
+    caption: "6am crew", tape: "Open 5am – 10pm", chip: "Otieno just checked in", menuNote: "no joining fee",
+    logo: (m, s) => `<span style="zoom:${s};font:800 92px/1 'Bricolage Grotesque';letter-spacing:-.05em;color:${ink(m, "#0E0E0E")}">gym<span style="color:transparent;-webkit-text-stroke:3px ${ink(m, "#0E0E0E")}">m</span></span>`,
+  },
+  latch: {
+    name: "haven", cta: "View", paper: "#F3EEE5", dark: "#1C3A2E", pop: "#E7C07A", accentInk: "#B5552F",
+    phone: "0700 000 707", where: "Westlands · Kilimani · Kileleshwa",
+    caption: "the real flat", tape: "No viewing fee", chip: "Amina just booked a viewing", menuNote: "no viewing fee",
+    logo: (m, s) => `<span style="zoom:${s};display:inline-block;position:relative;color:${ink(m, "#1C3A2E")}"><svg width="70" height="26" viewBox="0 0 70 26" style="position:absolute;left:30px;top:-14px"><path d="M4 24 L35 4 L66 24" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="miter"/></svg><span style="font:italic 400 112px/.85 'Instrument Serif';letter-spacing:-.02em">haven</span></span>`,
   },
 };
 
@@ -74,16 +58,16 @@ export const POSTERS = {
       price: "550/=", burstStyle: "left:20px;top:900px;width:250px;height:250px", script: "Double up!", scriptRight: 70 },
     { file: "03-family-feast", title: "8 pieces + chips & 2 Cokes", t: "photo", img: "14686447.jpg", pos: "50% 62%", big: "8", what: "PIECES", what2: "+ CHIPS & 2 COKES · FOR", price: "1,200", badge: "Family feast!",
       hero: "9706990.png", heroStyle: "left:770px;top:860px;width:210px;height:460px;transform:rotate(12deg)" },
-    { file: "04-wings-on-fire", title: "Wings on fire", t: "split", img: "12178045.jpg", pos: "50% 45%", bg: "#111", headInk: "#fff", kickInk: "#FFD23F", kicker: "NEW ON THE ROUTE",
+    { file: "04-wings-on-fire", title: "Wings on fire", t: "split", img: "12178045.jpg", pos: "50% 45%", bg: "#111", headInk: "#fff", kickInk: "#FFD23F", kicker: "NEW ON THE MENU",
       lines: ["Wings", "on fire."], sub: "10 hot wings, chips and a cooling dip. Sweat included.", price: "650/=", burstBg: "#FFD23F", burstInk: "#111" },
-    { file: "05-the-fare", title: "The fare — menu", t: "menu", bg: "#111", headInk: "#FFD23F", priceInk: "#FFD23F", head: "The Fare", kicker: "MENU · ROUTE 46", foot: "+ COKE 80/=",
-      items: [["551991.jpg", "Stage Burger", "Beef, cheese, chips", "450", "65% 50%"], ["6045036.jpg", "Crispy Chicken", "Fried thigh, slaw, sauce", "480", "50% 55%"], ["12178045.jpg", "6 Hot Wings", "With a cooling dip", "400", "50% 30%"], ["33254639.jpg", "Tenders", "4 pieces + chips", "420", "50% 50%"]] },
+    { file: "05-the-fare", title: "The fare — menu", t: "menu", bg: "#111", headInk: "#FFD23F", priceInk: "#FFD23F", head: "The Menu", kicker: "MENU · NAIROBI", foot: "+ COKE 80/=",
+      items: [["551991.jpg", "Chew Burger", "Beef, cheese, chips", "450", "65% 50%"], ["6045036.jpg", "Crispy Chicken", "Fried thigh, slaw, sauce", "480", "50% 55%"], ["12178045.jpg", "6 Hot Wings", "With a cooling dip", "400", "50% 30%"], ["33254639.jpg", "Tenders", "4 pieces + chips", "420", "50% 50%"]] },
     { file: "06-free-coke", title: "Free Coke with any combo", t: "hero", lines: ["Free", "Coke."], size: 200, ray1: "#FFD23F", ray2: "#FFC21A",
-      hero: "7429792.png", heroStyle: "left:330px;top:520px;width:400px;height:660px;transform:rotate(-8deg)", price: "FREE", priceTop: "WITH ANY", priceNote: "COMBO", burstStyle: "right:50px;top:560px;width:280px;height:280px", foot: "Every combo, every stop." },
+      hero: "7429792.png", heroStyle: "left:330px;top:520px;width:400px;height:660px;transform:rotate(-8deg)", price: "FREE", priceTop: "WITH ANY", priceNote: "COMBO", burstStyle: "right:50px;top:560px;width:280px;height:280px", foot: "Every combo." },
     { file: "07-lunch-sorted", title: "Lunch, sorted — 400/=", t: "frame", img: "12118979.jpg", pos: "50% 55%", kicker: "LUNCH STOP · 12–3PM", lines: ["Lunch,", "sorted."],
       sub: "2 pieces, chips and a soda. Out in five minutes.", price: "400/=" },
     { file: "08-every-stop", title: "Free delivery, every stop", t: "collage", imgs: [["551991.jpg", "55% 50%"], ["4113625.jpg", "50% 55%"], ["37228289.jpg", "40% 50%"], ["9207184.jpg", "50% 30%"]],
-      badgeTop: "FREE DELIVERY", badge: "Every<br>stop.", badgeNote: "Ngara · Westie · CBD", foot: "Order till 10pm" },
+      badgeTop: "FREE DELIVERY", badge: "To your door", badgeNote: "Ngara · Westie · CBD", foot: "Order till 10pm" },
   ],
   slice: [
     { file: "01-large-pepperoni", title: "Large pepperoni + free Coke", t: "stack", lines: ["Large", "Pepperoni"], size: 150, headInk: "#FFF3D6", sub: "+ a free Coke, every time", subInk: "#FFC93C",
@@ -126,7 +110,7 @@ export const POSTERS = {
     { file: "02-no-agent-drama", title: "No agent drama", t: "bogo", lines: ["No agent", "drama."], size: 180, headInk: "#F3EEE4", kicker: "DEPOSIT IN TWO PARTS", kickInk: "#C9A458",
       hero: "7167073.jpg", shape: "arch", pos: "40% 50%", heroStyle: "left:300px;top:600px;width:480px;height:600px;box-shadow:0 26px 50px rgba(0,0,0,.25)", side: "6934170.jpg", sideShape: "ring", sideStyle: "right:30px;top:640px;width:250px;height:250px",
       script: "Just keys.", scriptRight: 50, callLine: "Viewings:", button: "Book a viewing" },
-    { file: "03-two-bed-kileleshwa", title: "2 bed, Kileleshwa — 45K", t: "photo", img: "18285958.jpg", pos: "45% 50%", big: "2", what: "BEDROOMS", what2: "KILELESHWA · LIFT · PARKING", price: "45K", badge: "Per month", ctaTop: "TO VIEW, CALL", where: "LATCH HOMES · NAIROBI", tagLeft: 250 },
+    { file: "03-two-bed-kileleshwa", title: "2 bed, Kileleshwa — 45K", t: "photo", img: "18285958.jpg", pos: "45% 50%", big: "2", what: "BEDROOMS", what2: "KILELESHWA · LIFT · PARKING", price: "45K", badge: "Per month", ctaTop: "TO VIEW, CALL", where: "HAVEN · NAIROBI", tagLeft: 250 },
     { file: "04-checked-in-person", title: "Every listing checked in person", t: "split", img: "6934170.jpg", pos: "50% 50%", headInk: "#F3EEE4", kickInk: "#C9A458", kicker: "BEDSITTER TO BUNGALOW",
       lines: ["Checked in", "person."], size: 130, sub: "We walk every home before you see it. The photos are the real flat.", foot: "NAIROBI" },
     { file: "05-this-week", title: "This week's homes", t: "menu", bg: "#1F4A36", headInk: "#C9A458", priceInk: "#C9A458", head: "This week", kicker: "RENT PER MONTH", footBg: "#C8603A", footInk: "#fff", foot: "NO VIEWING FEE",
@@ -154,7 +138,7 @@ export const POSTERS = {
       hero: "2011414.jpg", shape: "ring", pos: "50% 30%", heroStyle: "left:240px;top:520px;width:600px;height:600px", price: "DEC", priceTop: "BOOKING", priceNote: "& JAN", burstStyle: "right:40px;top:520px;width:270px;height:270px", foot: "Trials on weekdays" },
     { file: "07-bring-your-pinterest", title: "Bring your Pinterest", t: "frame", img: "7066298.jpg", pos: "50% 50%", kicker: "NAIL ART", lines: ["Bring your", "Pinterest."], size: 110, sub: "Show us the picture. We'll match it — or tell you honestly if we can't." },
     { file: "08-first-visit", title: "First visit, 20% off", t: "collage", imgs: [["34871553.jpg", "50% 45%"], ["3997392.jpg", "50% 50%"], ["20758448.jpg", "50% 50%"], ["30062508.jpg", "50% 30%"]],
-      badgeTop: "FIRST VISIT", badge: "20% off", badgeSize: 110, badgeNote: "Any service, any day", foot: "Glow Studio, Kilimani" },
+      badgeTop: "FIRST VISIT", badge: "20% off", badgeSize: 110, badgeNote: "Any service, any day", foot: "Bella, Kilimani" },
   ],
   iron: [
     { file: "01-no-joining-fee", title: "No joining fee in November", t: "stack", align: "left", lines: ["No", "joining", "fee."], size: 170, top: 220, headInk: "#0E0E0E", sub: "all of November", subInk: "#fff",
@@ -171,6 +155,6 @@ export const POSTERS = {
       hero: "16679868.png", heroStyle: "left:360px;top:460px;width:360px;height:620px;transform:rotate(-10deg)", price: "FREE", priceTop: "FIRST", priceNote: "WEEK", burstStyle: "right:50px;top:560px;width:270px;height:270px", foot: "Walk in, we'll show you round" },
     { file: "07-five-to-ten", title: "Open 5am to 10pm", t: "frame", img: "4720764.jpg", pos: "50% 35%", kicker: "OPEN EARLY · CLOSE LATE", lines: ["5am", "to 10pm."], size: 130, sub: "Before work, after work, or both." },
     { file: "08-first-week-free", title: "First week free", t: "collage", imgs: [["12250460.jpg", "50% 50%"], ["3916766.jpg", "50% 50%"], ["6628962.jpg", "50% 50%"], ["17210041.jpg", "50% 25%"]],
-      badgeTop: "FIRST WEEK", badge: "Free.", badgeNote: "No card, no catch", foot: "Iron Yard, Ruaka" },
+      badgeTop: "FIRST WEEK", badge: "Free.", badgeNote: "No card, no catch", foot: "gymm, Ruaka" },
   ],
 };
