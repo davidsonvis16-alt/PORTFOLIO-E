@@ -32,3 +32,8 @@ tools/reels/.pylib
 tools/posters/photos
 tools/posters/cut
 tools/posters/out
+
+# Keys stay on this computer and in Vercel, never on GitHub
+.env
+.env.*
+!.env.example
