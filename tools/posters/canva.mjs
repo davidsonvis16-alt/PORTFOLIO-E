@@ -198,6 +198,44 @@ const T = {
     ${foot(b, p)}`;
   },
 
+  /* gymm: a raw training flyer. Hard black-and-white photo, huge condensed
+     capitals, one red-orange accent, timetable details in mono. Nothing
+     tilted, no prints, no tape, no pills. */
+  raw(b, p, dir) {
+    const A = b.pop;
+    const mono = "font-family:'Space Mono';text-transform:uppercase;letter-spacing:1px";
+    const lines = p.lines || (p.head ? [p.head] : p.big ? [`${p.big}${p.what}`, strip(p.badge || "")].filter(Boolean) : [p.badgeTop, strip(p.badge)]);
+    const longest = Math.max(...lines.map((l) => strip(l).length));
+    const size = Math.round(Math.min(230, 960 / (longest * 0.47)));
+    const big = `<div style="font:400 ${size}px/.84 Anton;text-transform:uppercase;letter-spacing:-1px;color:#fff">${lines.map((l, i) => (i === lines.length - 1 && lines.length > 1 ? `<span style="color:${A}">${strip(l)}</span>` : strip(l))).join("<br>")}</div>`;
+    const bar = `<div class="abs" style="left:56px;right:56px;top:46px;display:flex;justify-content:space-between;align-items:center;color:#fff">${b.logo("light", 0.6)}<span style="${mono};font-size:20px">${strip(p.kicker || p.badgeTop || "Ruaka")} / 05:00–22:00</span></div>`;
+    const price = p.price ? `<div style="${mono};font-size:22px;color:#fff;margin-top:26px">${p.priceTop ? strip(p.priceTop) + " " : ""}<b style="font:400 92px/1 Anton;color:${A};letter-spacing:0">${p.price}</b> ${p.priceNote && p.priceNote !== "ONLY!" ? strip(p.priceNote) : ""}</div>` : "";
+    const foot = `<div class="abs" style="left:56px;right:56px;bottom:44px;border-top:2px solid #fff;padding-top:18px;display:flex;justify-content:space-between;color:#fff;${mono};font-size:22px"><span>${b.cta} — ${b.phone}</span><span>${strip(p.foot || p.sub && "" || "Ruaka, Nairobi")}</span></div>`;
+    const gray = "filter:grayscale(1) contrast(1.35) brightness(.85)";
+    if (p.t === "menu") {
+      const rows = p.items.map(([, name, note, price]) => `<div style="display:flex;align-items:baseline;justify-content:space-between;border-top:2px solid #333;padding:22px 0"><span><span style="font:400 76px/1 Anton;text-transform:uppercase;color:#fff">${name}</span><br><span style="${mono};font-size:20px;color:#999">${note}</span></span><span style="font:400 76px/1 Anton;color:${A}">${price}</span></div>`).join("");
+      return `<div class="abs" style="inset:0;background:#000"></div>
+        <div class="ph" style="left:0;right:0;top:0;height:330px"><img src="${src(p.items[0][0], dir)}" style="object-position:${p.items[0][4] || "50% 30%"};${gray}"></div>
+        <div class="abs" style="left:0;right:0;top:130px;height:200px;background:linear-gradient(transparent,#000)"></div>
+        ${bar}
+        <div class="abs" style="left:56px;top:250px;font:400 150px/.84 Anton;color:#fff;text-transform:uppercase">Prices<span style="color:${A}">.</span></div>
+        <div class="abs" style="left:56px;right:56px;top:420px">${rows}</div>${foot}`;
+    }
+    if (p.t === "collage") {
+      const cells = p.imgs.map(([f, pos], i) => `<div class="ph" style="left:${i % 2 ? 543 : 0}px;top:${i < 2 ? 0 : 413}px;width:537px;height:410px"><img src="${src(f, dir)}" style="object-position:${pos || "50% 50%"};${gray}"></div>`).join("");
+      return `<div class="abs" style="inset:0;background:#000"></div>${cells}
+        <div class="abs" style="left:0;right:0;top:600px;height:230px;background:linear-gradient(transparent,#000)"></div>${bar}
+        <div class="abs" style="left:56px;bottom:200px">${big}<div style="${mono};font-size:24px;color:#fff;margin-top:22px">${strip(p.badgeNote || "")}</div></div>${foot}`;
+    }
+    const main = [p.img, p.hero, p.side, ...(p._alt || []).slice().reverse()].find((f) => f && !f.endsWith(".png")) || p.img || p.hero;
+    return `<div class="abs" style="inset:0;background:#000"></div>
+      <div class="ph" style="inset:0"><img src="${src(main, dir)}" style="object-position:${p.pos || "50% 35%"};${gray}"></div>
+      <div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 38%,rgba(0,0,0,.92) 78%)"></div>
+      ${bar}
+      <div class="abs" style="left:56px;right:56px;bottom:150px">${big}${p.sub || p.what2 ? `<div style="${mono};font-size:22px;color:#ccc;margin-top:22px;max-width:760px">${strip(p.sub || p.what2)}</div>` : ""}${price}</div>
+      ${foot}`;
+  },
+
   /* The menu: square photos, names in heavy type, prices on the right, written on the paper. */
   menu(b, p, dir) {
     const rows = p.items.map(([img, name, note, price, pos], i) => `
@@ -255,5 +293,5 @@ export function page(b, p, dir) {
   return `<!doctype html><html><head><meta charset="utf-8">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?${FONTS}${b.fonts ? "&" + b.fonts : ""}&display=block">
   <style>${base(b)}</style></head>
-  <body>${T[p.t === "menu" && b.menu ? b.menu : MAP[p.t]](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
+  <body>${T[b.raw ? "raw" : p.t === "menu" && b.menu ? b.menu : MAP[p.t]](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
 }
