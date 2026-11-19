@@ -18,9 +18,11 @@ const isCut = (f) => f && f.endsWith(".png");
 /* Headline: heavy lines, the last one in italic serif. */
 function head(b, lines, width, cap = 170, ink = b.dark) {
   const longest = Math.max(...lines.map((l) => strip(l).length));
-  const size = Math.round(Math.min(cap, width / (longest * 0.54)));
-  return `<div class="h" style="font-size:${size}px;color:${ink}">${lines
-    .map((l, i) => (i === lines.length - 1 && lines.length > 1 ? `<em>${l}</em>` : `<span>${l}</span>`))
+  const size = Math.round(Math.min(cap, width / (longest * (b.head === "caps" ? 0.64 : 0.54))));
+  const mode = b.head || "mix";
+  const fs = mode === "serif" ? Math.round(size * 1.15) : size;
+  return `<div class="h ${mode}" style="font-size:${fs}px;color:${ink}">${lines
+    .map((l, i) => (mode === "serif" || (mode === "mix" && i === lines.length - 1 && lines.length > 1) ? `<em>${l}</em>` : `<span>${l}</span>`))
     .join("<br>")}</div>`;
 }
 
@@ -33,6 +35,7 @@ function photo(f, dir, style, pos = "50% 50%") {
 /* A second print mounted over the first: paper edge, a handwritten caption. */
 function mount(b, f, dir, style, caption = "", pos = "50% 50%") {
   if (!f) return "";
+  if (b.captions === false) caption = "";
   if (isCut(f)) return photo(f, dir, style);
   return `<div class="print" style="${style}"><div class="ph" style="position:relative;width:100%;height:calc(100% - ${caption ? 70 : 0}px)"><img src="${src(f, dir)}" style="object-position:${pos}"></div>${caption ? `<div class="cap">${caption}</div>` : ""}</div>`;
 }
@@ -41,20 +44,23 @@ const pricePill = (b, p, style = "") =>
   p.price ? `<div class="pill price" style="${style}">${p.priceTop ? `<small>${p.priceTop.toLowerCase()}</small>` : ""}<b>${p.price}</b>${p.priceNote && p.priceNote !== "ONLY!" ? `<small>${p.priceNote.toLowerCase()}</small>` : ""}</div>` : "";
 
 const tape = (b, text, style) => {
+  if (b.tapeKind === "none") return "";
+  if (b.tapeKind === "stripe") return `<div class="tape" style="${style};height:40px;background:repeating-linear-gradient(-45deg,#E63B2E 0 22px,#fff 22px 44px,#1D4ED8 44px 66px,#fff 66px 88px)"></div>`;
   const t = strip(text);
   return `<div class="tape" style="${style}">${Array(6).fill(`<span>${t}</span><i>✺</i>`).join("")}</div>`;
 };
 
-const note = (text, style, arrow = true) =>
+const note = (text, style, arrow = true, b = {}) =>
+  text && b.notes === false ? `<div class="sub" style="${style.replace(/transform:[^;]*;?/, "")};font-size:30px;max-width:520px">${text}</div>` :
   text ? `<div class="note" style="${style}">${text}${arrow ? `<svg width="90" height="60" viewBox="0 0 90 60"><path d="M4 8 C 30 4, 60 14, 76 46" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M62 42 L77 49 L80 32" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ""}</div>` : "";
 
 const foot = (b, p, ink = b.dark, onDark = false) => `
   <div class="foot" style="color:${ink}">
-    <span class="pill call" style="background:${onDark ? b.pop : b.dark};color:${onDark ? b.dark : b.paper}">${p.ctaTop ? p.ctaTop.toLowerCase().replace(/^./, (c) => c.toUpperCase()) : b.cta || "Order"} · ${b.phone}</span>
+    <span class="pill call" style="background:${onDark ? b.pop : b.dark};color:${onDark ? b.onPop || b.dark : b.paper}">${p.ctaTop ? p.ctaTop.toLowerCase().replace(/^./, (c) => c.toUpperCase()) : b.cta || "Order"} · ${b.phone}</span>
     <span class="where">${strip(p.foot || p.strip || b.where)}</span>
   </div>`;
 
-const top = (b, p, ink = b.dark, mode = "dark") => `
+const top = (b, p, ink = b.dark, mode = b.logoOn || "dark") => `
   <div class="top" style="color:${ink}">${b.logo(mode, 0.62)}<span class="kick">${strip(p.kicker || p.badgeTop || b.where)}</span></div>`;
 
 export function base(b) {
@@ -65,16 +71,18 @@ export function base(b) {
   .abs{position:absolute}
   .h{font-weight:800;line-height:.9;letter-spacing:-.045em}
   .h em{font:italic 400 1.12em/.86 'Instrument Serif';letter-spacing:-.02em}
+  .h.serif em{font-size:1em;font-style:${b.serifItalic === false ? "normal" : "italic"}}
+  .h.caps{text-transform:uppercase;letter-spacing:-.035em;line-height:.86;${b.skew ? `transform:skewX(-${b.skew}deg);transform-origin:left bottom;` : ""}}
   .ph{position:absolute;overflow:hidden}
   .ph img{width:100%;height:100%;object-fit:cover;display:block}
   .cut{position:absolute;object-fit:contain;filter:drop-shadow(0 26px 30px rgba(0,0,0,.28))}
   .print{position:absolute;background:#fff;padding:14px 14px 0;box-shadow:0 22px 40px rgba(0,0,0,.25)}
   .print .cap{height:70px;display:flex;align-items:center;justify-content:center;font:700 40px/1 Caveat;color:#222}
   .pill{position:absolute;display:inline-flex;align-items:baseline;gap:12px;border-radius:999px;white-space:nowrap}
-  .price{background:${b.pop};color:${b.dark};padding:16px 34px 18px;box-shadow:0 14px 30px rgba(0,0,0,.18)}
+  .price{background:${b.pop};color:${b.onPop || b.dark};padding:16px 34px 18px;box-shadow:0 14px 30px rgba(0,0,0,.18)}
   .price b{font-size:72px;font-weight:800;letter-spacing:-.04em;line-height:1}
   .price small{font-size:28px;font-weight:600}
-  .tape{position:absolute;left:-60px;right:-60px;height:92px;background:${b.pop};color:${b.dark};display:flex;align-items:center;gap:30px;white-space:nowrap;overflow:hidden;font-weight:800;font-size:44px;letter-spacing:-.02em;text-transform:uppercase;box-shadow:0 10px 24px rgba(0,0,0,.15)}
+  .tape{position:absolute;left:-60px;right:-60px;height:92px;background:${b.pop};color:${b.onPop || b.dark};display:flex;align-items:center;gap:30px;white-space:nowrap;overflow:hidden;font-weight:800;font-size:44px;letter-spacing:-.02em;text-transform:uppercase;box-shadow:0 10px 24px rgba(0,0,0,.15)}
   .tape i{font-style:normal;font-size:38px}
   .note{position:absolute;font:700 50px/1 Caveat;display:flex;align-items:flex-start;gap:8px}
   .top{position:absolute;left:64px;right:64px;top:52px;display:flex;align-items:center;justify-content:space-between}
@@ -100,7 +108,7 @@ const T = {
     return `
     ${top(b, p)}
     <div class="abs" style="left:64px;top:150px">${head(b, lines, 620, 150)}</div>
-    ${note(p.sub, `left:70px;top:${below + 20}px;color:${b.accentInk || b.dark};transform:rotate(-3deg)`)}
+    ${note(p.sub, `left:70px;top:${below + 20}px;color:${b.accentInk || b.dark};transform:rotate(-3deg)`, true, b)}
     ${isCut(main)
       ? photo(main, dir, `left:120px;top:${Math.max(560, below + 60)}px;width:840px;height:${1060 - Math.max(560, below + 60)}px`)
       : `${photo(main, dir, `left:0;right:0;top:${Math.max(600, below + 80)}px;bottom:240px`, p.pos)}
@@ -139,6 +147,57 @@ const T = {
     ${foot(b, p, "#fff", true)}`;
   },
 
+  /* peeza: four pizzas as a grid of photos, name and price written on each. */
+  menuGrid(b, p, dir) {
+    const cells = p.items.map(([img, name, note, price, pos], i) => `
+      <div class="ph" style="left:${i % 2 ? 548 : 0}px;top:${i < 2 ? 330 : 830}px;width:532px;height:490px"><img src="${src(img, dir)}" style="object-position:${pos || "50% 50%"}"></div>
+      <div class="abs" style="left:${(i % 2 ? 548 : 0) + 34}px;top:${(i < 2 ? 330 : 830) + 340}px;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.6)">
+        <div style="font-size:52px;font-weight:800;letter-spacing:-.04em;line-height:1">${name}</div>
+        <div style="font-size:24px;margin-top:6px">${note}</div>
+      </div>
+      <div class="pill price" style="left:${(i % 2 ? 548 : 0) + 330}px;top:${(i < 2 ? 330 : 830) + 30}px;transform:rotate(-5deg);padding:10px 24px 12px"><b style="font-size:48px">${price}</b></div>`).join("");
+    return `
+    <div class="abs" style="left:0;right:0;top:320px;bottom:0;background:${b.paper}"></div>
+    ${cells}
+    ${top(b, p)}
+    <div class="abs" style="left:64px;top:130px">${head(b, ["The menu."], 700, 150)}</div>
+    <div class="foot" style="bottom:20px"><span class="pill call" style="background:${b.pop};color:${b.onPop || b.dark}">${b.cta} · ${b.phone}</span><span class="where" style="color:#fff">${strip(p.foot || "")}</span></div>`;
+  },
+
+  /* kinyozi: a barber's price board — big capitals, dotted leaders, no thumbnails. */
+  menuBoard(b, p, dir) {
+    const rows = p.items.map(([, name, note, price]) => `
+      <div style="padding:40px 0">
+        <div style="display:flex;align-items:baseline;gap:18px;font-size:100px;font-weight:800;letter-spacing:-.04em;text-transform:uppercase;line-height:.9">
+          <span>${name}</span><span style="flex:1;border-bottom:6px dotted ${b.dark};transform:translateY(-14px)"></span><span style="color:${b.pop}">${price}</span>
+        </div>
+        <div style="font-size:26px;margin-top:10px;opacity:.7">${note}</div>
+      </div>`).join("");
+    return `
+    ${top(b, p)}
+    <div class="abs" style="left:0;right:0;top:140px;height:40px;background:repeating-linear-gradient(-45deg,#E63B2E 0 22px,#fff 22px 44px,#1D4ED8 44px 66px,#fff 66px 88px)"></div>
+    <div class="abs" style="left:64px;top:220px;font-size:30px;font-weight:600;letter-spacing:6px;text-transform:uppercase">Price list · KSh</div>
+    <div class="abs" style="left:64px;right:64px;top:280px;color:${b.dark}">${rows}</div>
+    ${foot(b, p)}`;
+  },
+
+  /* Bella: a soft price card — one big photo, the list centred in serif. */
+  menuSerif(b, p, dir) {
+    const rows = p.items.map(([, name, note, price]) => `
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid ${b.dark}33">
+        <span><span style="font:italic 400 58px/1 'Instrument Serif'">${name}</span><span style="font-size:22px;margin-left:16px;opacity:.7">${note}</span></span>
+        <span style="font:400 54px/1 'Instrument Serif'">${price}</span>
+      </div>`).join("");
+    const [img, , , , pos] = p.items[0];
+    return `
+    ${photo(img, dir, "left:0;right:0;top:0;height:470px", pos)}
+    ${mount(b, p.items[1][0], dir, "right:70px;top:300px;width:250px;height:300px;transform:rotate(5deg)", "", p.items[1][4])}
+    <div class="top" style="color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.4)">${b.logo("light", 0.62)}<span class="kick">${strip(p.kicker)}</span></div>
+    <div class="abs" style="left:64px;top:500px">${head(b, ["Price list."], 600, 130)}</div>
+    <div class="abs" style="left:64px;right:64px;top:660px;color:${b.dark}">${rows}</div>
+    ${foot(b, p)}`;
+  },
+
   /* The menu: square photos, names in heavy type, prices on the right, written on the paper. */
   menu(b, p, dir) {
     const rows = p.items.map(([img, name, note, price, pos], i) => `
@@ -150,7 +209,7 @@ const T = {
     return `
     ${top(b, p)}
     <div class="abs" style="left:64px;top:140px">${head(b, ((w) => [w.slice(0, -1).join(" "), w[w.length - 1].toLowerCase() + "."])(strip(p.head).split(" ")), 700, 150)}</div>
-    ${note(b.menuNote, `right:80px;top:200px;color:${b.accentInk || b.dark};transform:rotate(-5deg)`, false)}
+    ${note(b.menuNote, `right:80px;top:200px;color:${b.accentInk || b.dark};transform:rotate(-5deg)`, false, b)}
     <div class="abs" style="left:64px;right:64px;top:440px;color:${b.dark}">${rows}</div>
     ${foot(b, p)}`;
   },
@@ -160,14 +219,14 @@ const T = {
     const main = p.hero || p.img;
     return `
     <div class="abs" style="inset:0;background:${b.pop}"></div>
-    ${top(b, p)}
-    <div class="abs" style="left:64px;top:150px">${head(b, p.lines, 920, 180)}</div>
+    ${top(b, p, b.onPop || b.dark, "dark")}
+    <div class="abs" style="left:64px;top:150px">${head(b, p.lines, 920, 180, b.onPop || b.dark)}</div>
     ${isCut(main)
       ? photo(main, dir, p.heroStyle || "left:300px;top:480px;width:480px;height:640px")
       : `${photo(main, dir, "left:200px;top:520px;width:560px;height:560px;transform:rotate(-3deg);box-shadow:0 26px 50px rgba(0,0,0,.25)", p.pos)}${mount(b, p._alt[0], dir, "right:60px;top:700px;width:270px;height:330px;transform:rotate(7deg)", b.caption)}`}
-    ${p.price ? `<div class="pill price" style="left:64px;top:900px;background:${b.dark};color:${b.paper};transform:rotate(-5deg)">${p.priceTop ? `<small>${p.priceTop.toLowerCase()}</small>` : ""}<b>${p.price}</b>${p.priceNote ? `<small>${p.priceNote.toLowerCase()}</small>` : ""}</div>` : ""}
-    ${tape(b, b.tape, `top:1110px;transform:rotate(2deg);background:${b.dark};color:${b.pop}`)}
-    <div class="foot" style="color:${b.dark}"><span class="pill call" style="background:${b.paper};color:${b.dark}">${b.phone}</span><span class="where">${strip(p.foot || b.where)}</span></div>`;
+    ${p.price ? `<div class="pill price" style="left:64px;top:900px;background:${b.paper};color:${b.dark};transform:rotate(-5deg)">${p.priceTop ? `<small>${p.priceTop.toLowerCase()}</small>` : ""}<b>${p.price}</b>${p.priceNote ? `<small>${p.priceNote.toLowerCase()}</small>` : ""}</div>` : ""}
+    ${tape(b, b.tape, `top:1110px;transform:rotate(2deg);background:${b.onPop || b.dark};color:${b.pop}`)}
+    <div class="foot" style="color:${b.onPop || b.dark}"><span class="pill call" style="background:${b.onPop || b.dark};color:${b.pop}">${b.phone}</span><span class="where">${strip(p.foot || b.where)}</span></div>`;
   },
 
   /* Four prints pinned overlapping, the offer written big underneath. */
@@ -196,5 +255,5 @@ export function page(b, p, dir) {
   return `<!doctype html><html><head><meta charset="utf-8">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?${FONTS}${b.fonts ? "&" + b.fonts : ""}&display=block">
   <style>${base(b)}</style></head>
-  <body>${T[MAP[p.t]](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
+  <body>${T[p.t === "menu" && b.menu ? b.menu : MAP[p.t]](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
 }

@@ -3,16 +3,35 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
 
-/* Home ships with the first load; every other page downloads when visited. */
-const Work = lazy(() => import("./pages/Work"));
-const Ads = lazy(() => import("./pages/Ads"));
-const Rates = lazy(() => import("./pages/Rates"));
-const About = lazy(() => import("./pages/About"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Order = lazy(() => import("./pages/Order"));
-const Pay = lazy(() => import("./pages/Pay"));
-const Login = lazy(() => import("./pages/Login"));
-const Account = lazy(() => import("./pages/Account"));
+/* Home ships with the first load; every other page downloads when visited.
+   After a new deploy, a phone that still has the old site open asks for
+   files that no longer exist — then reload once to get the new site,
+   instead of a white screen. */
+const page = (load) =>
+  lazy(() =>
+    load()
+      .then((m) => {
+        sessionStorage.removeItem("tessy-reloaded");
+        return m;
+      })
+      .catch((err) => {
+        if (!sessionStorage.getItem("tessy-reloaded")) {
+          sessionStorage.setItem("tessy-reloaded", "1");
+          window.location.reload();
+          return new Promise(() => {});
+        }
+        throw err;
+      })
+  );
+const Work = page(() => import("./pages/Work"));
+const Ads = page(() => import("./pages/Ads"));
+const Rates = page(() => import("./pages/Rates"));
+const About = page(() => import("./pages/About"));
+const Contact = page(() => import("./pages/Contact"));
+const Order = page(() => import("./pages/Order"));
+const Pay = page(() => import("./pages/Pay"));
+const Login = page(() => import("./pages/Login"));
+const Account = page(() => import("./pages/Account"));
 import "./site.css";
 
 /* Older links land on the page or section that now holds them. */
