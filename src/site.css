@@ -729,6 +729,16 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
 
 
 
+
+/* ---------- cookie note ----------
+   A thin strip, thin writing, one pill. */
+.cookie { position: fixed; left: 0; right: 0; bottom: 0; z-index: 300; display: flex; align-items: center; justify-content: center; gap: 18px; padding: 10px var(--gut); background: rgba(255, 255, 255, 0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-top: 1px solid var(--line); animation: cookie-in 0.4s var(--ease) both; }
+.cookie p { font-size: 13px; font-weight: 300; line-height: 1.4; color: #333; }
+.cookie-ok { flex: none; height: 30px; padding: 0 18px; border-radius: 999px; background: #000; color: #fff; font-size: 13px; font-weight: 700; }
+.cookie-ok:hover { background: var(--dot); }
+@keyframes cookie-in { from { transform: translateY(100%); } to { transform: none; } }
+@media (max-width: 560px) { .cookie { justify-content: space-between; } .cookie p { font-size: 12px; } }
+
 /* ---------- motion ---------- */
 .rise { animation: rise 0.8s var(--ease) both; }
 .rise:nth-child(2) { animation-delay: 0.06s; }

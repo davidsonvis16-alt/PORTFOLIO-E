@@ -307,6 +307,35 @@ function useScrolledPast(px) {
   return past;
 }
 
+/* A thin strip at the bottom, like Wikipedia's: the site only keeps what it
+   needs to work (your cart and your log-in), and says so once. The choice is
+   remembered in this browser. */
+const COOKIE_KEY = "tessy-cookies";
+function CookieNote() {
+  const [open, setOpen] = useState(() => {
+    try {
+      return !localStorage.getItem(COOKIE_KEY);
+    } catch {
+      return false;
+    }
+  });
+  if (!open) return null;
+  const ok = () => {
+    try {
+      localStorage.setItem(COOKIE_KEY, "essential");
+    } catch {}
+    setOpen(false);
+  };
+  return (
+    <div className="cookie" role="region" aria-label="Cookies">
+      <p>We use essential cookies only — to keep your cart and log-in working. No tracking, no ads.</p>
+      <button type="button" className="cookie-ok" onClick={ok}>
+        OK
+      </button>
+    </div>
+  );
+}
+
 export default function Layout() {
   const { pathname, hash } = useLocation();
   const showFab = useScrolledPast(700);
@@ -340,6 +369,7 @@ export default function Layout() {
       <Link to="/order" className={`fab ${showFab ? "is-on" : ""}`} tabIndex={showFab ? undefined : -1}>
         Start a project <span aria-hidden="true">→</span>
       </Link>
+      <CookieNote />
     </div>
   );
 }
