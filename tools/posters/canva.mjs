@@ -43,11 +43,22 @@ function mount(b, f, dir, style, caption = "", pos = "50% 50%") {
 const pricePill = (b, p, style = "") =>
   p.price ? `<div class="pill price" style="${style}">${p.priceTop ? `<small>${p.priceTop.toLowerCase()}</small>` : ""}<b>${p.price}</b>${p.priceNote && p.priceNote !== "ONLY!" ? `<small>${p.priceNote.toLowerCase()}</small>` : ""}</div>` : "";
 
-const tape = (b, text, style) => {
+/* Banners, no stars. Three shapes:
+   drip  — a band across with drips melting off its bottom edge
+   side  — a strip down the right edge, the words reading upwards
+   curve — the words riding a thick curved band */
+const tape = (b, text, style, kind = "drip", bg = b.pop, ink = b.onPop || b.dark) => {
   if (b.tapeKind === "none") return "";
   if (b.tapeKind === "stripe") return `<div class="tape" style="${style};height:40px;background:repeating-linear-gradient(-45deg,#E63B2E 0 22px,#fff 22px 44px,#1D4ED8 44px 66px,#fff 66px 88px)"></div>`;
   const t = strip(text);
-  return `<div class="tape" style="${style}">${Array(6).fill(`<span>${t}</span><i>✺</i>`).join("")}</div>`;
+  if (kind === "side")
+    return `<div class="abs" style="right:0;top:150px;bottom:150px;width:92px;background:${bg};color:${ink};display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;transform:rotate(180deg);font-weight:800;font-size:40px;letter-spacing:-.01em;text-transform:uppercase;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.15)">${t}&nbsp;&nbsp;&nbsp;—&nbsp;&nbsp;&nbsp;${t}</div>`;
+  if (kind === "curve")
+    return `<svg class="abs" style="left:0;${style}" width="1080" height="320" viewBox="0 0 1080 320"><path id="cv" d="M-40 250 Q 540 30 1120 250" fill="none" stroke="${bg}" stroke-width="96"/><text font-family="Bricolage Grotesque" font-weight="800" font-size="44" fill="${ink}" letter-spacing="1" dy="15"><textPath href="#cv" startOffset="50%" text-anchor="middle">${t.toUpperCase()}&#160;&#160;·&#160;&#160;${t.toUpperCase()}</textPath></text></svg>`;
+  // drip: the band, then rounded drips hanging off it at uneven lengths
+  const drips = [[60, 40], [170, 72], [300, 30], [430, 86], [560, 46], [700, 76], [830, 34], [960, 60]]
+    .map(([x, h]) => `<path d="M${x - 24} 0 L${x - 24} ${h} a24 24 0 0 0 48 0 L${x + 24} 0 Z" fill="${bg}"/>`).join("");
+  return `<div class="abs" style="left:0;right:0;${style}"><div style="height:88px;background:${bg};color:${ink};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:44px;letter-spacing:-.01em;text-transform:uppercase;white-space:nowrap">${t}</div><svg width="1080" height="180" viewBox="0 0 1080 180" style="display:block;margin-top:-1px">${drips}</svg></div>`;
 };
 
 const note = (text, style, arrow = true, b = {}) =>
@@ -114,7 +125,7 @@ const T = {
       : `${photo(main, dir, `left:0;right:0;top:${Math.max(600, below + 80)}px;bottom:240px`, p.pos)}
          ${mount(b, second, dir, `right:70px;top:${Math.max(600, below + 80) - 80}px;width:290px;height:350px;transform:rotate(5deg)`, b.caption, p.sidePos)}`}
     ${pricePill(b, p, "right:64px;top:250px;transform:rotate(-5deg)")}
-    ${tape(b, p.strip || b.tape, "top:1080px;transform:rotate(-3deg)")}
+    ${tape(b, p.strip || b.tape, "top:1030px", "drip")}
     ${foot(b, { ...p, foot: b.where, strip: null })}`;
   },
 
@@ -263,7 +274,7 @@ const T = {
       ? photo(main, dir, p.heroStyle || "left:300px;top:480px;width:480px;height:640px")
       : `${photo(main, dir, "left:200px;top:520px;width:560px;height:560px;transform:rotate(-3deg);box-shadow:0 26px 50px rgba(0,0,0,.25)", p.pos)}${mount(b, p._alt[0], dir, "right:60px;top:700px;width:270px;height:330px;transform:rotate(7deg)", b.caption)}`}
     ${p.price ? `<div class="pill price" style="left:64px;top:900px;background:${b.paper};color:${b.dark};transform:rotate(-5deg)">${p.priceTop ? `<small>${p.priceTop.toLowerCase()}</small>` : ""}<b>${p.price}</b>${p.priceNote ? `<small>${p.priceNote.toLowerCase()}</small>` : ""}</div>` : ""}
-    ${tape(b, b.tape, `top:1110px;transform:rotate(2deg);background:${b.onPop || b.dark};color:${b.pop}`)}
+    ${tape(b, b.tape, "", "side", b.onPop || b.dark, b.pop)}
     <div class="foot" style="color:${b.onPop || b.dark}"><span class="pill call" style="background:${b.onPop || b.dark};color:${b.pop}">${b.phone}</span><span class="where">${strip(p.foot || b.where)}</span></div>`;
   },
 
@@ -279,7 +290,7 @@ const T = {
     return `
     ${top(b, p)}
     ${prints}
-    ${tape(b, p.badgeTop, "top:500px;transform:rotate(-4deg)")}
+    ${tape(b, p.badgeTop, "top:380px", "curve")}
     <div class="abs" style="left:64px;top:980px">${head(b, [strip(p.badge).replace(/\.$/, "") + "."], 940, 170)}</div>
     ${p.badgeNote ? `<div class="sub" style="left:66px;top:1150px;font-size:32px;color:${b.dark}">${p.badgeNote}</div>` : ""}
     <div class="foot" style="color:${b.dark}"><span></span><span class="pill call" style="background:${b.dark};color:${b.paper}">${b.phone}</span></div>`;
