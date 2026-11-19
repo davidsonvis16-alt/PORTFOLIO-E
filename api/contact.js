@@ -8,7 +8,7 @@
                        (it only delivers to the Resend account's email) */
 
 const LIMITS = { name: 80, reach: 120, need: 60, message: 3000 };
-const NEEDS = ["Website", "App", "Tools & automation", "Ads", "Something else"];
+const NEEDS = ["Website", "App", "Tools & automation", "Ads", "Something else", "Call request"];
 
 const clean = (v, max) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 const escape = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   }
 
   const key = process.env.RESEND_API_KEY;
-  if (!key || !process.env.CONTACT_TO) return res.status(503).json({ error: "The form is not switched on yet. Please use WhatsApp." });
+  if (!key || !process.env.CONTACT_TO) return res.status(503).json({ error: "The form is not switched on yet. Please email hello@tessy.co.ke." });
 
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
 
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 
   if (!r.ok) {
     console.error("[contact] Resend refused the message", r.status, await r.text());
-    return res.status(502).json({ error: "The message did not go through. Please use WhatsApp." });
+    return res.status(502).json({ error: "The message did not go through. Please email hello@tessy.co.ke." });
   }
   return res.status(200).json({ ok: true });
 }

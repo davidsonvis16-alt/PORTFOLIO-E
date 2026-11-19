@@ -1,14 +1,14 @@
 import { useMemo } from "react";
-import { AD_CAMPAIGNS, AD_COUNT, AD_TERMS, AD_TIERS, waLink } from "../data";
+import { AD_CAMPAIGNS, AD_COUNT, AD_TERMS, AD_TIERS, mailLink } from "../data";
 import { AdRows } from "../blocks";
-import { VIDEO_ITEMS, adItems } from "../adItems";
+import { adItems } from "../adItems";
 import { useLightbox } from "../tokens";
 import { Lightbox, SecHead } from "../ui";
 
 /* Each campaign gets its own card colour for the "get one like this" card. */
 const TONES = ["t-tomato", "t-lilac", "t-ink", "t-pink", "t-green", "t-blue"];
 
-/* A poster or video frame that opens full screen. */
+/* A poster that opens full screen. */
 function Tile({ it, onOpen, lead }) {
   return (
     <li className={lead ? "is-lead" : undefined}>
@@ -48,7 +48,7 @@ function Campaign({ c, i }) {
         ))}
         <li>
           <a
-            href={waLink(`Hi Tessy, I saw the ${c.name} ads. Could you do a campaign like that for my business?`)}
+            href={mailLink(`Hi Tessy, I saw the ${c.name} ads. Could you do a campaign like that for my business?`)}
             target="_blank"
             rel="noopener noreferrer"
             className={`board-ask ${TONES[i % TONES.length]}`}
@@ -56,7 +56,7 @@ function Campaign({ c, i }) {
             <span>Want ads like {c.name}?</span>
             <b>Get a campaign like this</b>
             <span className="board-ask-from">From KSh {AD_TIERS[0].price} a poster ↗</span>
-            <span className="sr">(opens WhatsApp in a new tab)</span>
+            <span className="sr">(opens your email)</span>
           </a>
         </li>
       </ul>
@@ -66,7 +66,6 @@ function Campaign({ c, i }) {
 }
 
 export default function Ads() {
-  const videos = useLightbox(VIDEO_ITEMS.length);
   return (
     <>
       <section className="wrap page-top" aria-labelledby="ads-title">
@@ -75,12 +74,9 @@ export default function Ads() {
           Ads<span className="dot">.</span>
         </h1>
         <p className="page-sub rise">
-          Promo posters with a price and a number to call, and voiced video ads made for Reels and TikTok. These brands are concepts, not clients — the kind of campaign we make for a real business.
+          Posters for Instagram, Facebook, TikTok and Status. Concept brands.
         </p>
         <nav className="jump rise" aria-label="Jump to">
-          <a href="#video" className="pill-link">
-            Video ads
-          </a>
           {AD_CAMPAIGNS.map((c) => (
             <a key={c.key} href={`#${c.key}`} className="pill-link">
               {c.name}
@@ -92,31 +88,13 @@ export default function Ads() {
         </nav>
       </section>
 
-      <section id="video" className="wrap campaign" aria-labelledby="video-title">
-        <header className="campaign-head">
-          <span className="idx">00</span>
-          <div>
-            <h2 id="video-title" className="campaign-name">
-              Video ads<span className="dot">.</span>
-            </h2>
-            <p className="campaign-sector">Voiced, 15–21 seconds</p>
-          </div>
-          <p className="campaign-brief">Full-screen like a Reel, with a voice-over, music and captions burned in — made to stop the thumb on TikTok, Reels and Status.</p>
-        </header>
-        <ul className="reels">
-          {VIDEO_ITEMS.map((it, i) => (
-            <Tile key={it.key} it={it} onOpen={() => videos.open(i)} />
-          ))}
-        </ul>
-        <Lightbox items={VIDEO_ITEMS} index={videos.index} onClose={videos.close} onStep={videos.step} />
-      </section>
 
       {AD_CAMPAIGNS.map((c, i) => (
         <Campaign key={c.key} c={c} i={i} />
       ))}
 
       <section id="ad-prices" className="wrap sec" aria-labelledby="ad-prices-title">
-        <SecHead n="07" title="Ad prices" id="ad-prices-title" note="60% to start, 40% on delivery. Monthly content is paid at the start of each month." />
+        <SecHead n="07" title="Ad prices" id="ad-prices-title" note="60% to start, 40% on delivery." />
         <AdRows />
         <p className="fine">{AD_TERMS}</p>
       </section>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { waLink } from "../data";
+import { mailLink } from "../data";
 import { PayMethods } from "../ui";
 
 const POLL_MS = 4000;
@@ -27,7 +27,7 @@ export default function Pay() {
         const out = await r.json();
         if (out.status === "success") return setState({ status: "paid", reference: state.reference });
         if (out.status === "failed") return setState({ status: "error", error: out.message || "The payment did not go through." });
-        if (Date.now() - started.current > POLL_FOR_MS) return setState({ status: "error", error: "We didn't hear back from M-Pesa. If money left your account, send us the M-Pesa message on WhatsApp." });
+        if (Date.now() - started.current > POLL_FOR_MS) return setState({ status: "error", error: "We didn't hear back from M-Pesa. If money left your account, email us the M-Pesa message at hello@tessy.co.ke." });
         setState((s) => ({ ...s }));
       } catch {
         setState((s) => ({ ...s }));
@@ -58,14 +58,14 @@ export default function Pay() {
         <h1 id="pay-title" className="page-title rise">
           Pay<span className="dot">.</span>
         </h1>
-        <p className="page-sub rise">Pay a deposit or an invoice. M-Pesa sends a prompt straight to your phone — enter your PIN and you're done. Paystack emails your receipt.</p>
+        <p className="page-sub rise">Deposit or invoice. Enter your M-Pesa PIN, done.</p>
       </section>
 
       <section className="wrap pay">
         {state.status === "paid" ? (
           <div className="form-done t-green" role="status">
             <b>Paid — thank you.</b>
-            <p>Your receipt is on its way to your email. We'll confirm on WhatsApp and get started.</p>
+            <p>Your receipt is on its way to your email. We'll confirm by email and get started.</p>
           </div>
         ) : ["waiting", "checking"].includes(state.status) ? (
           <div className="form-done t-lilac" role="status" aria-live="polite">
@@ -109,8 +109,8 @@ export default function Pay() {
               {state.status === "error" && (
                 <p className="form-error" role="alert">
                   {state.error}{" "}
-                  <a href={waLink("Hi Tessy, I tried to pay on the site.")} target="_blank" rel="noopener noreferrer" className="ulink">
-                    WhatsApp us ↗
+                  <a href={mailLink("Hi Tessy, I tried to pay on the site.")} target="_blank" rel="noopener noreferrer" className="ulink">
+                    Email us ↗
                   </a>
                 </p>
               )}
@@ -120,7 +120,7 @@ export default function Pay() {
         <aside className="pay-side">
           <p className="pay-side-k">We accept</p>
           <PayMethods />
-          <p className="cart-note">Pay only amounts we've agreed with you — 60% to start, 40% at launch, or an invoice we sent. Your card details go to Paystack, never to us.</p>
+          <p className="cart-note">Only amounts we agreed. Card details go to Paystack, not us.</p>
         </aside>
       </section>
     </>

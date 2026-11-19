@@ -1,15 +1,109 @@
 import { useState } from "react";
-import { EMAIL, LOCATION, waLink } from "../data";
+import { EMAIL, LOCATION, mailLink } from "../data";
 
-const WAYS = [
-  { k: "Fastest — usually a reply within a couple of hours", name: "WhatsApp", value: "+254 142 614 743", href: waLink("Hi Tessy, I'd like to talk about a project."), tone: "t-green" },
-  { k: "For quotes, documents and anything long", name: "Email", value: EMAIL, href: `mailto:${EMAIL}`, tone: "t-lilac" },
-].filter((w) => w.value);
+/* Email works with or without a mail app: the link opens one if there is
+   one, and the copy button puts the address on the clipboard either way. */
+function EmailCard() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
+  return (
+    <div className="way t-blue">
+      <span className="way-k">The best way to reach us — a reply within a working day</span>
+      <b>Email</b>
+      <span className="way-v">
+        <a href={mailLink("Hi Tessy, I'd like to talk about a project.")} className="ulink">
+          {EMAIL}
+        </a>
+      </span>
+      <button type="button" className="act act-quiet way-copy" onClick={copy}>
+        {copied ? "Copied ✓" : "Copy address"}
+      </button>
+    </div>
+  );
+}
+
+/* Request a call: the number goes to us through the same form handler as
+   the contact form, so it works without a mail app. */
+function CallForm() {
+  const [f, setF] = useState({ name: "", phone: "", when: "", company: "" });
+  const [state, setState] = useState({ status: "idle", error: "" });
+  const set = (k) => (e) => setF((p) => ({ ...p, [k]: e.target.value }));
+  const submit = async (e) => {
+    e.preventDefault();
+    setState({ status: "sending", error: "" });
+    try {
+      const r = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: f.name,
+          reach: f.phone,
+          need: "Call request",
+          message: `Please call me on ${f.phone}.${f.when ? ` A good time: ${f.when}.` : ""}`,
+          company: f.company,
+        }),
+      });
+      const out = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(out.error || "The request did not go through.");
+      setState({ status: "sent", error: "" });
+    } catch (err) {
+      setState({ status: "error", error: err.message });
+    }
+  };
+  if (state.status === "sent") {
+    return (
+      <div id="call" className="way t-green" role="status">
+        <b>We'll call you.</b>
+        <span className="way-k">Usually within a working day, at the time you gave.</span>
+      </div>
+    );
+  }
+  return (
+    <form id="call" className="way t-green form call-form" onSubmit={submit}>
+      <span className="way-k form-wide">Rather talk? Leave your number and we'll ring you.</span>
+      <b className="form-wide">Request a call</b>
+      <label>
+        <span>Your name</span>
+        <input value={f.name} onChange={set("name")} required maxLength={80} autoComplete="name" />
+      </label>
+      <label>
+        <span>Phone</span>
+        <input value={f.phone} onChange={set("phone")} required maxLength={20} inputMode="tel" autoComplete="tel" placeholder="07… or +254…" />
+      </label>
+      <label className="form-wide">
+        <span>A good time to call (optional)</span>
+        <input value={f.when} onChange={set("when")} maxLength={60} placeholder="e.g. weekdays after 5pm" />
+      </label>
+      <label className="form-trap" aria-hidden="true">
+        Company
+        <input value={f.company} onChange={set("company")} tabIndex={-1} autoComplete="off" />
+      </label>
+      <div className="form-end">
+        <button type="submit" className="act act-solid" disabled={state.status === "sending"}>
+          {state.status === "sending" ? "Sending…" : "Call me"} <span aria-hidden="true">→</span>
+        </button>
+        {state.error && (
+          <p className="form-error" role="alert">
+            {state.error} Email us at {EMAIL} instead.
+          </p>
+        )}
+      </div>
+    </form>
+  );
+}
 
 const NEEDS = ["Website", "App", "Tools & automation", "Ads", "Something else"];
 
 /* The form posts to /api/contact, which emails it to us through Resend.
-   If that fails for any reason, WhatsApp is offered instead. */
+   If that fails for any reason, email is offered instead. */
 function ContactForm() {
   const [state, setState] = useState({ status: "idle", error: "" });
   const [need, setNeed] = useState(NEEDS[0]);
@@ -36,7 +130,7 @@ function ContactForm() {
     return (
       <div className="form-done t-pink" role="status">
         <b>Thanks — it's with us.</b>
-        <p>We'll reply within a working day. If it's urgent, WhatsApp is faster.</p>
+        <p>We'll reply within a working day.</p>
       </div>
     );
   }
@@ -75,8 +169,8 @@ function ContactForm() {
         {state.status === "error" && (
           <p className="form-error" role="alert">
             {state.error}{" "}
-            <a href={waLink("Hi Tessy, I tried the form on your site.")} target="_blank" rel="noopener noreferrer" className="ulink">
-              Message us on WhatsApp ↗
+            <a href={mailLink("Hi Tessy, I tried the form on your site.")} target="_blank" rel="noopener noreferrer" className="ulink">
+              Email us ↗
             </a>
           </p>
         )}
@@ -93,21 +187,14 @@ export default function Contact() {
         <h1 id="contact-page-title" className="page-title rise">
           Contact<span className="dot">.</span>
         </h1>
-        <p className="page-sub rise">Tell us what you need built. WhatsApp is fastest, during working hours, East Africa time — wherever you are in Kenya.</p>
+        <p className="page-sub rise">Email, form or call. Reply within a working day.</p>
       </section>
 
       <section className="wrap contact-page">
-        <ul className="ways">
-          {WAYS.map((w) => (
-            <li key={w.name}>
-              <a href={w.href} className={`way ${w.tone}`} {...(w.href.startsWith("mailto") ? {} : { target: "_blank", rel: "noopener noreferrer" })}>
-                <span className="way-k">{w.k}</span>
-                <b>{w.name}</b>
-                <span className="way-v">{w.value} ↗</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="ways">
+          <EmailCard />
+          <CallForm />
+        </div>
         <div className="contact-form">
           <h2 className="band-title">
             Or write to us<span className="dot">.</span>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, useSearchParams } from "react-router-dom";
-import { waLink } from "../data";
+import { mailLink } from "../data";
 import { supabase, useSession } from "../supabase";
 
 /* Log in or sign up for the client area. Email + password, or a sign-in link
@@ -59,7 +59,7 @@ export default function Login() {
           {mode === "signup" ? "Sign up" : "Log in"}
           <span className="dot">.</span>
         </h1>
-        <p className="page-sub rise">See your sites, domain renewal and maintenance dates, and pay invoices — with reminders before anything is due.</p>
+        <p className="page-sub rise">Your sites, dates and invoices.</p>
       </section>
 
       <section className="wrap pay">
@@ -75,7 +75,7 @@ export default function Login() {
 
           {!supabase && (
             <p className="login-soon form-wide" role="status">
-              Accounts are being switched on. Until then, message us on WhatsApp.
+              Accounts are being switched on. Until then, email us at hello@tessy.co.ke.
             </p>
           )}
 
@@ -86,7 +86,7 @@ export default function Login() {
                 <input value={f.full_name} onChange={set("full_name")} required maxLength={80} autoComplete="name" />
               </label>
               <label>
-                <span>Phone (WhatsApp)</span>
+                <span>Phone</span>
                 <input value={f.phone} onChange={set("phone")} required maxLength={20} inputMode="tel" autoComplete="tel" placeholder="07… or +254…" />
               </label>
               <label className="form-wide">
@@ -130,9 +130,9 @@ export default function Login() {
 
         <aside className="pay-side">
           <p className="pay-side-k">For clients</p>
-          <p className="cart-note">One account shows every site we look after for you: when the domain renews, when maintenance is due, and what's been paid. We send a reminder before anything is due.</p>
-          <a href={waLink("Hi Tessy, I'm a client and need help with my account.")} target="_blank" rel="noopener noreferrer" className="act act-solid">
-            WhatsApp us <span aria-hidden="true">↗</span>
+          <p className="cart-note">Renewals, maintenance and payments in one place.</p>
+          <a href={mailLink("Hi Tessy, I'm a client and need help with my account.")} target="_blank" rel="noopener noreferrer" className="act act-solid">
+            Email us <span aria-hidden="true">↗</span>
           </a>
         </aside>
       </section>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import { ksh, waLink } from "../data";
+import { ksh, mailLink } from "../data";
 import { supabase, useSession } from "../supabase";
 
 const day = (d) => (d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
@@ -63,7 +63,7 @@ export default function Account() {
         <h1 id="acct-title" className="page-title rise">
           Account<span className="dot">.</span>
         </h1>
-        <p className="page-sub rise">Hi {name.split(" ")[0]}. Here's everything we look after for you, and what's coming up.</p>
+        <p className="page-sub rise">Hi {name.split(" ")[0]}. Here's what's coming up.</p>
       </section>
 
       <section className="wrap acct">
@@ -88,7 +88,7 @@ export default function Account() {
         {data.loading ? (
           <p className="cart-note">Loading…</p>
         ) : data.services.length === 0 ? (
-          <p className="login-soon">Nothing here yet. Once we build or take over a site for you, it shows here with its renewal and maintenance dates.</p>
+          <p className="login-soon">Nothing here yet.</p>
         ) : (
           <ul className="acct-list">
             {data.services.map((s) => (
@@ -154,8 +154,8 @@ export default function Account() {
         <div className="acct-end">
           <p className="cart-note">
             {open.length ? `${open.length} invoice${open.length > 1 ? "s" : ""} open. ` : ""}Questions about your site?{" "}
-            <a href={waLink("Hi Tessy, I have a question about my site.")} target="_blank" rel="noopener noreferrer" className="ulink">
-              WhatsApp us ↗
+            <a href={mailLink("Hi Tessy, I have a question about my site.")} target="_blank" rel="noopener noreferrer" className="ulink">
+              Email us ↗
             </a>
           </p>
           <button type="button" className="act" onClick={signOut}>

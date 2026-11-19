@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useRevealAll } from "./tokens";
-import { EMAIL, LINE, PACKAGES, SITE_NAV, waLink } from "./data";
+import { EMAIL, LINE, PACKAGES, SITE_NAV, mailLink } from "./data";
 import { HashLink, Icon, Mark } from "./ui";
 import { useCart } from "./cart";
 import { Search } from "./Search";
@@ -50,9 +50,9 @@ function ServicesMenu({ open, onClose }) {
         ))}
         <Link to="/order" className="mega-card t-ink" onClick={onClose}>
           <span className="mega-card-k">Build your order</span>
-          <b>Pick a package, show us the look you like, send it.</b>
+          <b>Pick a package, send it.</b>
           <span>
-            We reply with a fixed price — usually within a working day.
+            Fixed price in a day.
           </span>
           <span className="mega-card-go" aria-hidden="true">
             →
@@ -196,19 +196,13 @@ function Header() {
             <Icon name="bag" size={17} />
             {cart.count > 0 && <span className="cart-count">{cart.count}</span>}
           </Link>
-          <a
-            href={waLink("Hi Tessy, I'd like to start a project.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="talk"
-          >
+          <Link to="/order" className="talk">
             <span className="talk-long">Start a project</span>
             <span className="talk-short" aria-hidden="true">
-              Chat
+              Start
             </span>
-            <span aria-hidden="true">↗</span>
-            <span className="sr">on WhatsApp (opens in a new tab)</span>
-          </a>
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
 
@@ -256,14 +250,14 @@ function Header() {
             </span>
           </Link>
           <a
-            href={waLink("Hi Tessy, I'd like to start a project.")}
+            href={mailLink("Hi Tessy, I'd like to start a project.")}
             target="_blank"
             rel="noopener noreferrer"
             onClick={close}
             className="sheet-talk"
             style={{ "--d": `${SITE_NAV.length * 45}ms` }}
           >
-            Start a project on WhatsApp
+            Start a project by email
             <span aria-hidden="true">↗</span>
           </a>
         </nav>
@@ -282,14 +276,6 @@ function Footer() {
         </Link>
         <p className="foot-tag">{LINE}</p>
         <nav className="foot-links" aria-label="Contact">
-          <a
-            href={waLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ulink"
-          >
-            WhatsApp +254 142 614 743
-          </a>
           <Link to="/pay" className="ulink">
             Pay an invoice
           </Link>
@@ -309,7 +295,7 @@ function Footer() {
 }
 
 /* The floating chat pill (phones) waits until the top of the page — which
-   has its own WhatsApp buttons — has scrolled away. */
+   has its own buttons — has scrolled away. */
 function useScrolledPast(px) {
   const [past, setPast] = useState(false);
   useEffect(() => {
@@ -351,16 +337,9 @@ export default function Layout() {
         </Suspense>
       </main>
       <Footer />
-      <a
-        href={waLink("Hi Tessy, I'd like to start a project.")}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`fab ${showFab ? "is-on" : ""}`}
-        tabIndex={showFab ? undefined : -1}
-      >
-        Start a project on WhatsApp <span aria-hidden="true">↗</span>
-        <span className="sr">(opens in a new tab)</span>
-      </a>
+      <Link to="/order" className={`fab ${showFab ? "is-on" : ""}`} tabIndex={showFab ? undefined : -1}>
+        Start a project <span aria-hidden="true">→</span>
+      </Link>
     </div>
   );
 }

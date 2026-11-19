@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { AD_CAMPAIGNS, AD_TIERS, CASE_META, CASE_STUDIES, FACTS, LOCATION, OFFER_ENDS, OTHER_BUILDS, OWNERSHIP, PLACEHOLDER, PRICING_TIERS, SITE_TYPES, adSrc, phone, waLink } from "../data";
+import { AD_CAMPAIGNS, AD_TIERS, CASE_META, CASE_STUDIES, FACTS, LOCATION, OFFER_ENDS, OTHER_BUILDS, OWNERSHIP, PLACEHOLDER, PRICING_TIERS, SITE_TYPES, adSrc, phone, mailLink } from "../data";
 import { Contact, PriceRows, Steps } from "../blocks";
-import { BandHead, Placeholder } from "../ui";
+import { BandHead, Mounted, Placeholder } from "../ui";
 
 /* White page, black type. Colour lives in two places only: the cards, each
    in its own tone, and a few words. Cards change size and orientation as
@@ -25,7 +25,7 @@ const WHO = [
    the coloured word in its own colour, then "all over Kenya." After the full
    stop the sentence stays, and only the coloured word changes — turning
    over to the next one every couple of seconds. */
-const PRE = "Websites, apps and ads for ";
+const PRE = "Websites, apps, emails and ads for ";
 const SUF = "all over Kenya.";
 const LONGEST = WHO.reduce((a, [w]) => (w.length > a.length ? w : a), "");
 
@@ -64,7 +64,7 @@ function Typewriter() {
   if (calm || phase === "done") {
     return (
       <>
-        <span className="sr">Websites, apps and ads for businesses, schools, restaurants, churches, clinics, NGOs, shops and trainers, all over Kenya.</span>
+        <span className="sr">Websites, apps, emails and ads for businesses, schools, restaurants, churches, clinics, NGOs, shops and trainers, all over Kenya.</span>
         <span aria-hidden="true">
           {PRE}
           <span className="turn">
@@ -85,7 +85,7 @@ function Typewriter() {
 
   return (
     <>
-      <span className="sr">Websites, apps and ads for businesses, schools, restaurants, churches, clinics, NGOs, shops and trainers, all over Kenya.</span>
+      <span className="sr">Websites, apps, emails and ads for businesses, schools, restaurants, churches, clinics, NGOs, shops and trainers, all over Kenya.</span>
       <span className="tw" aria-hidden="true">
         <span className="tw-ghost">
           {PRE}
@@ -109,6 +109,63 @@ function Typewriter() {
   );
 }
 
+/* Offers at the top, like a shop's deals row: square black cards set like
+   the ad posters — the price big, the old one struck through, the saving in
+   a pink tag. Every number comes from the price list in data.js. */
+const toNum = (v) => Number(String(v).replace(/,/g, ""));
+const off = (was, now) => Math.round((1 - toNum(now) / toNum(was)) * 100);
+const ORDER_KEY = { landing: "landing", business: "business", custom: "shop", monthly: "monthly", campaign: "campaign", full: "campaign" };
+
+const OFFERS = [
+  ...PRICING_TIERS.filter((t) => t.was).map((t) => ({ key: t.key, kicker: "Website", name: t.name, price: t.price, was: t.was, from: t.from })),
+  ...AD_TIERS.filter((t) => t.was).map((t) => ({ key: t.key, kicker: "Ads", name: t.name, price: t.price, was: t.was, unit: t.unit.split(" · ")[0] })),
+];
+
+function Offers() {
+  return (
+    <section className="offers" aria-labelledby="offers-title">
+      <div className="wrap offers-head">
+        <h2 id="offers-title">
+          End-of-year offers<span className="dot">.</span>
+        </h2>
+        <span>Until {OFFER_ENDS}</span>
+      </div>
+      <ul className="wrap offers-row">
+        {OFFERS.map((o) => (
+          <li key={o.key}>
+            <Link to={`/order?p=${ORDER_KEY[o.key] || o.key}`} className="offer">
+              <span className="offer-tag">−{off(o.was, o.price)}%</span>
+              <span className="offer-kicker">{o.kicker}</span>
+              <b className="offer-name">{o.name}</b>
+              <span className="offer-price">
+                {o.from && <small>from</small>}
+                KSh {o.price}
+              </span>
+              <s className="offer-was">KSh {o.was}</s>
+              <span className="offer-foot">
+                <span>{o.unit || `Ends ${OFFER_ENDS}`}</span>
+                <span aria-hidden="true">Get it →</span>
+              </span>
+            </Link>
+          </li>
+        ))}
+        <li>
+          <Link to="/order?p=campaign" className="offer offer-bundle">
+            <span className="offer-tag">−KSh 5,000</span>
+            <span className="offer-kicker">Bundle</span>
+            <b className="offer-name">Website + ad campaign</b>
+            <span className="offer-note">Book a campaign with any website and take KSh 5,000 off the campaign.</span>
+            <span className="offer-foot">
+              <span>Ends {OFFER_ENDS}</span>
+              <span aria-hidden="true">Get it →</span>
+            </span>
+          </Link>
+        </li>
+      </ul>
+    </section>
+  );
+}
+
 function Hero() {
   return (
     <section className="wrap hero" aria-labelledby="hero-title">
@@ -122,16 +179,17 @@ function Hero() {
       </h1>
       <div className="hero-foot rise">
         <p className="hero-copy">
-          We design and build websites and apps that load on three bars of signal, and the posters and video ads that send people to them — for clients all over Kenya. Fixed prices in shillings, M-Pesa built in, and we host it for you.
+          Fast sites, M-Pesa built in, fixed prices. We host.
         </p>
         <div className="hero-acts">
           <Link to="/work" className="act act-solid">
             See the work <span aria-hidden="true">→</span>
           </Link>
-          <a href={waLink("Hi Tessy, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="act act-quiet">
-            Start on WhatsApp <span aria-hidden="true">↗</span>
+          <a href={mailLink("Hi Tessy, I'd like to start a project.")} target="_blank" rel="noopener noreferrer" className="act act-quiet">
+            Email us <span aria-hidden="true">↗</span>
           </a>
         </div>
+        <Mounted set="home" className="hero-art" />
       </div>
       <dl className="facts rise">
         {FACTS.map((f, i) => (
@@ -187,7 +245,7 @@ function Case({ s, i }) {
 function ClientWork() {
   return (
     <section id="work" className="wrap band" aria-labelledby="work-title">
-      <BandHead n="01" title="Client work" id="work-title" note="Live, and used every day by the people they were built for." />
+      <BandHead n="01" title="Client work" id="work-title" note="Live and in use." />
       <ul className="cases">
         {CASE_STUDIES.map((s, i) => (
           <Case key={s.n} s={s} i={i} />
@@ -196,7 +254,7 @@ function ClientWork() {
       <LiveSites />
       <div className="band-end">
         <p>
-          <span className="w-blue">{FACTS[0].value} client sites</span> and {FACTS[1].value} of our own — restaurants, shops, a florist, a tattoo studio, a dating app.
+          <span className="w-blue">{FACTS[0].value} client sites</span>, {FACTS[1].value} demos.
         </p>
         <Link to="/work" className="act">
           All work <span aria-hidden="true">→</span>
@@ -281,13 +339,12 @@ function AdBoard() {
 }
 
 /* Every site that is live right now, as round badges with the address under
-   the name — clients first, then Finderr, then the rest of our own builds. */
+   the name — clients first, then our own builds. */
 const host = (url) => new URL(url).hostname.replace(/^www\./, "");
 const LIVE_SITES = [
-  ...CASE_STUDIES.map((s) => ({ name: s.client, url: s.demo, img: s.img, kind: "Client" })),
+  ...CASE_STUDIES.map((s) => ({ name: s.client, url: s.demo, img: s.img, sticker: null })),
   ...OTHER_BUILDS.filter((b) => b.demo?.startsWith("http"))
-    .sort((a, b) => (a.title === "Finderr" ? -1 : b.title === "Finderr" ? 1 : 0))
-    .map((b) => ({ name: b.title, url: b.demo, img: b.img, kind: b.title === "Finderr" ? "Our app" : null })),
+    .map((b) => ({ name: b.title, url: b.demo, img: b.img, sticker: "Demo" })),
 ];
 
 function LiveSites() {
@@ -301,6 +358,7 @@ function LiveSites() {
         {LIVE_SITES.map((site) => (
           <li key={site.url} className="badge-slot">
             <a href={site.url} target="_blank" rel="noopener noreferrer" className="badge">
+              {site.sticker && <span className="sticker">{site.sticker}</span>}
               <span className="badge-pic">
                 <img src={phone(site.img)} alt="" width="390" height="844" loading="lazy" decoding="async" />
                 <span className="badge-go" aria-hidden="true">
@@ -311,7 +369,7 @@ function LiveSites() {
               <span className="badge-domain" title={host(site.url)}>
                 {host(site.url)}
               </span>
-              {site.kind && <span className="badge-kind">{site.kind}</span>}
+
               <span className="sr">(opens in a new tab)</span>
             </a>
           </li>
@@ -324,11 +382,11 @@ function LiveSites() {
 function Ads() {
   return (
     <section className="wrap band" aria-labelledby="ads-title">
-      <BandHead n="03" title="Ad campaigns" id="ads-title" note="Six concept brands, not clients. Posters with a price and a number to call, and voiced video ads for Reels and TikTok." />
+      <BandHead n="04" title="Ad campaigns" id="ads-title" note="Concept brands." />
       <AdBoard />
       <div className="band-end">
         <p>
-          Ad design from <span className="w-tomato">KSh {AD_TIERS[0].price}</span> a poster, or a whole campaign at once.
+          From <span className="w-tomato">KSh {AD_TIERS[0].price}</span> a poster.
         </p>
         <Link to="/ads" className="act">
           All ads <span aria-hidden="true">→</span>
@@ -344,7 +402,7 @@ const TYPE_TONES = ["t-blue", "t-pink", "t-lilac", "t-ink", "t-tomato", "t-green
 function WhatWeBuild() {
   return (
     <section id="build" className="wrap band" aria-labelledby="build-title">
-      <BandHead n="02" title="What we build" id="build-title" note="All kinds of websites, apps and tools. If people need to find it, read it, buy it or book it — or you are tired of doing it by hand — we build it." />
+      <BandHead n="02" title="What we build" id="build-title" note="Websites, apps and tools." />
       <ul className="types">
         {SITE_TYPES.map((t, i) => (
           <li key={t.name} className={`type ${t.size ?? ""} ${TYPE_TONES[i % TYPE_TONES.length]}`} data-reveal>
@@ -354,12 +412,33 @@ function WhatWeBuild() {
           </li>
         ))}
       </ul>
-      <div className="band-end">
-        <p>Something not on the list? Tell us what it has to do — we'll scope it and price it.</p>
-        <a href={waLink("Hi Tessy, we need a website or app built. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
-          Ask on WhatsApp <span aria-hidden="true">↗</span>
-        </a>
-      </div>
+    </section>
+  );
+}
+
+/* Emails a business sends its own customers: the name in heavy black, then a
+   small thin line on what it means. */
+const EMAILS = [
+  ["Order confirmations", "What they bought, the total, when it arrives."],
+  ["Receipts & invoices", "With your logo, after every payment."],
+  ["Booking reminders", "The day before, so fewer no-shows."],
+  ["Offers & news", "Sales and new menus, to people who said yes."],
+  ["Welcome emails", "A hello when someone signs up."],
+  ["Your own address", "hello@yourbusiness.co.ke, not a Gmail."],
+];
+
+function Emails() {
+  return (
+    <section id="emails" className="wrap band" aria-labelledby="emails-title">
+      <BandHead n="03" title="Emails to your customers" id="emails-title" note="Sent by your site, with your logo." />
+      <ul className="mails">
+        {EMAILS.map(([name, body]) => (
+          <li key={name} className="mail" data-reveal>
+            <h3>{name}</h3>
+            <p>{body}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -367,13 +446,13 @@ function WhatWeBuild() {
 function Prices() {
   return (
     <section className="wrap band" aria-labelledby="prices-title">
-      <BandHead n="04" title="Prices" id="prices-title" note={`End-of-year prices until ${OFFER_ENDS}. ${OWNERSHIP.ours}`} />
+      <BandHead n="05" title="Prices" id="prices-title" note={`Until ${OFFER_ENDS}.`} />
       <PriceRows />
       <p className="own">
         <span className="w-blue">{OWNERSHIP.ours}</span> {OWNERSHIP.theirs}
       </p>
       <div className="band-end">
-        <p>Bigger project? Marketplaces, accounts, bookings — scoped together and priced to the job.</p>
+        <p>Bigger project? Priced to the job.</p>
         <Link to="/rates" className="act">
           All prices <span aria-hidden="true">→</span>
         </Link>
@@ -385,7 +464,7 @@ function Prices() {
 function HowItWorks() {
   return (
     <section className="wrap band" aria-labelledby="how-title">
-      <BandHead n="05" title="How it works" id="how-title" note="Two payments, no surprises." />
+      <BandHead n="06" title="How it works" id="how-title" note="60% to start, 40% at launch." />
       <Steps />
     </section>
   );
@@ -394,13 +473,15 @@ function HowItWorks() {
 export default function Home() {
   return (
     <>
+      <Offers />
       <Hero />
       <ClientWork />
       <WhatWeBuild />
+      <Emails />
       <Ads />
       <Prices />
       <HowItWorks />
-      <Contact n="06" />
+      <Contact n="07" />
     </>
   );
 }

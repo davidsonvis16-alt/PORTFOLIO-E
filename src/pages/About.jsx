@@ -15,9 +15,9 @@ export default function About() {
       <section className="wrap sec" aria-label="Who builds it">
         <SecHead n="01" title="Who builds it" />
         <div className="prose" data-reveal>
-          <p className="prose-lead">We build websites and apps and design ads for businesses all over Kenya — shops, restaurants, schools, trainers, churches, NGOs and anyone with something to tell people.</p>
+          <p className="prose-lead">Websites, apps and ads for businesses all over Kenya.</p>
           <p>
-            Every one is held to the same standard: it has to look like it cost more than it did, and it has to load when the signal drops to three bars. You deal directly with the people who design the posters and write the code, from the first message to the day it goes live. We host what we build; the domain, database and accounts stay in your name.
+            Fast on three bars of signal. You talk to the people who build it. We host; the domain is yours.
           </p>
         </div>
       </section>
