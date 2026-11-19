@@ -568,6 +568,9 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
 .offers-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 12px; }
 .offers-head h2 { font-size: 20px; font-weight: 900; letter-spacing: -0.03em; }
 .offers-head span { font-size: 13px; font-weight: 700; color: var(--sub); }
+.offers-end { display: inline-flex; align-items: center; gap: 8px; }
+.offers-arrow { width: 34px; height: 34px; border-radius: 999px; display: grid; place-items: center; background: #000; color: #fff; font-size: 15px; font-weight: 800; transition: background-color 0.2s var(--ease); }
+.offers-arrow:hover { background: var(--dot); }
 .offers-row { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gut); scrollbar-width: none; position: relative; }
 .offers-row::-webkit-scrollbar { display: none; }
 .offers-row > li { flex: 0 0 clamp(210px, 19vw, 260px); scroll-snap-align: start; }

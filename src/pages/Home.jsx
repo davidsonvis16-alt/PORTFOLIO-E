@@ -122,15 +122,30 @@ const OFFERS = [
 ];
 
 function Offers() {
+  const row = useRef(null);
+  const step = (dir) => {
+    const el = row.current;
+    if (!el) return;
+    const card = el.querySelector("li");
+    el.scrollBy({ left: dir * ((card?.offsetWidth || 260) + 10) * 2, behavior: "smooth" });
+  };
   return (
     <section className="offers" aria-labelledby="offers-title">
       <div className="wrap offers-head">
         <h2 id="offers-title">
           End-of-year offers<span className="dot">.</span>
         </h2>
-        <span>Until {OFFER_ENDS}</span>
+        <span className="offers-end">
+          Until {OFFER_ENDS}
+          <button type="button" className="offers-arrow" onClick={() => step(-1)} aria-label="Earlier offers">
+            ←
+          </button>
+          <button type="button" className="offers-arrow" onClick={() => step(1)} aria-label="More offers">
+            →
+          </button>
+        </span>
       </div>
-      <ul className="wrap offers-row">
+      <ul className="wrap offers-row" ref={row}>
         {OFFERS.map((o) => (
           <li key={o.key}>
             <Link to={`/order?p=${ORDER_KEY[o.key] || o.key}`} className="offer">
