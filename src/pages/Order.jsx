@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CASE_STUDIES, OTHER_BUILDS, PACKAGES, STYLES, ksh, waLink } from "../data";
+import { CASE_STUDIES, OTHER_BUILDS, PACKAGES, STYLES, ksh, mailLink } from "../data";
 import { useCart } from "../cart";
 import { Icon, PayMethods } from "../ui";
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ const MAX_FILE_BYTES = 1.5 * 1024 * 1024;
 
 const priceLabel = (p) => (p.from == null ? "Quoted" : `from ${ksh(p.from)}${p.unit ? ` ${p.unit}` : ""}`);
 
-/* The plain-text order, for WhatsApp and the email's text part. */
+/* The plain-text order, for the email link and the email's text part. */
 function summary(cart, f) {
   const lines = [
     `New order from ${f.name || "—"} (${f.business || "—"})`,
@@ -89,7 +89,7 @@ function CartBox({ cart }) {
         <span>{cart.count ? `${cart.count} item${cart.count > 1 ? "s" : ""}` : "Empty"}</span>
       </div>
       {cart.lines.length === 0 ? (
-        <p className="cart-empty">Pick one or more packages. You can mix a website with ads or automation.</p>
+        <p className="cart-empty">Pick one or more.</p>
       ) : (
         <ul className="cart-lines">
           {cart.lines.map((l) => (
@@ -148,7 +148,7 @@ function OrderForm({ cart }) {
     const picked = [...e.target.files].filter((x) => x.type.startsWith("image/"));
     e.target.value = "";
     const tooBig = picked.find((x) => x.size > MAX_FILE_BYTES);
-    if (tooBig) return setState({ status: "idle", error: `${tooBig.name} is over 1.5 MB. Send big files on WhatsApp instead.` });
+    if (tooBig) return setState({ status: "idle", error: `${tooBig.name} is over 1.5 MB. Email big files to us instead.` });
     const read = await Promise.all(picked.slice(0, MAX_FILES - f.files.length).map(readFile));
     setF((prev) => ({ ...prev, files: [...prev.files, ...read].slice(0, MAX_FILES) }));
     setState({ status: "idle", error: "" });
@@ -176,9 +176,9 @@ function OrderForm({ cart }) {
     return (
       <div className="form-done t-pink" role="status">
         <b>Order received — thank you.</b>
-        <p>It's in our inbox. We'll come back with a fixed price, usually within a working day.</p>
-        <a href={waLink(text)} target="_blank" rel="noopener noreferrer" className="act act-solid">
-          Also send it on WhatsApp <span aria-hidden="true">↗</span>
+        <p>Got it. Fixed price within a working day.</p>
+        <a href={mailLink(text)} target="_blank" rel="noopener noreferrer" className="act act-solid">
+          Email us a copy <span aria-hidden="true">↗</span>
         </a>
         <button type="button" className="act" onClick={() => cart.clear()}>
           Start a new order
@@ -280,7 +280,7 @@ function OrderForm({ cart }) {
         <input value={f.name} onChange={set("name")} required maxLength={80} autoComplete="name" />
       </label>
       <label>
-        <span>Phone (WhatsApp)</span>
+        <span>Phone</span>
         <input value={f.phone} onChange={set("phone")} required maxLength={20} inputMode="tel" autoComplete="tel" placeholder="07… or +254…" />
       </label>
       <label>
@@ -296,12 +296,12 @@ function OrderForm({ cart }) {
         <button type="submit" className="act act-solid" disabled={state.status === "sending"}>
           {state.status === "sending" ? "Sending…" : "Send my order"} <span aria-hidden="true">→</span>
         </button>
-        <a href={waLink(text)} target="_blank" rel="noopener noreferrer" className="act act-quiet">
-          Send on WhatsApp instead <span aria-hidden="true">↗</span>
+        <a href={mailLink(text)} target="_blank" rel="noopener noreferrer" className="act act-quiet">
+          Send by email instead <span aria-hidden="true">↗</span>
         </a>
         {state.error && (
           <p className="form-error" role="alert">
-            {state.error} You can still send it on WhatsApp.
+            {state.error} You can still send it by email.
           </p>
         )}
       </div>
@@ -327,7 +327,7 @@ export default function Order() {
         <h1 id="order-title" className="page-title rise">
           Order<span className="dot">.</span>
         </h1>
-        <p className="page-sub rise">Pick what you need, show us the look you like, and send it. It lands in our inbox — or on WhatsApp if you prefer — and we reply with a fixed price.</p>
+        <p className="page-sub rise">Pick, send, get a fixed price.</p>
       </section>
       <section className="wrap order">
         <div className="order-main">

@@ -1,10 +1,9 @@
-import { ADDONS, AD_BUNDLE, AD_TERMS, BASE_SITE, OFFER_ENDS, OTHER_BUILDS, ksh, priceOf, waLink } from "../data";
+import { AD_BUNDLE, AD_TERMS, OFFER_ENDS, mailLink } from "../data";
 import { AdRows, PriceRows, Steps } from "../blocks";
 import { Link } from "react-router-dom";
 import { PayMethods, SecHead } from "../ui";
 
 export default function Rates() {
-  const builds = [...OTHER_BUILDS].sort((a, b) => priceOf(b).total - priceOf(a).total);
   return (
     <>
       <section className="wrap page-top" aria-labelledby="rates-title">
@@ -12,85 +11,21 @@ export default function Rates() {
         <h1 id="rates-title" className="page-title rise">
           Prices<span className="dot">.</span>
         </h1>
-        <p className="page-sub rise">Fixed prices, agreed before any work starts. We host every website; the domain and database are yours. M-Pesa or bank transfer.</p>
+        <p className="page-sub rise">Fixed prices. M-Pesa or bank.</p>
         <nav className="jump rise" aria-label="Jump to">
           <a href="#sites" className="pill-link">Websites</a>
-          <a href="#addons" className="pill-link">What adds to the price</a>
-          <a href="#builds" className="pill-link">What the builds cost</a>
           <a href="#ads" className="pill-link">Ad design</a>
           <a href="#paying" className="pill-link">Paying</a>
         </nav>
       </section>
 
       <section id="sites" className="wrap sec" aria-labelledby="sites-title">
-        <SecHead n="01" title="Websites" id="sites-title" note="Each plan includes everything in the one before it." />
+        <SecHead n="01" title="Websites" id="sites-title" note="Each plan includes the one before." />
         <PriceRows />
-        <div className="sec-end">
-          <p>Something more complex? Marketplaces, customer accounts, multi-branch systems — scoped together and priced to the job.</p>
-          <a href={waLink("Hi Tessy, I have a bigger project in mind. Can we talk it through?")} target="_blank" rel="noopener noreferrer" className="act">
-            Talk it through <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </section>
-
-      <section id="addons" className="wrap sec" aria-labelledby="addons-title">
-        <SecHead
-          n="02"
-          title="What adds to the price"
-          id="addons-title"
-          note={`Every build starts as a custom-designed site of up to 5 pages (${ksh(BASE_SITE[1])}). Each feature adds its own price; the end-of-year offer takes 15% off the total.`}
-        />
-        <ul className="ledger">
-          {Object.values(ADDONS)
-            .sort((a, b) => b[1] - a[1])
-            .map(([name, v]) => (
-              <li key={name}>
-                <span>{name}</span>
-                <b>+{v.toLocaleString("en-US")}</b>
-              </li>
-            ))}
-        </ul>
-      </section>
-
-      <section id="builds" className="wrap sec" aria-labelledby="builds-title">
-        <SecHead n="03" title="What the builds would cost" id="builds-title" note="Our own builds, priced as if you asked for one like it today. Client prices stay between us and them." />
-        <div className="table-wrap">
-          <table className="cost">
-            <thead>
-              <tr>
-                <th scope="col">Site</th>
-                <th scope="col">What drives the price</th>
-                <th scope="col">Normal</th>
-                <th scope="col">Until {OFFER_ENDS}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {builds.map((b) => {
-                const p = priceOf(b);
-                return (
-                  <tr key={b.title}>
-                    <th scope="row">
-                      <a href={b.demo} target="_blank" rel="noopener noreferrer" className="ulink">
-                        {b.title}
-                      </a>
-                    </th>
-                    <td>{b.addons.map((k) => ADDONS[k][0]).join(" · ")}</td>
-                    <td>
-                      <s>{ksh(p.total)}</s>
-                    </td>
-                    <td>
-                      <b>{ksh(p.now)}</b>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
       </section>
 
       <section id="ads" className="wrap sec" aria-labelledby="ads-title">
-        <SecHead n="04" title="Ad design" id="ads-title" note="Per poster, a monthly content plan, or a whole campaign in one go." />
+        <SecHead n="02" title="Ad design" id="ads-title" note="Per poster, monthly, or a campaign." />
         <AdRows />
         <p className="fine">
           {AD_TERMS} {AD_BUNDLE}
@@ -98,7 +33,7 @@ export default function Rates() {
       </section>
 
       <section id="paying" className="wrap sec" aria-labelledby="paying-title">
-        <SecHead n="05" title="How paying works" id="paying-title" note="Two payments, no surprises. We host the site; the domain, database and any paid services are in your name and yours to pay for." />
+        <SecHead n="03" title="How paying works" id="paying-title" note="60% to start, 40% at launch. Domain and database are yours." />
         <Steps />
         <div className="pay-strip">
           <PayMethods />

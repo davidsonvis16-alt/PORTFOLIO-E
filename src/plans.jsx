@@ -1,4 +1,4 @@
-import { AD_BUNDLE, AD_TERMS, AD_TIERS, OTHER_BUILDS, PAY_STEPS, PRICING_TIERS, waLink } from "./data";
+import { AD_BUNDLE, AD_TERMS, AD_TIERS, OTHER_BUILDS, PAY_STEPS, PRICING_TIERS, mailLink } from "./data";
 import { Check } from "./ui";
 
 /* Price cards: a colour block where a photo would be, carrying the price;
@@ -60,7 +60,7 @@ export function SitePlans() {
           from={t.from}
           unit={`+ KSh ${t.monthly}/month maintenance`}
           blurb={t.blurb}
-          cta={{ href: waLink(`Hi Tessy, I'm interested in the ${t.name} at KSh ${t.price} (end-of-year offer). Can we discuss it?`), label: "Ask about this" }}
+          cta={{ href: mailLink(`Hi Tessy, I'm interested in the ${t.name} at KSh ${t.price} (end-of-year offer). Can we discuss it?`), label: "Ask about this" }}
           foot={
             OTHER_BUILDS.some((b) => b.tier === t.key) &&
             `Built at this level: ${OTHER_BUILDS.filter((b) => b.tier === t.key).map((b) => b.title).join(", ")}`
@@ -110,7 +110,7 @@ export function AdPlans() {
             price={t.price}
             unit={t.unit}
             blurb={t.blurb}
-            cta={{ href: waLink(`Hi Tessy, I'm interested in the ${t.name} ad package (KSh ${t.price}). Can we talk?`), label: "Book this" }}
+            cta={{ href: mailLink(`Hi Tessy, I'm interested in the ${t.name} ad package (KSh ${t.price}). Can we talk?`), label: "Book this" }}
             foot={t.eg && `Built at this level: ${t.eg.join(", ")}`}
           >
             <Features items={t.features} />

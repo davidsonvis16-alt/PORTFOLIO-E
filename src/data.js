@@ -1,6 +1,5 @@
 /* All site content in one place. */
 
-export const WHATSAPP_NUMBER = "254142614743";
 /* The studio email. Empty until the real address is confirmed; every place
    that shows an email hides itself while this is empty. */
 export const EMAIL = "hello@tessy.co.ke";
@@ -141,20 +140,6 @@ export const OTHER_BUILDS = [
     img: "/work/jave.jpg",
   },
   {
-    title: "Eden Phones",
-    addons: ["catalogue", "ordering", "instalments", "zones"],
-    icon: "device",
-    group: "shop",
-    tier: "custom",
-    tierWhy: "M-Pesa checkout and instalment plans",
-    kind: "Phone shop · E-commerce",
-    desc: "Genuine and certified-refurbished phones in Nairobi — same-day delivery, M-Pesa, and Lipa Mdogo Mdogo instalments.",
-    stack: "Next.js · TypeScript · Tailwind",
-    year: "2026",
-    demo: "https://phoneske-gamma.vercel.app/",
-    img: "/work/phones.jpg",
-  },
-  {
     title: "Petal",
     addons: ["builder", "ordering", "zones"],
     icon: "flower",
@@ -167,20 +152,6 @@ export const OTHER_BUILDS = [
     year: "2026",
     demo: "https://floristke.vercel.app/",
     img: "/work/petal.jpg",
-  },
-  {
-    title: "Aldosi Merchants",
-    addons: ["catalogue", "motion"],
-    icon: "flame",
-    group: "shop",
-    tier: "business",
-    tierWhy: "catalogue and brand pages, no checkout",
-    kind: "Brand storefront",
-    desc: "An editorial storefront for a Nairobi cooker brand — a lit-burner hero and a catalogue that reads like a magazine.",
-    stack: "React · Tailwind · Framer Motion",
-    year: "2026",
-    demo: "https://aldosi-merchants.vercel.app/",
-    img: "/work/aldosi.jpg",
   },
   {
     title: "Haven",
@@ -197,48 +168,6 @@ export const OTHER_BUILDS = [
     img: "/work/haven.jpg",
   },
   {
-    title: "Gadellaa Arts",
-    addons: ["gallery", "bookings", "deposits"],
-    icon: "pen",
-    group: "studio",
-    tier: "custom",
-    tierWhy: "session booking on top of the portfolio pages",
-    kind: "Tattoo studio · Nyeri",
-    desc: "A dark, type-led site for a tattoo studio — portfolio, prices, the artist, and session booking.",
-    stack: "React · TypeScript · CSS Modules",
-    year: "2026",
-    demo: "https://gadella.vercel.app/",
-    img: "/work/gadella.jpg",
-  },
-  {
-    title: "Bridges",
-    addons: ["coverage", "categories", "ordering"],
-    icon: "truck",
-    group: "platform",
-    tier: "custom",
-    tierWhy: "address search across cities and categories",
-    kind: "Delivery platform",
-    desc: "Food, groceries and pharmacy delivery across Kenyan cities — address-first search and category browsing.",
-    stack: "React · TypeScript · Tailwind",
-    year: "2026",
-    demo: "https://bridges-theta.vercel.app/",
-    img: "/work/bridges.jpg",
-  },
-  {
-    title: "Finderr",
-    addons: ["profiles", "matching", "gated"],
-    icon: "heart",
-    group: "platform",
-    tier: "custom",
-    tierWhy: "mutual-interest matching and gated contact",
-    kind: "Dating & discovery",
-    desc: "Human-first discovery — a WhatsApp connection only unlocks after mutual interest, numbers never shown publicly.",
-    stack: "React · TypeScript · Tailwind",
-    year: "2026",
-    demo: "https://arrow-puce.vercel.app/",
-    img: "/work/arrow.jpg",
-  },
-  {
     title: "Kijani Kafe",
     addons: ["gallery"],
     icon: "leaf",
@@ -251,20 +180,6 @@ export const OTHER_BUILDS = [
     year: "2026",
     demo: "https://kijani-kafe.vercel.app/",
     img: "/work/kijani.jpg",
-  },
-  {
-    title: "Beyond Fruits",
-    addons: ["catalogue", "ordering", "zones", "gallery"],
-    icon: "apple",
-    group: "shop",
-    tier: "custom",
-    tierWhy: "basket and checkout",
-    kind: "Grocery · Delivery",
-    desc: "Fresh produce with country-wide delivery — basket and checkout kept fast on mobile data.",
-    stack: "React · Vite · Tailwind",
-    year: "2026",
-    demo: "https://beyond-taupe-one.vercel.app/",
-    img: "/work/beyond.jpg",
   },
 ];
 
@@ -296,39 +211,39 @@ export const PRICING_TIERS = [
     key: "business",
     name: "Business Site",
     was: "40,000",
-    price: "34,000",
+    price: "30,000",
     from: true,
     monthly: "1,500",
-    split: ["20,400", "13,600"],
+    split: ["18,000", "12,000"],
     methods: "M-Pesa or bank transfer",
-    tag: "Save KSh 6,000",
+    tag: "Save KSh 10,000",
     featured: true,
     perks: ["Hosting included"],
     blurb: "The full shopfront — menu, story, location and payments.",
     plus: "EVERYTHING IN LANDING, PLUS",
-    features: ["Up to 5 pages", "Custom design, not a stock layout", "M-Pesa payments", "1 round of revisions", "7-day turnaround"],
+    features: ["Up to 5 pages", "Custom design, not a stock layout", "M-Pesa payments", "7-day turnaround"],
     missing: ["No cart or checkout", "No bookings or accounts"],
   },
   {
     key: "custom",
     name: "Custom Build",
-    was: "75,000",
-    price: "64,000",
+    was: "60,000",
+    price: "45,000",
     from: true,
     monthly: "3,000",
-    split: ["38,400", "25,600"],
+    split: ["27,000", "18,000"],
     methods: "M-Pesa or bank transfer",
-    tag: "Save KSh 11,000",
+    tag: "Save KSh 15,000",
     perks: ["Hosting included"],
     blurb: "When the site has to run part of the business, not just describe it.",
     plus: "EVERYTHING IN BUSINESS, PLUS",
-    features: ["Cart and M-Pesa checkout", "Bookings, search or listings", "Database behind the site", "Revisions scoped to the job", "Ongoing support"],
+    features: ["Cart and M-Pesa checkout", "Bookings, search or listings", "Customer login (with its own database)", "Ongoing support"],
     missing: [],
   },
 ];
 
 export const PAY_STEPS = [
-  { n: "01", title: "Agree the scope", body: "Tell us what the business needs on WhatsApp. You get a fixed price before any work starts." },
+  { n: "01", title: "Agree the scope", body: "Email us what the business needs. You get a fixed price before any work starts." },
   { n: "02", title: "Pay 60% to start", body: "The deposit books your slot and work begins the same week." },
   { n: "03", title: "Review and approve", body: "You see the design first, then the built site, and sign it off." },
   { n: "04", title: "Pay 40% at launch", body: "The balance is due when the site goes live. We host it; the domain is registered in your name." },
@@ -407,10 +322,13 @@ export const PROOF = [
   { value: CASE_STUDIES.length, label: "Clients", note: "sites live and in use" },
   { value: LIVE_COUNT, label: "Sites live", note: "client + self-directed" },
   { text: "< 2s", label: "Typical load, 3G", note: "target, not a lab figure" },
-  { text: "< 2h", label: "Usual reply time", note: "WhatsApp, working hours" },
+  { text: "< 2h", label: "Usual reply time", note: "email, working days" },
 ];
 
-export const waLink = (text) => `https://wa.me/${WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
+/* Every "talk to us" link opens an email to us, with the message already
+   written. No phone number is published; people request a call on the Contact page. */
+export const mailLink = (text, subject = "Enquiry from tessy.co.ke") =>
+  `mailto:hello@tessy.co.ke?subject=${encodeURIComponent(subject)}${text ? `&body=${encodeURIComponent(text)}` : ""}`;
 
 /* Phone-size screenshot of the same site. */
 export const phone = (img) => img.replace("/work/", "/work/m/");
@@ -438,7 +356,6 @@ export const CATEGORIES = [
   { to: "/work#shops", label: "Shops", icon: "bag" },
   { to: "/work#more", label: "Homes & apps", icon: "home" },
   { to: "/ads", label: "Ad campaigns", icon: "image" },
-  { to: "/ads#video", label: "Video ads", icon: "play" },
   { to: "/rates", label: "Prices", icon: "tag" },
 ];
 
@@ -604,7 +521,8 @@ export const AD_CAMPAIGNS = [
   },
 ];
 
-export const AD_COUNT = AD_CAMPAIGNS.reduce((n, c) => n + c.pieces.length, 0);
+/* Posters only: the voiced video ads are kept in the files but not offered for now. */
+export const AD_COUNT = AD_CAMPAIGNS.reduce((n, c) => n + c.pieces.filter(([, , format]) => !format.startsWith("Video")).length, 0);
 export const adSrc = (key, file, small = false) => `/ads/${key}/${small ? "s/" : ""}${file}.webp`;
 export const adVideo = (key, file) => ({ src: `/ads/${key}/${file}.mp4`, poster: `/ads/${key}/s/${file}.jpg` });
 export const isVideo = (format) => format.startsWith("Video");
@@ -626,53 +544,45 @@ export const AD_TIERS = [
   {
     key: "single",
     name: "Single Poster",
-    price: "2,500",
-    unit: "per design",
-    blurb: "One poster for one offer — a new item, a deal, an opening.",
-    features: ["1 feed post or story", "Your logo and colours", "1 round of changes", "48-hour turnaround"],
-  },
-  {
-    key: "video",
-    name: "Video Ad",
-    price: "6,000",
-    unit: "per video",
-    blurb: "A voiced 15–20 second ad, full-screen for Reels, TikTok and Status.",
-    features: ["Script and voice-over", "Your photos or stock footage", "Captions burned in", "1 round of changes", "5-day turnaround"],
+    price: "1,000",
+    unit: "per poster",
+    blurb: "One poster for your offer.",
+    features: ["For Instagram, Facebook or Status", "Your logo and colours", "Ready in 2 days"],
   },
   {
     key: "monthly",
     name: "Monthly Content",
-    was: "20,000",
-    price: "17,000",
+    was: "10,500",
+    price: "9,000",
     unit: "per month",
-    blurb: "Your feed handled every month, so it never goes quiet.",
-    features: ["12 feed posts + 4 stories a month", "One look across the whole month", "Planned with you at the start", "Cancel with a month's notice"],
+    blurb: "A month of posts, ready to upload.",
+    features: ["12 posts + 4 stories", "Same look all month", "We plan it with you", "Stop anytime, a month's notice"],
   },
   {
     key: "campaign",
     name: "Brand Campaign",
-    was: "25,000",
-    price: "21,000",
+    was: "21,000",
+    price: "18,000",
     unit: "one-off · up to 10 pieces",
     featured: true,
-    blurb: "A full voice for the business — posts, stories and a billboard.",
-    features: ["Feed posts and stories", "A billboard / banner size", "Logo sheet tidy-up", "2 rounds of changes", "7-day turnaround"],
+    blurb: "Posts, stories and a billboard for one launch.",
+    features: ["Posts and stories", "Billboard or banner", "Logo cleaned up", "Ready in 7 days"],
     eg: ["The Lineup", "Latch Homes"],
   },
   {
     key: "full",
     name: "Full Campaign",
-    was: "45,000",
-    price: "38,000",
+    was: "30,000",
+    price: "25,000",
     unit: "one-off · up to 18 pieces",
-    blurb: "Everything for a launch — every format, stickers and a menu or price board.",
-    features: ["Feed, story, square and billboard", "Logo and sticker sheet", "Menu, receipt or price-board post", "2 rounds of changes", "10-day turnaround"],
+    blurb: "Everything for a launch.",
+    features: ["Posts, stories and billboard", "Logo and stickers", "Menu or price board", "Ready in 10 days"],
     eg: ["Stage 46"],
   },
 ];
 
-export const AD_TERMS = "Ad spend on Instagram, Facebook or TikTok is paid by you, directly to the platform — it's never inside these prices.";
-export const AD_BUNDLE = "Book a campaign with any website and take KSh 5,000 off the campaign.";
+export const AD_TERMS = "Boosting posts on Instagram or TikTok is paid separately, to them.";
+export const AD_BUNDLE = "KSh 5,000 off with any website.";
 
 /* ---------- the typographic site ----------
    Copy for the redesign, in the studio's own words from the pages above. Anything
@@ -700,22 +610,22 @@ export const CASE_META = {
 /* Counts taken from the data above, so they stay true as work is added. */
 export const FACTS = [
   { value: CASE_STUDIES.length, label: "client sites, live and in use" },
-  { value: OTHER_BUILDS.filter((b) => b.demo?.startsWith("http")).length, label: "self-initiated builds, all live" },
+  { value: OTHER_BUILDS.filter((b) => b.demo?.startsWith("http")).length, label: "demo sites, all live" },
   { value: AD_COUNT, label: "ad pieces across six concept brands" },
 ];
 
 /* Every kind of site and app we take on. Shown as cards on the home page. */
 export const SITE_TYPES = [
-  { name: "Business sites", body: "Who you are, what you sell, where to find you — the shopfront every business needs.", size: "is-big" },
-  { name: "Online shops", body: "Cart, M-Pesa and card checkout, stock and orders in one place." },
-  { name: "Learning platforms (LMS)", body: "Courses, lessons, quizzes and student progress, for schools, trainers and coaches.", size: "is-tall" },
-  { name: "Information sites", body: "Get the word out — campaigns, NGOs, churches, county and community projects." },
-  { name: "School sites", body: "Admissions, fees, notices and a page for every department." },
-  { name: "Restaurants & ordering", body: "Menus customers read before they walk in, and orders without a phone call.", size: "is-wide" },
-  { name: "Bookings & appointments", body: "Salons, clinics, hotels and tours — pick a slot, pay the deposit." },
-  { name: "Listings & marketplaces", body: "Property, cars, jobs or anything else people search and filter." },
-  { name: "Web & mobile apps", body: "Accounts, dashboards and tools that run part of the business, on the phone or the web.", size: "is-wide" },
-  { name: "Landing pages", body: "One sharp page for one offer, launch or event." },
+  { name: "Business sites", body: "Who you are, what you sell, where.", size: "is-big" },
+  { name: "Online shops", body: "Cart, M-Pesa, stock and orders." },
+  { name: "Learning platforms (LMS)", body: "Courses, quizzes, progress.", size: "is-tall" },
+  { name: "Information sites", body: "NGOs, churches, campaigns." },
+  { name: "School sites", body: "Admissions, fees, notices." },
+  { name: "Restaurants & ordering", body: "Menus and orders online.", size: "is-wide" },
+  { name: "Bookings & appointments", body: "Pick a slot, pay the deposit." },
+  { name: "Listings & marketplaces", body: "Property, cars, jobs." },
+  { name: "Web & mobile apps", body: "Accounts and dashboards.", size: "is-wide" },
+  { name: "Landing pages", body: "One page, one offer." },
   {
     name: "Tools & automation",
     body: "The jobs nobody should do by hand. WhatsApp that answers for you — order confirmations, booking reminders, replies after hours, a catalogue customers can browse in the chat — plus M-Pesa payment reminders, a daily sales report and stock alerts.",
@@ -734,21 +644,20 @@ export const OWNERSHIP = {
    the plans above (Landing Page, Business Site, Custom Build) and the ad
    price list; null means it is quoted once we know the job. */
 export const PACKAGES = [
-  { key: "business", group: "Websites", name: "Business site", icon: "home", from: 34000, blurb: "Who you are, what you sell, where to find you." },
-  { key: "restaurant", group: "Websites", name: "Restaurant site", icon: "utensils", from: 34000, blurb: "Menu, photos, location and WhatsApp orders." },
-  { key: "school", group: "Websites", name: "School site", icon: "cap", from: 34000, blurb: "Admissions, fees, notices and departments." },
-  { key: "info", group: "Websites", name: "Information site", icon: "book", from: 34000, blurb: "Campaigns, NGOs, churches, community projects." },
-  { key: "landing", group: "Websites", name: "Landing page", icon: "star", from: 15000, blurb: "One sharp page for one offer, launch or event." },
-  { key: "shop", group: "Platforms & apps", name: "Online shop", icon: "bag", from: 64000, blurb: "Cart, M-Pesa and card checkout, stock and orders." },
-  { key: "lms", group: "Platforms & apps", name: "Learning platform (LMS)", icon: "cap", from: 64000, blurb: "Courses, quizzes, certificates and payments." },
-  { key: "bookings", group: "Platforms & apps", name: "Bookings site", icon: "clock", from: 64000, blurb: "Pick a slot, pay the deposit, get reminders." },
-  { key: "listings", group: "Platforms & apps", name: "Listings & marketplace", icon: "search", from: 64000, blurb: "Property, cars, jobs — search and filter." },
-  { key: "app", group: "Platforms & apps", name: "Web or mobile app", icon: "device", from: 64000, blurb: "Accounts and dashboards that run the business." },
+  { key: "business", group: "Websites", name: "Business site", icon: "home", from: 30000, blurb: "Who you are, what you sell, where to find you." },
+  { key: "restaurant", group: "Websites", name: "Restaurant site", icon: "utensils", from: 30000, blurb: "Menu, photos, location and WhatsApp orders." },
+  { key: "school", group: "Websites", name: "School site", icon: "cap", from: 30000, blurb: "Admissions, fees, notices and departments." },
+  { key: "info", group: "Websites", name: "Information site", icon: "book", from: 30000, blurb: "Campaigns, NGOs, churches, community projects." },
+  { key: "landing", group: "Websites", name: "Landing page", icon: "star", from: 15000, blurb: "One page, one offer." },
+  { key: "shop", group: "Platforms & apps", name: "Online shop", icon: "bag", from: 45000, blurb: "Cart, M-Pesa and card checkout, stock and orders." },
+  { key: "lms", group: "Platforms & apps", name: "Learning platform (LMS)", icon: "cap", from: 45000, blurb: "Courses, quizzes, certificates and payments." },
+  { key: "bookings", group: "Platforms & apps", name: "Bookings site", icon: "clock", from: 45000, blurb: "Pick a slot, pay the deposit, get reminders." },
+  { key: "listings", group: "Platforms & apps", name: "Listings & marketplace", icon: "search", from: 45000, blurb: "Property, cars, jobs — search and filter." },
+  { key: "app", group: "Platforms & apps", name: "Web or mobile app", icon: "device", from: 45000, blurb: "Accounts and dashboards that run the business." },
   { key: "automation", group: "Platforms & apps", name: "Tools & WhatsApp automation", icon: "key", from: null, blurb: "Order confirmations, reminders, reports, alerts." },
-  { key: "poster", group: "Ads", name: "Poster", icon: "image", from: 2500, unit: "each", blurb: "One feed post or story for one offer." },
-  { key: "video", group: "Ads", name: "Video ad", icon: "play", from: 6000, unit: "each", blurb: "A voiced 15–20 second ad for Reels and TikTok." },
-  { key: "monthly", group: "Ads", name: "Monthly content", icon: "image", from: 17000, unit: "a month", blurb: "12 posts and 4 stories every month." },
-  { key: "campaign", group: "Ads", name: "Brand campaign", icon: "flame", from: 21000, blurb: "Posts, stories and a billboard in one voice." },
+  { key: "poster", group: "Ads", name: "Poster", icon: "image", from: 1000, unit: "each", blurb: "One feed post or story for one offer." },
+  { key: "monthly", group: "Ads", name: "Monthly content", icon: "image", from: 9000, unit: "a month", blurb: "12 posts and 4 stories a month." },
+  { key: "campaign", group: "Ads", name: "Brand campaign", icon: "flame", from: 18000, blurb: "Posts, stories and a billboard." },
 ];
 
 /* Looks to start from on the order form. The swatches only illustrate the

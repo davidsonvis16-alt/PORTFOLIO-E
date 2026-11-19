@@ -67,7 +67,7 @@ export function Mark({ className = "" }) {
   return (
     <span className={`mark ${className}`} role="img" aria-label="Tessy">
       <span className="mark-word" aria-hidden="true">
-        <span className="mark-t">T</span>essy
+        Tessy
       </span>
       <svg className="mark-swash" viewBox="0 0 106 16" aria-hidden="true">
         <path d="M3.2 9.6C17 7.1 33.4 8.6 49.6 8.9c15.8.3 31.4-1.6 44.9-2.9 1.6-.2 2.6 1.6 1.2 2.4-.6.3-1.5.4-2.6.6-14.6 2.3-29.6 4.6-45.1 4.4C33.1 13.2 18.6 12.1 4 12.7c-1.9.1-2.6-2.7-.8-3.1Z" fill="#111111" />
@@ -377,5 +377,22 @@ export function PayMethods({ className = "" }) {
         <img src="/pay/paystack.svg" alt="Paystack" loading="lazy" decoding="async" />
       </li>
     </ul>
+  );
+}
+
+/* Our real work as one square block: one big square, two smaller squares
+   stacked beside it. Full-resolution files, cropped square, set straight. */
+const MOUNTS = {
+  work: ["/work/m/bakemart.jpg", "/ads/stage46/01-crispy-chicken-burger.webp", "/work/m/aspire.jpg"],
+  home: ["/work/m/kahawa.jpg", "/ads/lineup/01-fresh-fade-friday.webp", "/work/m/chabao.jpg"],
+};
+
+export function Mounted({ set = "work", className = "" }) {
+  return (
+    <div className={`mounted ${className}`} aria-hidden="true">
+      {MOUNTS[set].map((src, i) => (
+        <img key={src} src={src} alt="" className={`mount ${i === 0 ? "is-big" : ""}`} loading={set === "home" ? "eager" : "lazy"} decoding="async" />
+      ))}
+    </div>
   );
 }

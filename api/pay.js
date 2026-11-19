@@ -40,7 +40,7 @@ async function paystack(path, key, body) {
 
 export default async function handler(req, res) {
   const key = process.env.PAYSTACK_SECRET_KEY;
-  if (!key) return res.status(503).json({ error: "Online payments are not switched on yet. Please pay by M-Pesa as agreed on WhatsApp." });
+  if (!key) return res.status(503).json({ error: "Online payments are not switched on yet. Please pay as agreed by email." });
 
   if (req.method === "GET") {
     const reference = clean(req.query?.reference, 100);
