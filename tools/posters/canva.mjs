@@ -10,7 +10,7 @@
    Reads the same poster props as templates.mjs (lines, sub, price, img/hero,
    items, imgs …), so posters.mjs only needs new brands, not new posters. */
 
-const FONTS = "family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Serif:ital@0;1&family=Caveat:wght@600;700";
+const FONTS = "family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Serif:ital@0;1&family=Caveat:wght@600;700&family=Space+Mono:wght@400;700";
 export const src = (f, dir) => `${dir}/${f.endsWith(".png") ? "cut" : "photos"}/${f}`;
 const strip = (s = "") => String(s).replace(/<br>/g, " ");
 const isCut = (f) => f && f.endsWith(".png");
@@ -73,6 +73,16 @@ const foot = (b, p, ink = b.dark, onDark = false) => `
 
 const top = (b, p, ink = b.dark, mode = b.logoOn || "dark") => `
   <div class="top" style="color:${ink}">${b.logo(mode, 0.62)}<span class="kick">${strip(p.kicker || p.badgeTop || b.where)}</span></div>`;
+
+
+/* Every usable photo for a poster: its own first, then the brand's others. */
+const pics = (p, cutFirst = false) => {
+  const all = [p.hero, p.img, p.side, ...(p.imgs || []).map((i) => i[0]), ...(p.items || []).map((i) => i[0]), ...(p._alt || [])].filter(Boolean);
+  const list = [...new Set(cutFirst ? all : all.filter((f) => !isCut(f)))];
+  return list.length ? list : all;
+};
+/* The words a poster leads with, whatever layout it was written for. */
+const linesOf = (p) => p.lines || (p.head ? [p.head] : p.big ? [`${p.big} ${p.what.toLowerCase()}`] : [strip(p.badgeTop || ""), strip(p.badge || "")].filter(Boolean));
 
 export function base(b) {
   return `
@@ -151,7 +161,7 @@ const T = {
     <div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(0,0,0,.38) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(0,0,0,.72) 100%)"></div>
     <div class="top" style="color:#fff">${b.logo("light", 0.62)}<span class="kick">${strip(p.where || b.where)}</span></div>
     ${mount(b, p.hero || p._alt[0], dir, "right:64px;top:170px;width:290px;height:350px;transform:rotate(5deg)", b.caption)}
-    <div class="pill" style="left:64px;top:170px;background:rgba(255,255,255,.92);color:${b.dark};padding:14px 26px;font-size:24px;font-weight:600;align-items:center"><i style="width:12px;height:12px;border-radius:50%;background:#2fbf71;display:inline-block"></i>${b.chip}</div>
+    <div class="pill" style="left:64px;top:170px;background:rgba(255,255,255,.92);color:#111;padding:14px 26px;font-size:24px;font-weight:600;align-items:center"><i style="width:12px;height:12px;border-radius:50%;background:#2fbf71;display:inline-block"></i>${b.chip}</div>
     <div class="abs" style="left:64px;bottom:250px">${head(b, lines, 900, 150, "#fff")}</div>
     ${p.what2 ? `<div class="sub" style="left:66px;bottom:196px;color:#fff;font-weight:600;font-size:30px;letter-spacing:1px">${p.what2.replace(/\s*(·\s*)?FOR$/, "").toLowerCase().replace(/^./, (c) => c.toUpperCase())}</div>` : ""}
     ${pricePill(b, p, "right:64px;bottom:250px;transform:rotate(-5deg)")}
@@ -207,6 +217,87 @@ const T = {
     <div class="abs" style="left:64px;top:500px">${head(b, ["Price list."], 600, 130)}</div>
     <div class="abs" style="left:64px;right:64px;top:660px;color:${b.dark}">${rows}</div>
     ${foot(b, p)}`;
+  },
+
+  /* Colour field on the left with the words; a full-height photo on the right;
+     a second print mounted across the seam. */
+  half(b, p, dir) {
+    const [main, second] = pics(p);
+    const lines = linesOf(p);
+    return `
+    ${photo(main, dir, "left:500px;right:0;top:0;bottom:0", p.pos)}
+    <div class="abs" style="left:0;top:0;bottom:0;width:500px;background:${b.paper}"></div>
+    <div class="abs" style="left:56px;top:50px">${b.logo(b.logoOn || "dark", 0.6)}</div>
+    <div class="abs" style="left:56px;top:190px;width:420px">${head(b, lines, 400, 120)}</div>
+    ${p.sub ? `<div class="sub" style="left:58px;top:${220 + lines.length * 116}px;width:400px;font-size:28px;color:${b.dark}">${strip(p.sub)}</div>` : ""}
+    ${mount(b, second, dir, "left:300px;top:760px;width:300px;height:360px;transform:rotate(-4deg)", b.caption)}
+    ${pricePill(b, p, "left:56px;top:640px;transform:rotate(-4deg)")}
+    <div class="abs" style="left:56px;bottom:54px"><span class="pill call" style="background:${b.dark};color:${b.paper}">${b.cta} · ${b.phone}</span></div>`;
+  },
+
+  /* One giant number fills the poster; the product sits on top of it. */
+  giant(b, p, dir) {
+    const n = strip(p.giant || p.price || p.big || linesOf(p)[0]).replace(/\/=$/, "");
+    const size = Math.round(Math.min(560, 1000 / (n.length * 0.62)));
+    const [main] = pics(p, true);
+    return `
+    <div class="abs" style="inset:0;background:${b.pop}"></div>
+    ${top(b, p, b.onPop || b.dark, "dark")}
+    <div class="abs" style="left:0;right:0;top:330px;text-align:center;font:800 ${size}px/.8 'Bricolage Grotesque';letter-spacing:-.07em;color:${b.onPop || b.dark}">${n}</div>
+    ${isCut(main) ? photo(main, dir, `left:270px;top:${330 + Math.round(size * 0.62)}px;width:540px;height:${1010 - 330 - Math.round(size * 0.62)}px`) : photo(main, dir, `left:320px;top:${330 + Math.round(size * 0.55)}px;width:440px;height:${Math.min(460, 1000 - 330 - Math.round(size * 0.55))}px;transform:rotate(3deg);box-shadow:0 26px 50px rgba(0,0,0,.3)`, p.pos)}
+    <div class="abs" style="left:64px;top:150px;width:900px">${head(b, [strip(linesOf(p).join(" "))], 900, 96, b.onPop || b.dark)}</div>
+    ${p.sub ? `<div class="sub" style="left:64px;top:1060px;width:620px;font-size:30px;color:${b.onPop || b.dark}">${strip(p.sub)}</div>` : ""}
+    <div class="foot" style="color:${b.onPop || b.dark}"><span class="pill call" style="background:${b.onPop || b.dark};color:${b.pop}">${b.cta} · ${b.phone}</span><span class="where">${strip(p.foot || b.where)}</span></div>`;
+  },
+
+  /* A till receipt mounted on the photo. */
+  ticket(b, p, dir) {
+    const [main] = pics(p);
+    const item = strip(linesOf(p).join(" "));
+    const mono = "font-family:'Space Mono';text-transform:uppercase";
+    return `
+    ${photo(main, dir, "inset:0", p.pos)}
+    <div class="abs" style="inset:0;background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,0) 60%)"></div>
+    <div class="abs" style="left:90px;top:170px;width:540px;padding:44px 40px 70px;background:#fff;color:#111;transform:rotate(-3deg);box-shadow:0 30px 60px rgba(0,0,0,.35);clip-path:polygon(0 0,100% 0,100% 96%,95% 100%,90% 96%,85% 100%,80% 96%,75% 100%,70% 96%,65% 100%,60% 96%,55% 100%,50% 96%,45% 100%,40% 96%,35% 100%,30% 96%,25% 100%,20% 96%,15% 100%,10% 96%,5% 100%,0 96%)">
+      <div style="text-align:center">${b.logo("dark", 0.55)}</div>
+      <div style="${mono};font-size:20px;text-align:center;margin:14px 0 24px;opacity:.7">${strip(b.where)}<br>${strip(p.kicker || "Order no. 0254")}</div>
+      <div style="border-top:3px dashed #111;padding-top:20px;font:800 54px/1 'Bricolage Grotesque';letter-spacing:-.04em">${item}</div>
+      ${p.sub ? `<div style="${mono};font-size:20px;margin-top:14px;line-height:1.4">${strip(p.sub)}</div>` : ""}
+      ${p.price ? `<div style="border-top:3px dashed #111;margin-top:26px;padding-top:18px;display:flex;justify-content:space-between;align-items:baseline;${mono}"><span style="font-size:26px">Total</span><b style="font-size:56px">${strip(p.price)}</b></div>` : `<div style="${mono};font-size:22px;margin-top:22px;border-top:3px dashed #111;padding-top:16px">${strip(p.badgeNote || "")}</div>`}
+      <div style="${mono};font-size:22px;text-align:center;margin-top:26px">${b.cta} · ${b.phone}</div>
+      <div style="${mono};font-size:18px;text-align:center;margin-top:10px;opacity:.6">*** asante ***</div>
+    </div>`;
+  },
+
+  /* Words only, filling the page, one small print in the corner. */
+  type(b, p, dir) {
+    const [main] = pics(p);
+    const words = strip(linesOf(p).join(" ")).split(" ");
+    const longest = Math.max(...words.map((w) => w.length));
+    const size = Math.round(Math.min(250, 960 / (longest * 0.56)));
+    const serif = b.head === "serif";
+    const rows = words.map((w, i) => `<div style="color:${i % 2 ? b.pop : b.paper};${serif || i % 2 ? `font:italic 400 ${Math.round(size * 1.12)}px/.86 'Instrument Serif';letter-spacing:-.02em` : ""}">${w}</div>`).join("");
+    return `
+    <div class="abs" style="inset:0;background:${b.dark}"></div>
+    <div class="top" style="color:${b.paper}">${b.logo("light", 0.6)}<span class="kick">${strip(p.kicker || p.badgeTop || b.where)}</span></div>
+    <div class="abs" style="left:60px;top:160px;font:800 ${size}px/.9 'Bricolage Grotesque';letter-spacing:-.05em">${rows}</div>
+    ${mount(b, main, dir, "right:64px;bottom:150px;width:300px;height:360px;transform:rotate(4deg)", b.caption, p.pos)}
+    ${p.price ? `<div class="pill price" style="left:60px;bottom:160px;transform:rotate(-4deg)">${p.priceTop ? `<small>${p.priceTop.toLowerCase()}</small>` : ""}<b>${p.price}</b></div>` : ""}
+    <div class="foot" style="color:${b.paper}"><span class="pill call" style="background:${b.paper};color:${b.dark}">${b.cta} · ${b.phone}</span><span></span></div>`;
+  },
+
+  /* Three photo bands stacked like film, the headline across the middle one. */
+  film(b, p, dir) {
+    const ps = pics(p);
+    const bands = [0, 1, 2].map((i) => `<div class="ph" style="left:0;right:0;top:${130 + i * 350}px;height:340px"><img src="${src(ps[i % ps.length], dir)}" style="object-position:50% ${[35, 50, 60][i]}%"></div>`).join("");
+    return `
+    <div class="abs" style="inset:0;background:#111"></div>
+    ${bands}
+    <div class="abs" style="left:0;right:0;top:480px;height:340px;background:rgba(0,0,0,.45)"></div>
+    <div class="top" style="color:#fff">${b.logo("light", 0.6)}<span class="kick">${strip(p.kicker || p.badgeTop || b.where)}</span></div>
+    <div class="abs" style="left:64px;top:540px">${head(b, linesOf(p), 900, 130, "#fff")}</div>
+    ${pricePill(b, p, "right:64px;top:450px;transform:rotate(-5deg)")}
+    <div class="foot" style="color:#fff"><span class="pill call" style="background:${b.pop};color:${b.onPop || b.dark}">${b.cta} · ${b.phone}</span><span class="where">${strip(p.foot || b.where)}</span></div>`;
   },
 
   /* gymm: a raw training flyer. Hard black-and-white photo, huge condensed
@@ -304,5 +395,5 @@ export function page(b, p, dir) {
   return `<!doctype html><html><head><meta charset="utf-8">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?${FONTS}${b.fonts ? "&" + b.fonts : ""}&display=block">
   <style>${base(b)}</style></head>
-  <body>${T[b.raw || p.raw ? "raw" : p.t === "menu" && b.menu ? b.menu : MAP[p.t]](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
+  <body>${T[b.raw || p.raw ? "raw" : (b.layouts || {})[p.file.slice(0, 2)] || (p.t === "menu" && b.menu ? b.menu : MAP[p.t])](b, p, dir)}<div class="mark" style="color:${p.t === "photo" ? "#fff" : b.dark}">tessy</div></body></html>`;
 }
