@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c0c0c" media="(prefers-color-scheme: dark)" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Tessy — websites, apps and ad campaigns for businesses all over Kenya. Built to load on mobile data, fixed prices in shillings, M-Pesa built in." />
     <meta name="theme-color" content="#ffffff" />
@@ -21,18 +24,19 @@
     <title>Tessy — Websites, apps &amp; ads, Kenya</title>
     <style>
       /* Intro: the Tessy mark on a white page for 1.3s, drawn before any JS loads. */
-      #intro { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #ffffff; transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0.5s; }
+      #intro { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #ffffff; color: #000; transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), visibility 0.5s; }
       #intro.out { opacity: 0; visibility: hidden; }
       #intro svg { width: clamp(220px, 46vw, 520px); height: auto; animation: intro-in 0.7s cubic-bezier(0.25, 0.1, 0.25, 1) both; }
       @keyframes intro-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
       @keyframes intro-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
       @keyframes intro-dot { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
       html.intro, html.intro body { overflow: hidden; }
+      @media (prefers-color-scheme: dark) { #intro { background: #0c0c0c; color: #f3f3f3; } }
       @media (prefers-reduced-motion: reduce) { #intro svg { animation: none; } }
     </style>
   </head>
   <body>
-    <div id="intro" aria-hidden="true"><svg viewBox="0 0 26.2 5.2" shape-rendering="crispEdges"><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM1 1h1v1h-1zM2 1h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM2 4h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM7 0h1v1h-1zM8 0h1v1h-1zM5 1h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM5 3h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM10 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM13 0h1v1h-1zM10 1h1v1h-1zM10 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM13 3h1v1h-1zM10 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM15 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM18 0h1v1h-1zM15 1h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM18 3h1v1h-1zM15 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM20 0h1v1h-1zM23 0h1v1h-1zM20 1h1v1h-1zM23 1h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM23 2h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1z" fill="#000"/><rect x="25" y="4" width="1" height="1" fill="#e0479e" transform="rotate(-12 25.5 4.5)"/></svg></div>
+    <div id="intro" aria-hidden="true"><svg viewBox="0 0 26.2 5.2" shape-rendering="crispEdges"><path fill="currentColor" d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM1 1h1v1h-1zM2 1h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM2 4h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM7 0h1v1h-1zM8 0h1v1h-1zM5 1h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM5 3h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM10 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM13 0h1v1h-1zM10 1h1v1h-1zM10 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM13 3h1v1h-1zM10 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM15 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM18 0h1v1h-1zM15 1h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM18 3h1v1h-1zM15 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM20 0h1v1h-1zM23 0h1v1h-1zM20 1h1v1h-1zM23 1h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM23 2h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1z" fill="#000"/><rect x="25" y="4" width="1" height="1" fill="#e0479e" transform="rotate(-12 25.5 4.5)"/></svg></div>
     <script>
       /* Once per visit (browser tab session). The app calls __introDone
          when it has rendered; the intro holds until 1.3s have passed. */

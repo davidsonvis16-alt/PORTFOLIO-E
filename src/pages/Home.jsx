@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AD_CAMPAIGNS, AD_TIERS, CASE_META, CASE_STUDIES, FACTS, LOCATION, OFFER_ENDS, OTHER_BUILDS, OWNERSHIP, PLACEHOLDER, PRICING_TIERS, SITE_TYPES, adSrc, phone, mailLink } from "../data";
 import { Contact, PriceRows, Steps } from "../blocks";
-import { BandHead, Mounted, Placeholder } from "../ui";
+import { BandHead, BlockText, Mounted, Placeholder } from "../ui";
 
 /* White page, black type. Colour lives in two places only: the cards, each
    in its own tone, and a few words. Cards change size and orientation as
@@ -68,8 +68,8 @@ function Typewriter() {
         <span aria-hidden="true">
           {PRE}
           <span className="turn">
-            <span key={word} className={`turn-word ${flipped ? "is-turning" : ""} ${tone}`}>
-              {word}
+            <span key={word} className={`turn-word block-word ${flipped ? "is-turning" : ""} ${tone}`}>
+              <BlockText text={word} dot={false} />
             </span>
           </span>
           <span className="hero-line2">{SUF}</span>
@@ -89,13 +89,19 @@ function Typewriter() {
       <span className="tw" aria-hidden="true">
         <span className="tw-ghost">
           {PRE}
-          {LONGEST}
+          <span className="block-word">
+            <BlockText text={LONGEST} dot={false} />
+          </span>
           <span className="hero-line2">{SUF}</span>
         </span>
         <span className="tw-live">
           {PRE.slice(0, a)}
           {n <= PRE.length && caret}
-          {b > 0 && <span className={tone}>{word.slice(0, b)}</span>}
+          {b > 0 && (
+            <span className={`block-word ${tone}`}>
+              <BlockText text={word.slice(0, b)} dot={false} />
+            </span>
+          )}
           {n > PRE.length && c === 0 && caret}
           {c > 0 && (
             <span className="hero-line2">
@@ -114,7 +120,7 @@ function Typewriter() {
 function Studio() {
   return (
     <section className="wrap studio" aria-label="Our studio">
-      <img src="/work/m/studio.jpg" alt="A designer drawing on a tablet with her laptop beside her" width="2000" height="1333" fetchPriority="high" decoding="async" />
+      <img src="/work/m/studio.jpg" alt="A designer working on her laptop in a neon-lit studio" width="2000" height="1334" fetchPriority="high" decoding="async" />
     </section>
   );
 }
@@ -165,6 +171,42 @@ function Hero() {
    hovering slides up what the client needed. */
 const CASE_TONES = ["t-blue", "t-pink", "t-green", "t-lilac"];
 
+/* Client cards: a hand-drawn picture of what each business is about,
+   on a soft square of paper stuck to the page. */
+const DRAWINGS = {
+  "BakeMart Coffee House": (
+    <>
+      <path d="M30 52h52v22a24 24 0 0 1-24 24h-4a24 24 0 0 1-24-24z" fill="var(--soft-ink)" />
+      <path d="M82 58h6a10 10 0 0 1 0 20h-7" />
+      <path d="M22 104h76" />
+      <path d="M44 42c-4-6 4-10 0-16M56 42c-4-6 4-10 0-16M68 42c-4-6 4-10 0-16" />
+    </>
+  ),
+  "Global Mogul": (
+    <>
+      <rect x="47" y="18" width="26" height="46" rx="13" fill="var(--soft-ink)" />
+      <path d="M38 52a22 22 0 0 0 44 0" />
+      <path d="M60 74v18M44 98h32" />
+      <path d="M24 30l-8-6M22 46h-10M96 30l8-6M98 46h10" />
+    </>
+  ),
+  "Fidel Castrol": (
+    <>
+      <path d="M60 26l46 18-46 18-46-18z" fill="var(--soft-ink)" />
+      <path d="M34 54v22c0 8 12 14 26 14s26-6 26-14V54" />
+      <path d="M106 44v26" />
+      <path d="M102 70h8l-2 12h-4z" fill="currentColor" />
+    </>
+  ),
+  "Aspire Safety Academy": (
+    <>
+      <path d="M60 16l38 14v26c0 24-16 40-38 48-22-8-38-24-38-48V30z" fill="var(--soft-ink)" />
+      <path d="M42 60l12 12 24-26" />
+      <path d="M100 18l4-8M108 26l8-4" />
+    </>
+  ),
+};
+
 function Case({ s, i }) {
   const meta = CASE_META[s.client] ?? {};
   const spec = Object.fromEntries(s.spec);
@@ -175,8 +217,11 @@ function Case({ s, i }) {
           <span>{s.n}</span>
           <span className="case-status">{spec.STATUS.split(",")[0]}</span>
         </span>
-        <span className="case-shot">
-          <img src={phone(s.img)} alt="" width="390" height="844" loading="lazy" decoding="async" />
+        <span className="case-shot case-paper">
+          <span className="case-tape" aria-hidden="true" />
+          <svg className="case-draw" viewBox="0 0 120 120" aria-hidden="true">
+            {DRAWINGS[s.client]}
+          </svg>
           <span className="case-need">{s.need}</span>
         </span>
         <span className="case-text">
@@ -294,8 +339,8 @@ function AdBoard() {
 /* Every site that is live right now, as round badges with the address under
    the name — clients first, then our own builds. */
 const host = (url) => new URL(url).hostname.replace(/^www\./, "");
-/* Each site wears a painting as its cover instead of a screenshot — public-
-   domain works from the Art Institute of Chicago, picked to suit the place. */
+/* Each site wears a moody photo of what it sells instead of a screenshot
+   (Pexels, free licence), picked to suit the place. */
 const COVERS = {
   "BakeMart Coffee House": ["bakemart", "Cézanne"],
   "Global Mogul": ["global-mogul", "Caillebotte"],
@@ -339,7 +384,6 @@ function LiveSites() {
               <span className="badge-domain" title={host(site.url)}>
                 {host(site.url)}
               </span>
-              {site.artist && <span className="badge-art">cover: {site.artist}</span>}
 
               <span className="sr">(opens in a new tab)</span>
             </a>
