@@ -1,6 +1,6 @@
 import { CASE_META, CASE_STUDIES, OTHER_BUILDS } from "../data";
 import LIVE from "../live.json";
-import { Mounted } from "../ui";
+import { Mounted, BlockText } from "../ui";
 
 /* Every site we've built, as one list. Each row shows what it is, its
    address, and whether it answered when we last checked
@@ -21,7 +21,7 @@ export default function Work() {
           {liveCount} of {ROWS.length} live
         </span>
         <h1 id="work-title" className="page-title rise">
-          Work<span className="dot">.</span>
+          <BlockText text="Work" />
         </h1>
         <Mounted set="work" className="page-art rise" />
         <p className="page-sub rise">Every site we've built.</p>

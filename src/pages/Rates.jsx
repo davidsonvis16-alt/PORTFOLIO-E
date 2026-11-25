@@ -1,7 +1,7 @@
 import { AD_BUNDLE, AD_TERMS, OFFER_ENDS, mailLink } from "../data";
 import { AdRows, PriceRows, Steps } from "../blocks";
 import { Link } from "react-router-dom";
-import { PayMethods, SecHead } from "../ui";
+import { PayMethods, SecHead, BlockText } from "../ui";
 
 export default function Rates() {
   return (
@@ -9,7 +9,7 @@ export default function Rates() {
       <section className="wrap page-top" aria-labelledby="rates-title">
         <span className="idx rise">End-of-year prices until {OFFER_ENDS}</span>
         <h1 id="rates-title" className="page-title rise">
-          Prices<span className="dot">.</span>
+          <BlockText text="Prices" />
         </h1>
         <p className="page-sub rise">Fixed prices. M-Pesa or bank.</p>
         <nav className="jump rise" aria-label="Jump to">

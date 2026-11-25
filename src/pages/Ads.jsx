@@ -3,7 +3,7 @@ import { AD_CAMPAIGNS, AD_COUNT, AD_TERMS, AD_TIERS, mailLink } from "../data";
 import { AdRows } from "../blocks";
 import { adItems } from "../adItems";
 import { useLightbox } from "../tokens";
-import { Lightbox, SecHead } from "../ui";
+import { Lightbox, SecHead, BlockText } from "../ui";
 
 /* Each campaign gets its own card colour for the "get one like this" card. */
 const TONES = ["t-tomato", "t-lilac", "t-ink", "t-pink", "t-green", "t-blue"];
@@ -71,7 +71,7 @@ export default function Ads() {
       <section className="wrap page-top" aria-labelledby="ads-title">
         <span className="idx rise">Six concept brands — {AD_COUNT} pieces</span>
         <h1 id="ads-title" className="page-title rise">
-          Ads<span className="dot">.</span>
+          <BlockText text="Ads" />
         </h1>
         <p className="page-sub rise">
           Posters for Instagram, Facebook, TikTok and Status. Concept brands.

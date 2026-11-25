@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { mailLink } from "../data";
-import { PayMethods } from "../ui";
+import { PayMethods, BlockText } from "../ui";
 
 const POLL_MS = 4000;
 const POLL_FOR_MS = 2.5 * 60 * 1000;
@@ -56,7 +56,7 @@ export default function Pay() {
       <section className="wrap page-top" aria-labelledby="pay-title">
         <span className="idx rise">Secured by Paystack</span>
         <h1 id="pay-title" className="page-title rise">
-          Pay<span className="dot">.</span>
+          <BlockText text="Pay" />
         </h1>
         <p className="page-sub rise">Deposit or invoice. Enter your M-Pesa PIN, done.</p>
       </section>

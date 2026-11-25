@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CASE_STUDIES, OTHER_BUILDS, PACKAGES, STYLES, ksh, mailLink } from "../data";
 import { useCart } from "../cart";
-import { Icon, PayMethods } from "../ui";
+import { Icon, PayMethods, BlockText } from "../ui";
 import { Link } from "react-router-dom";
 
 const GROUPS = [...new Set(PACKAGES.map((p) => p.group))];
@@ -325,7 +325,7 @@ export default function Order() {
       <section className="wrap page-top" aria-labelledby="order-title">
         <span className="idx rise">Fixed price before any work starts</span>
         <h1 id="order-title" className="page-title rise">
-          Order<span className="dot">.</span>
+          <BlockText text="Order" />
         </h1>
         <p className="page-sub rise">Pick, send, get a fixed price.</p>
       </section>

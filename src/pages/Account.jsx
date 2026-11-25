@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BlockText } from "../ui";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { ksh, mailLink } from "../data";
 import { supabase, useSession } from "../supabase";
@@ -61,7 +62,7 @@ export default function Account() {
       <section className="wrap page-top" aria-labelledby="acct-title">
         <span className="idx rise">{session.user.email}</span>
         <h1 id="acct-title" className="page-title rise">
-          Account<span className="dot">.</span>
+          <BlockText text="Account" />
         </h1>
         <p className="page-sub rise">Hi {name.split(" ")[0]}. Here's what's coming up.</p>
       </section>

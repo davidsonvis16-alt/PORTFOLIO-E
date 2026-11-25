@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BlockText } from "../ui";
 import { EMAIL, LOCATION, mailLink } from "../data";
 
 /* Email works with or without a mail app: the link opens one if there is
@@ -185,7 +186,7 @@ export default function Contact() {
       <section className="wrap page-top" aria-labelledby="contact-page-title">
         <span className="idx rise">{LOCATION}</span>
         <h1 id="contact-page-title" className="page-title rise">
-          Contact<span className="dot">.</span>
+          <BlockText text="Contact" />
         </h1>
         <p className="page-sub rise">Email, form or call. Reply within a working day.</p>
       </section>

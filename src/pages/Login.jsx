@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BlockText } from "../ui";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { mailLink } from "../data";
 import { supabase, useSession } from "../supabase";
@@ -56,8 +57,7 @@ export default function Login() {
       <section className="wrap page-top" aria-labelledby="login-title">
         <span className="idx rise">Client area</span>
         <h1 id="login-title" className="page-title rise">
-          {mode === "signup" ? "Sign up" : "Log in"}
-          <span className="dot">.</span>
+          <BlockText text={mode === "signup" ? "Sign up" : "Log in"} />
         </h1>
         <p className="page-sub rise">Your sites, dates and invoices.</p>
       </section>

@@ -76,6 +76,51 @@ export function Mark({ className = "" }) {
   );
 }
 
+/* Big titles drawn in the same square blocks as the TESSY logo: thick,
+   tight, readable. The full stop is the logo's pink block. */
+const BLOCK_GLYPHS = {
+  A: [".##.", "#..#", "####", "#..#", "#..#"],
+  C: ["####", "#...", "#...", "#...", "####"],
+  D: ["###.", "#..#", "#..#", "#..#", "###."],
+  E: ["####", "#...", "###.", "#...", "####"],
+  G: ["####", "#...", "#.##", "#..#", "####"],
+  I: ["###", ".#.", ".#.", ".#.", "###"],
+  K: ["#..#", "#.#.", "##..", "#.#.", "#..#"],
+  L: ["#...", "#...", "#...", "#...", "####"],
+  N: ["#...#", "##..#", "#.#.#", "#..##", "#...#"],
+  O: ["####", "#..#", "#..#", "#..#", "####"],
+  P: ["####", "#..#", "####", "#...", "#..."],
+  R: ["####", "#..#", "####", "#.#.", "#..#"],
+  S: ["####", "#...", "####", "...#", "####"],
+  T: ["####", ".##.", ".##.", ".##.", ".##."],
+  U: ["#..#", "#..#", "#..#", "#..#", "####"],
+  W: ["#...#", "#...#", "#.#.#", "##.##", "#...#"],
+  Y: ["#..#", "#..#", "####", ".##.", ".##."],
+};
+export function BlockText({ text, dot = true }) {
+  let x = 0;
+  const d = [];
+  for (const ch of text.toUpperCase()) {
+    if (ch === " ") {
+      x += 2;
+      continue;
+    }
+    const g = BLOCK_GLYPHS[ch];
+    if (!g) continue;
+    g.forEach((row, r) => [...row].forEach((v, c) => v === "#" && d.push(`M${x + c} ${r}h1v1h-1z`)));
+    x += g[0].length + 1;
+  }
+  return (
+    <>
+      <span className="sr">{text}</span>
+      <svg className="blocks" viewBox={`0 0 ${x + (dot ? 1.2 : -0.8)} 5.2`} shapeRendering="crispEdges" aria-hidden="true">
+        <path d={d.join("")} fill="currentColor" />
+        {dot && <rect className="mark-dot" x={x} y="4" width="1" height="1" fill="#e0479e" />}
+      </svg>
+    </>
+  );
+}
+
 /* One card, recipe-site style: square picture with a round action button,
    title, one line of detail, then who / tag under a hairline. */
 export function Card({ to, href, onClick, img, alt = "", tall, poster, whole, title, meta, metaIcon = "clock", price, who, avatar, tag, tagTone, action = "out", video, extra }) {

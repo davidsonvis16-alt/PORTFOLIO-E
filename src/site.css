@@ -632,7 +632,8 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
    page titles on the inner pages (Prices., Work., Ads., Contact.) are set
    in the logo's italic serif. */
 .contact-card .dot { color: #ffc4e1; }
-.page-title:not(.page-title-text) { font-family: "Silkscreen", var(--sans, sans-serif); font-style: normal; font-weight: 700; font-size: clamp(48px, 9vw, 150px); letter-spacing: -0.14em; line-height: 0.95; text-transform: uppercase; }
+.page-title:not(.page-title-text) { line-height: 0; color: #000; }
+.page-title .blocks { display: block; height: clamp(54px, 8.5vw, 132px); width: auto; max-width: 100%; overflow: visible; }
 
 /* ---------- stickers: demos are marked like a label stuck on ---------- */
 .sticker { display: inline-block; padding: 4px 9px 5px; background: var(--dot); color: #fff; font-family: var(--font); font-size: 11px; font-weight: 900; letter-spacing: 0.06em; line-height: 1; text-transform: uppercase; border-radius: 0; transform: rotate(-6deg); box-shadow: 0 2px 6px rgba(17, 17, 17, 0.18); white-space: nowrap; }
