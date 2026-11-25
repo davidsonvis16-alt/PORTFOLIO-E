@@ -294,10 +294,27 @@ function AdBoard() {
 /* Every site that is live right now, as round badges with the address under
    the name — clients first, then our own builds. */
 const host = (url) => new URL(url).hostname.replace(/^www\./, "");
+/* Each site wears a painting as its cover instead of a screenshot — public-
+   domain works from the Art Institute of Chicago, picked to suit the place. */
+const COVERS = {
+  "BakeMart Coffee House": ["bakemart", "Cézanne"],
+  "Global Mogul": ["global-mogul", "Caillebotte"],
+  "Fidel Castrol": ["fidel", "Renoir"],
+  "Aspire Safety Academy": ["aspire", "Monet"],
+  "Frame Zetu": ["framezetu", "Van Gogh"],
+  "Cha Bao": ["chabao", "Hokusai"],
+  "Kahawa & Crumb": ["kahawa", "Renoir"],
+  "Maison Kiatu": ["kiatu", "Mucha"],
+  Jave: ["jave", "Hiroshige"],
+  Petal: ["petal", "Renoir"],
+  Haven: ["haven", "Van Gogh"],
+  "Kijani Kafe": ["kijani", "Monet"],
+};
+const cover = (name, img) => (COVERS[name] ? { art: `/work/art/${COVERS[name][0]}.jpg`, artist: COVERS[name][1] } : { art: phone(img), artist: "" });
 const LIVE_SITES = [
-  ...CASE_STUDIES.map((s) => ({ name: s.client, url: s.demo, img: s.img, sticker: null })),
+  ...CASE_STUDIES.map((s) => ({ name: s.client, url: s.demo, sticker: null, ...cover(s.client, s.img) })),
   ...OTHER_BUILDS.filter((b) => b.demo?.startsWith("http"))
-    .map((b) => ({ name: b.title, url: b.demo, img: b.img, sticker: "Demo" })),
+    .map((b) => ({ name: b.title, url: b.demo, sticker: "Demo", ...cover(b.title, b.img) })),
 ];
 
 function LiveSites() {
@@ -313,7 +330,7 @@ function LiveSites() {
             <a href={site.url} target="_blank" rel="noopener noreferrer" className="badge">
               {site.sticker && <span className="sticker">{site.sticker}</span>}
               <span className="badge-pic">
-                <img src={phone(site.img)} alt="" width="390" height="844" loading="lazy" decoding="async" />
+                <img src={site.art} alt="" width="700" height="700" loading="lazy" decoding="async" />
                 <span className="badge-go" aria-hidden="true">
                   ↗
                 </span>
@@ -322,6 +339,7 @@ function LiveSites() {
               <span className="badge-domain" title={host(site.url)}>
                 {host(site.url)}
               </span>
+              {site.artist && <span className="badge-art">cover: {site.artist}</span>}
 
               <span className="sr">(opens in a new tab)</span>
             </a>

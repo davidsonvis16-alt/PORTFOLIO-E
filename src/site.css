@@ -234,12 +234,14 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
 .live-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 18px; }
 .live-head h3 { font-size: clamp(22px, 2vw, 30px); font-weight: 800; letter-spacing: -0.03em; }
 .live-head p { font-size: 14px; color: var(--sub); }
-.rail.badges { align-items: stretch; gap: 6px; }
+.rail.badges { align-items: stretch; gap: 14px; }
 .badge-slot { flex: none; width: clamp(150px, 13vw, 196px); scroll-snap-align: start; }
-.badge { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 12px 12px 16px; border-radius: 0; transition: background-color 0.25s var(--ease); }
-.badge:hover, .badge:focus-visible { background: var(--paper-2); }
-.badge-pic { position: relative; display: block; margin-bottom: 10px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--paper-2); box-shadow: 0 8px 24px rgba(17, 17, 17, 0.14); }
-.badge-pic img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.badge { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 0 0 16px; border-radius: 0; transition: background-color 0.25s var(--ease); }
+.badge:hover b { color: var(--dot); }
+.badge-pic { position: relative; display: block; margin-bottom: 10px; aspect-ratio: 1; border-radius: 0; overflow: hidden; background: var(--paper-2); }
+.badge-pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
+.badge:hover .badge-pic img { transform: scale(1.04); }
+.badge-art { font-size: 11px; font-weight: 300; color: var(--sub); font-style: italic; }
 .badge-go { position: absolute; right: 6%; bottom: 6%; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--blue); color: #fff; font-size: 16px; opacity: 0; transform: translateY(6px); transition: opacity 0.25s var(--ease), transform 0.25s var(--ease); }
 .badge:hover .badge-go, .badge:focus-visible .badge-go { opacity: 1; transform: none; }
 .badge b { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -630,7 +632,7 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
    page titles on the inner pages (Prices., Work., Ads., Contact.) are set
    in the logo's italic serif. */
 .contact-card .dot { color: #ffc4e1; }
-.page-title:not(.page-title-text) { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.015em; }
+.page-title:not(.page-title-text) { font-family: "Silkscreen", var(--sans, sans-serif); font-style: normal; font-weight: 700; font-size: clamp(48px, 9vw, 150px); letter-spacing: -0.14em; line-height: 0.95; text-transform: uppercase; }
 
 /* ---------- stickers: demos are marked like a label stuck on ---------- */
 .sticker { display: inline-block; padding: 4px 9px 5px; background: var(--dot); color: #fff; font-family: var(--font); font-size: 11px; font-weight: 900; letter-spacing: 0.06em; line-height: 1; text-transform: uppercase; border-radius: 0; transform: rotate(-6deg); box-shadow: 0 2px 6px rgba(17, 17, 17, 0.18); white-space: nowrap; }
@@ -837,7 +839,7 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
   .case-where { display: none; }
   .case-title { font-size: 15px; }
   .case-domain { font-size: 12px; margin-top: 2px; }
-  .badge-slot { width: 40vw; }
+  .badge-slot { width: 46vw; }
   .badge-go { opacity: 1; transform: none; width: 32px; height: 32px; }
   .prices { grid-template-columns: minmax(0, 1fr); }
   .types { grid-auto-rows: minmax(150px, auto); gap: 10px; }
