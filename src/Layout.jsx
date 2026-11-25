@@ -339,9 +339,32 @@ function CookieNote() {
   );
 }
 
+/* Each page names itself in the browser tab and in search results. */
+const TITLES = {
+  "/": ["Tessy — Websites, apps & ads, Kenya", "Websites, apps, emails and ad campaigns for businesses all over Kenya. Fixed prices, M-Pesa built in, we host."],
+  "/work": ["Work — Tessy", "Every site we've built, live: client sites and demos for restaurants, shops, schools and more in Kenya."],
+  "/ads": ["Ads — Tessy", "Ad posters for Instagram, Facebook, TikTok and WhatsApp Status, from KSh 1,000."],
+  "/rates": ["Prices — Tessy", "Fixed prices for websites and ad design in Kenya: landing page KSh 15,000, business site KSh 30,000, custom build KSh 45,000."],
+  "/about": ["About — Tessy", "One team for every poster and every line of code, all over Kenya."],
+  "/contact": ["Contact — Tessy", "Email hello@tessy.co.ke or ask for a call. We reply within a working day."],
+  "/order": ["Order — Tessy", "Pick a website, app or ad package and get a fixed price."],
+  "/pay": ["Pay — Tessy", "Pay a deposit or invoice by M-Pesa or card."],
+  "/login": ["Log in — Tessy", "Client area: your sites, renewal dates and invoices."],
+  "/account": ["Account — Tessy", "Your sites, renewal dates and invoices."],
+};
+function usePageTitle(pathname) {
+  useEffect(() => {
+    const [title, desc] = TITLES[pathname] || TITLES["/"];
+    document.title = title;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", desc);
+    document.querySelector('link[rel="canonical"]')?.setAttribute("href", `https://tessy.co.ke${pathname === "/" ? "/" : pathname}`);
+  }, [pathname]);
+}
+
 export default function Layout() {
   const { pathname, hash } = useLocation();
   const showFab = useScrolledPast(700);
+  usePageTitle(pathname);
   useRevealAll();
 
   /* New page starts at the top; a #hash lands on its section, gliding

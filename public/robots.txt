@@ -1,4 +1,9 @@
+# Tessy — tessy.co.ke
 User-agent: *
 Allow: /
+# Private client pages and the server functions are not for search results.
+Disallow: /account
+Disallow: /pay
+Disallow: /api/
 
 Sitemap: https://tessy.co.ke/sitemap.xml
