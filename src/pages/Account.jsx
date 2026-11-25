@@ -59,11 +59,12 @@ export default function Account() {
 
   return (
     <>
-      <section className="wrap page-top" aria-labelledby="acct-title">
+      <section className="wrap page-top has-art" aria-labelledby="acct-title">
         <span className="idx rise">{session.user.email}</span>
         <h1 id="acct-title" className="page-title rise">
           <BlockText text="Account" />
         </h1>
+        <img className="page-art page-photo rise" src="/work/pages/account.jpg" alt="A desk with a laptop in red light" width="900" height="900" decoding="async" />
         <p className="page-sub rise">Hi {name.split(" ")[0]}. Here's what's coming up.</p>
       </section>
 

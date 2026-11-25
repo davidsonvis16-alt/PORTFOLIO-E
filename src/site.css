@@ -635,7 +635,7 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
    page titles on the inner pages (Prices., Work., Ads., Contact.) are set
    in the logo's italic serif. */
 .contact-card .dot { color: #ffc4e1; }
-.page-title:not(.page-title-text) { line-height: 0; color: #000; }
+.page-title:not(.page-title-text) { line-height: 0; color: var(--ink); }
 .page-title .blocks { display: block; height: clamp(54px, 8.5vw, 132px); width: auto; max-width: 100%; overflow: visible; }
 
 /* ---------- stickers: demos are marked like a label stuck on ---------- */
@@ -808,6 +808,14 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
 
 /* What we build: one colour, the ink — the page was too colourful. */
 .types .type h3, .facts .fact dt { color: var(--ink); }
+
+/* Client cards: no description hanging over the names. */
+.case-paper .case-need { display: none; }
+
+/* Page photos beside the big titles: square, sharp, mounted with a soft
+   shadow and a slight tilt. */
+.page-photo { display: block; width: min(100%, 460px); aspect-ratio: 1; object-fit: cover; justify-self: end; transform: rotate(1.5deg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 22px 44px rgba(0, 0, 0, 0.16); }
+@media (max-width: 900px) { .page-photo { width: 100%; max-width: none; aspect-ratio: 4 / 3; transform: none; } }
 
 /* moving word in the hero, in the logo's blocks */
 .block-word { display: inline-block; }

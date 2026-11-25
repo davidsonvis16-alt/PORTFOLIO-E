@@ -53,11 +53,12 @@ export default function Pay() {
 
   return (
     <>
-      <section className="wrap page-top" aria-labelledby="pay-title">
+      <section className="wrap page-top has-art" aria-labelledby="pay-title">
         <span className="idx rise">Secured by Paystack</span>
         <h1 id="pay-title" className="page-title rise">
           <BlockText text="Pay" />
         </h1>
+        <img className="page-art page-photo rise" src="/work/pages/pay.jpg" alt="A laptop on a desk lit by a warm strip light" width="900" height="900" decoding="async" />
         <p className="page-sub rise">Deposit or invoice. Enter your M-Pesa PIN, done.</p>
       </section>
 

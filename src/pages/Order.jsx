@@ -322,11 +322,12 @@ export default function Order() {
 
   return (
     <>
-      <section className="wrap page-top" aria-labelledby="order-title">
+      <section className="wrap page-top has-art" aria-labelledby="order-title">
         <span className="idx rise">Fixed price before any work starts</span>
         <h1 id="order-title" className="page-title rise">
           <BlockText text="Order" />
         </h1>
+        <img className="page-art page-photo rise" src="/work/pages/order.jpg" alt="A designer working late in a studio" width="900" height="900" decoding="async" />
         <p className="page-sub rise">Pick, send, get a fixed price.</p>
       </section>
       <section className="wrap order">

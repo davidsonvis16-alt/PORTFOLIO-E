@@ -183,11 +183,12 @@ function ContactForm() {
 export default function Contact() {
   return (
     <>
-      <section className="wrap page-top" aria-labelledby="contact-page-title">
+      <section className="wrap page-top has-art" aria-labelledby="contact-page-title">
         <span className="idx rise">{LOCATION}</span>
         <h1 id="contact-page-title" className="page-title rise">
           <BlockText text="Contact" />
         </h1>
+        <img className="page-art page-photo rise" src="/work/pages/contact.jpg" alt="A red telephone box, door open" width="900" height="900" decoding="async" />
         <p className="page-sub rise">Email, form or call. Reply within a working day.</p>
       </section>
 

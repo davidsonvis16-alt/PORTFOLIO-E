@@ -6,11 +6,12 @@ import { PayMethods, SecHead, BlockText } from "../ui";
 export default function Rates() {
   return (
     <>
-      <section className="wrap page-top" aria-labelledby="rates-title">
+      <section className="wrap page-top has-art" aria-labelledby="rates-title">
         <span className="idx rise">End-of-year prices until {OFFER_ENDS}</span>
         <h1 id="rates-title" className="page-title rise">
           <BlockText text="Prices" />
         </h1>
+        <img className="page-art page-photo rise" src="/work/pages/prices.jpg" alt="A desk screen showing the time" width="900" height="900" decoding="async" />
         <p className="page-sub rise">Fixed prices. M-Pesa or bank.</p>
         <nav className="jump rise" aria-label="Jump to">
           <a href="#sites" className="pill-link">Websites</a>

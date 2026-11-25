@@ -54,11 +54,12 @@ export default function Login() {
 
   return (
     <>
-      <section className="wrap page-top" aria-labelledby="login-title">
+      <section className="wrap page-top has-art" aria-labelledby="login-title">
         <span className="idx rise">Client area</span>
         <h1 id="login-title" className="page-title rise">
           <BlockText text={mode === "signup" ? "Sign up" : "Log in"} />
         </h1>
+        <img className="page-art page-photo rise" src="/work/pages/login.jpg" alt="A laptop glowing on a desk at night" width="900" height="900" decoding="async" />
         <p className="page-sub rise">Your sites, dates and invoices.</p>
       </section>
 

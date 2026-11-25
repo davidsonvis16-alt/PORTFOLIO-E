@@ -5,11 +5,12 @@ import { SecHead } from "../ui";
 export default function About() {
   return (
     <>
-      <section className="wrap page-top" aria-labelledby="about-title">
+      <section className="wrap page-top has-art" aria-labelledby="about-title">
         <span className="idx rise">About Tessy</span>
         <h1 id="about-title" className="page-title page-title-text rise">
           One team. Every poster and every line of code<span className="dot">.</span>
         </h1>
+        <img className="page-art page-photo rise" src="/work/pages/about.jpg" alt="Two women working on laptops at night" width="900" height="900" decoding="async" />
       </section>
 
       <section className="wrap sec" aria-label="Who builds it">

@@ -431,6 +431,7 @@ export function PayMethods({ className = "" }) {
 const MOUNTS = {
   work: ["/work/m/bakemart.jpg", "/ads/stage46/01-crispy-chicken-burger.webp", "/work/m/aspire.jpg"],
   home: ["/work/m/kahawa.jpg", "/ads/lineup/01-fresh-fade-friday.webp", "/work/m/chabao.jpg"],
+  ads: ["/ads/stage46/01-crispy-chicken-burger.webp", "/ads/slice/04-door-in-30.webp", "/ads/iron/01-no-joining-fee.webp"],
 };
 
 export function Mounted({ set = "work", className = "" }) {
