@@ -84,6 +84,20 @@ export const CASE_STUDIES = [
 /* Everything else — self-directed builds, not client engagements. Newest first. */
 export const OTHER_BUILDS = [
   {
+    title: "Frame Zetu",
+    addons: ["catalogue", "builder", "ordering", "accounts", "pay"],
+    icon: "image",
+    group: "shop",
+    tier: "custom",
+    tierWhy: "a shop of framed prints, a live frame builder, accounts and checkout",
+    kind: "Framing studio · Shop",
+    desc: "A Nairobi framing studio: shop the wall, frame your own photo with a live preview, and book a house makeover — M-Pesa, card or cash on delivery.",
+    stack: "React · TypeScript · Vite",
+    year: "2026",
+    demo: "https://framezetuke.vercel.app/",
+    img: "/work/framezetu.jpg",
+  },
+  {
     title: "Cha Bao",
     addons: ["ordering", "bookings", "admin", "pay"],
     icon: "bowl",

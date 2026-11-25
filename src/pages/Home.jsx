@@ -109,74 +109,12 @@ function Typewriter() {
   );
 }
 
-/* Offers at the top, like a shop's deals row: square black cards set like
-   the ad posters — the price big, the old one struck through, the saving in
-   a pink tag. Every number comes from the price list in data.js. */
-const toNum = (v) => Number(String(v).replace(/,/g, ""));
-const off = (was, now) => Math.round((1 - toNum(now) / toNum(was)) * 100);
-const ORDER_KEY = { landing: "landing", business: "business", custom: "shop", monthly: "monthly", campaign: "campaign", full: "campaign" };
-
-const OFFERS = [
-  ...PRICING_TIERS.filter((t) => t.was).map((t) => ({ key: t.key, kicker: "Website", name: t.name, price: t.price, was: t.was, from: t.from })),
-  ...AD_TIERS.filter((t) => t.was).map((t) => ({ key: t.key, kicker: "Ads", name: t.name, price: t.price, was: t.was, unit: t.unit.split(" · ")[0] })),
-];
-
-function Offers() {
-  const row = useRef(null);
-  const step = (dir) => {
-    const el = row.current;
-    if (!el) return;
-    const card = el.querySelector("li");
-    el.scrollBy({ left: dir * ((card?.offsetWidth || 260) + 10) * 2, behavior: "smooth" });
-  };
+/* Top of the page: a real photo of the work — someone designing, not a
+   banner. Sharp edges, no box, nothing written on it. */
+function Studio() {
   return (
-    <section className="offers" aria-labelledby="offers-title">
-      <div className="wrap offers-head">
-        <h2 id="offers-title">
-          End-of-year offers<span className="dot">.</span>
-        </h2>
-        <span className="offers-end">
-          Until {OFFER_ENDS}
-          <button type="button" className="offers-arrow" onClick={() => step(-1)} aria-label="Earlier offers">
-            ←
-          </button>
-          <button type="button" className="offers-arrow" onClick={() => step(1)} aria-label="More offers">
-            →
-          </button>
-        </span>
-      </div>
-      <ul className="wrap offers-row" ref={row}>
-        {OFFERS.map((o) => (
-          <li key={o.key}>
-            <Link to={`/order?p=${ORDER_KEY[o.key] || o.key}`} className="offer">
-              <span className="offer-tag">−{off(o.was, o.price)}%</span>
-              <span className="offer-kicker">{o.kicker}</span>
-              <b className="offer-name">{o.name}</b>
-              <span className="offer-price">
-                {o.from && <small>from</small>}
-                KSh {o.price}
-              </span>
-              <s className="offer-was">KSh {o.was}</s>
-              <span className="offer-foot">
-                <span>{o.unit || `Ends ${OFFER_ENDS}`}</span>
-                <span aria-hidden="true">Get it →</span>
-              </span>
-            </Link>
-          </li>
-        ))}
-        <li>
-          <Link to="/order?p=campaign" className="offer offer-bundle">
-            <span className="offer-tag">−KSh 5,000</span>
-            <span className="offer-kicker">Bundle</span>
-            <b className="offer-name">Website + ad campaign</b>
-            <span className="offer-note">Book a campaign with any website and take KSh 5,000 off the campaign.</span>
-            <span className="offer-foot">
-              <span>Ends {OFFER_ENDS}</span>
-              <span aria-hidden="true">Get it →</span>
-            </span>
-          </Link>
-        </li>
-      </ul>
+    <section className="wrap studio" aria-label="Our studio">
+      <img src="/work/m/studio.jpg" alt="A designer drawing on a tablet with her laptop beside her" width="2000" height="1333" fetchPriority="high" decoding="async" />
     </section>
   );
 }
@@ -488,7 +426,7 @@ function HowItWorks() {
 export default function Home() {
   return (
     <>
-      <Offers />
+      <Studio />
       <Hero />
       <ClientWork />
       <WhatWeBuild />

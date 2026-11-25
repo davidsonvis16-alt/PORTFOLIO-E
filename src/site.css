@@ -53,11 +53,10 @@ html.menu-open { overflow: hidden; }
 .page-wait { min-height: 70vh; }
 
 /* ---------- type primitives ---------- */
-.mark { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1; }
-.mark-word { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 36px; letter-spacing: -0.01em; line-height: 0.8; padding: 0 4px 0 2px; }
-.mark-swash { width: 3.9em; height: auto; margin-top: 2px; font-size: 21px; overflow: visible; }
-.mark-swash path { transform-origin: left center; transition: transform 0.5s var(--ease); }
-a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
+.mark { display: inline-flex; line-height: 1; color: #000; }
+.mark-blocks { height: 26px; width: auto; overflow: visible; }
+.mark-dot { transform-box: fill-box; transform-origin: center; transform: rotate(-12deg); transition: transform 0.4s var(--ease); }
+a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
 .dot { color: var(--dot); }
 .idx { font-size: 13px; font-weight: 600; color: var(--sub); font-variant-numeric: tabular-nums; letter-spacing: 0; }
 .fine { grid-column: 4 / -1; margin-top: 32px; font-size: 14px; color: var(--sub); max-width: 70ch; }
@@ -743,6 +742,14 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
 @keyframes cookie-in { from { transform: translateY(100%); } to { transform: none; } }
 @media (max-width: 560px) { .cookie { justify-content: space-between; } .cookie p { font-size: 12px; } }
 
+
+/* ---------- studio photo at the top ---------- */
+.studio { position: relative; padding-top: 20px; }
+.studio img { display: block; width: 100%; aspect-ratio: 21 / 9; object-fit: cover; object-position: 50% 40%; }
+.studio p { position: absolute; left: calc(var(--gut) + 22px); bottom: 20px; color: #fff; font-size: clamp(16px, 1.6vw, 22px); font-weight: 800; letter-spacing: -0.02em; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45); }
+.studio + .hero { min-height: auto; padding-top: clamp(40px, 5vw, 72px); }
+@media (max-width: 700px) { .studio img { aspect-ratio: 4 / 3; } .studio p { left: calc(var(--gut) + 14px); bottom: 14px; } }
+
 /* ---------- motion ---------- */
 .rise { animation: rise 0.8s var(--ease) both; }
 .rise:nth-child(2) { animation-delay: 0.06s; }
@@ -787,7 +794,7 @@ a:hover > .mark .mark-swash path { transform: scaleX(1.06); }
   .talk { height: 40px; padding: 0 14px; }
   .talk-long { display: none; }
   .talk-short { display: inline; }
-  .mark-word { font-size: 30px; }
+  .mark-blocks { height: 17px; }
   /* Hero */
   .hero { min-height: auto; padding-top: 28px; }
   .offers-row { margin-right: calc(-1 * var(--gut)); padding-right: var(--gut); }

@@ -64,14 +64,13 @@ export function Icon({ name, size = 16, className = "" }) {
    pink, with an ink-brush underline — thick in the middle, thin at the
    ends — that finishes in a pink dot. Drawn, not built from shapes. */
 export function Mark({ className = "" }) {
+  /* TESSY in square blocks, packed tight, like a game title; the dot is one
+     pink block, tipped over. */
   return (
     <span className={`mark ${className}`} role="img" aria-label="Tessy">
-      <span className="mark-word" aria-hidden="true">
-        Tessy
-      </span>
-      <svg className="mark-swash" viewBox="0 0 106 16" aria-hidden="true">
-        <path d="M3.2 9.6C17 7.1 33.4 8.6 49.6 8.9c15.8.3 31.4-1.6 44.9-2.9 1.6-.2 2.6 1.6 1.2 2.4-.6.3-1.5.4-2.6.6-14.6 2.3-29.6 4.6-45.1 4.4C33.1 13.2 18.6 12.1 4 12.7c-1.9.1-2.6-2.7-.8-3.1Z" fill="#111111" />
-        <circle cx="101.6" cy="6.2" r="3.4" fill="#ff7ab6" />
+      <svg className="mark-blocks" viewBox="0 0 26.2 5.2" shapeRendering="crispEdges" aria-hidden="true">
+        <path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM1 1h1v1h-1zM2 1h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM2 4h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM7 0h1v1h-1zM8 0h1v1h-1zM5 1h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM5 3h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM10 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM13 0h1v1h-1zM10 1h1v1h-1zM10 2h1v1h-1zM11 2h1v1h-1zM12 2h1v1h-1zM13 2h1v1h-1zM13 3h1v1h-1zM10 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM13 4h1v1h-1zM15 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM18 0h1v1h-1zM15 1h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM18 2h1v1h-1zM18 3h1v1h-1zM15 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM20 0h1v1h-1zM23 0h1v1h-1zM20 1h1v1h-1zM23 1h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM23 2h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1z" fill="currentColor" />
+        <rect className="mark-dot" x="25" y="4" width="1" height="1" fill="#e0479e" />
       </svg>
     </span>
   );
