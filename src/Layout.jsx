@@ -2,7 +2,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useRevealAll } from "./tokens";
 import { EMAIL, LINE, PACKAGES, SITE_NAV, mailLink } from "./data";
-import { HashLink, Icon, Mark } from "./ui";
+import { BlockText, HashLink, Icon, Mark } from "./ui";
 import { useCart } from "./cart";
 import { Search } from "./Search";
 import { useSession } from "./supabase";
@@ -328,10 +328,20 @@ function CookieNote() {
   };
   return (
     <div className="cookie" role="region" aria-label="Cookies">
-      <p>
-        <span className="cookie-dot" aria-hidden="true" />
-        We use essential cookies only — to keep your cart and log-in working. No tracking, no ads<span className="dot">.</span>
-      </p>
+      <span className="cookie-tape" aria-hidden="true" />
+      <svg className="cookie-pic" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 6a26 26 0 1 0 26 27 9 9 0 0 1-10-9 9 9 0 0 1-8-10 8 8 0 0 1-8-8z" fill="#e9b872" />
+        <rect x="20" y="24" width="6" height="6" fill="currentColor" />
+        <rect x="34" y="38" width="6" height="6" fill="currentColor" />
+        <rect x="18" y="40" width="5" height="5" fill="currentColor" />
+        <rect x="40" y="26" width="4" height="4" fill="currentColor" />
+      </svg>
+      <div className="cookie-text">
+        <b className="cookie-title">
+          <BlockText text="Cookies" />
+        </b>
+        <p>Only the ones the site needs — your cart and your log-in. No tracking, no ads.</p>
+      </div>
       <button type="button" className="cookie-ok" onClick={ok}>
         OK
       </button>

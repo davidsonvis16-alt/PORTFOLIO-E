@@ -738,16 +738,18 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
 
 
 /* ---------- cookie note ----------
-   A thin strip, thin writing, one pill. */
-.cookie { position: fixed; left: 0; right: 0; bottom: 0; z-index: 300; display: flex; align-items: center; justify-content: center; gap: 18px; padding: 10px var(--gut); background: rgba(255, 255, 255, 0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-top: 1px solid var(--line); animation: cookie-in 0.4s var(--ease) both; }
-.cookie-dot { display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: var(--dot); vertical-align: 1px; }
-.cookie .dot { color: var(--dot); font-weight: 800; }
-.cookie p { font-size: 13px; font-weight: 300; line-height: 1.4; color: var(--sub); }
-.cookie-ok { flex: none; height: 30px; padding: 0 18px; border-radius: 999px; background: var(--ink); color: var(--on-ink); font-size: 13px; font-weight: 700; }
+   A small square of paper taped to the corner: a drawn cookie, the word in
+   the logo's blocks, one line, one pill. */
+.cookie { position: fixed; left: var(--gut); bottom: 20px; z-index: 300; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 6px 14px; align-items: center; width: min(340px, calc(100vw - 2 * var(--gut))); padding: 22px 20px 18px; background: #fff4d6; color: #000; transform: rotate(-1.5deg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 18px 40px rgba(0, 0, 0, 0.18); animation: cookie-in 0.5s var(--ease) both; }
+.cookie-tape { position: absolute; top: -11px; left: 50%; width: 92px; height: 22px; transform: translateX(-50%) rotate(3deg); background: rgba(255, 255, 255, 0.6); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+.cookie-pic { width: 48px; height: 48px; grid-row: span 2; align-self: start; color: #5a3410; }
+.cookie-title { display: block; line-height: 0; color: #000; }
+.cookie-title .blocks { height: 16px; width: auto; }
+.cookie p { font-size: 12.5px; font-weight: 400; line-height: 1.45; color: #3a3a3a; margin-top: 8px; }
+.cookie-ok { grid-column: 2; justify-self: start; margin-top: 10px; height: 32px; padding: 0 20px; border-radius: 999px; background: #000; color: #fff; font-size: 13px; font-weight: 800; transition: background-color 0.2s var(--ease); }
 .cookie-ok:hover { background: var(--dot); }
-@keyframes cookie-in { from { transform: translateY(100%); } to { transform: none; } }
-@media (max-width: 560px) { .cookie { justify-content: space-between; } .cookie p { font-size: 12px; } }
-
+@keyframes cookie-in { from { opacity: 0; transform: translateY(30px) rotate(4deg); } to { opacity: 1; transform: rotate(-1.5deg); } }
+@media (max-width: 560px) { .cookie { left: 12px; right: 12px; width: auto; bottom: 12px; } }
 
 /* ---------- studio photo at the top ---------- */
 .studio { position: relative; padding-top: 20px; }
@@ -797,7 +799,6 @@ a:hover > .mark .mark-dot { transform: rotate(18deg) translateY(-0.4px); }
   .hdr-nav .pill-link:hover, .mega-btn.is-open { background: rgba(255, 255, 255, 0.08); }
   .hdr-nav .pill-link[aria-current="page"], .acct-pill.is-in { background: rgba(255, 255, 255, 0.92); color: #000; box-shadow: none; }
   .cart-pill:hover, .jump .pill-link:hover { background: rgba(60, 60, 60, 0.8); }
-  .cookie { background: rgba(16, 16, 16, 0.92); }
   .act:hover, .act-solid:hover, .act-quiet:hover { background: var(--dot); border-color: var(--dot); color: #fff; }
   .print, .case-tape { background: #f3f3f3; }
   .case-paper { box-shadow: 0 18px 34px rgba(0, 0, 0, 0.5); }
