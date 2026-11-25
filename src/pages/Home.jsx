@@ -125,6 +125,59 @@ function Studio() {
   );
 }
 
+/* Under the hero: what we make, drawn by hand on four soft squares of paper
+   stuck to the page — the same paper as the client cards. */
+const MAKES = [
+  ["Websites", "t-blue", (
+    <>
+      <rect x="14" y="24" width="92" height="72" fill="var(--soft-ink)" />
+      <path d="M14 40h92" />
+      <path d="M22 32h2M30 32h2M38 32h2" />
+      <path d="M26 54h40M26 64h28M26 74h34" />
+      <rect x="74" y="52" width="22" height="30" fill="currentColor" stroke="none" />
+    </>
+  )],
+  ["Apps", "t-pink", (
+    <>
+      <rect x="38" y="12" width="44" height="96" fill="var(--soft-ink)" />
+      <path d="M54 20h12M58 100h4" />
+      <path d="M46 34h28v20H46zM46 62h12v12H46zM62 62h12v12H62zM46 80h28" />
+    </>
+  )],
+  ["Emails", "t-green", (
+    <>
+      <rect x="16" y="30" width="88" height="60" fill="var(--soft-ink)" />
+      <path d="M16 30l44 34 44-34" />
+      <path d="M86 18l6-8M96 24l9-3" />
+    </>
+  )],
+  ["Ads", "t-lilac", (
+    <>
+      <path d="M22 50h16l40-22v64L38 70H22z" fill="var(--soft-ink)" />
+      <path d="M38 70l6 24h12l-6-24" />
+      <path d="M90 46c6 4 6 24 0 28M98 38c12 8 12 36 0 44" />
+    </>
+  )],
+];
+
+function Doodles() {
+  return (
+    <ul className="doodles rise" aria-label="What we make">
+      {MAKES.map(([name, tone, art]) => (
+        <li key={name} className={`case ${tone}`}>
+          <span className="case-paper">
+            <span className="case-tape" aria-hidden="true" />
+            <svg className="case-draw" viewBox="0 0 120 120" aria-hidden="true">
+              {art}
+            </svg>
+          </span>
+          <b>{name}</b>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function Hero() {
   return (
     <section className="wrap hero" aria-labelledby="hero-title">
@@ -148,7 +201,7 @@ function Hero() {
             Email us <span aria-hidden="true">↗</span>
           </a>
         </div>
-        <Mounted set="home" className="hero-art" />
+        <Doodles />
       </div>
       <dl className="facts rise">
         {FACTS.map((f, i) => (
